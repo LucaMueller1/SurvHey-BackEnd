@@ -60,6 +60,7 @@ public class PetApiController implements PetApi {
 
     public ResponseEntity<Pet> getPetById(@Parameter(in = ParameterIn.PATH, description = "ID of pet to return", required=true, schema=@Schema()) @PathVariable("petId") Long petId) {
         String accept = request.getHeader("Accept");
+        log.info("request done");
         if (accept != null && accept.contains("application/json")) {
             try {
                 return new ResponseEntity<Pet>(objectMapper.readValue("{\n  \"photoUrls\" : [ \"photoUrls\", \"photoUrls\" ],\n  \"name\" : \"doggie\",\n  \"id\" : 0,\n  \"category\" : {\n    \"name\" : \"name\",\n    \"id\" : 6\n  },\n  \"tags\" : [ {\n    \"name\" : \"name\",\n    \"id\" : 1\n  }, {\n    \"name\" : \"name\",\n    \"id\" : 1\n  } ],\n  \"status\" : \"available\"\n}", Pet.class), HttpStatus.NOT_IMPLEMENTED);
@@ -68,7 +69,6 @@ public class PetApiController implements PetApi {
                 return new ResponseEntity<Pet>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
-
         return new ResponseEntity<Pet>(HttpStatus.NOT_IMPLEMENTED);
     }
 
