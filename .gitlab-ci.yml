@@ -9,12 +9,3 @@ build:
   artifacts:
     paths:
       - target/survhey-0.0.1-SNAPSHOT.jar
-
-production:
-  stage: deploy
-  script:
-    - curl --location "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar zx
-    - ./cf login -u $CF_USERNAME -p $CF_PASSWORD -a api.run.pivotal.io
-    - ./cf push
-  only:
-    - master
