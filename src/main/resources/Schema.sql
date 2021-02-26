@@ -60,6 +60,14 @@ Answer text,
 foreign key (Participation_ID) references SurvHey_DB.Survey_Answer(Participation_ID) on update cascade on delete cascade
 
 );
+
+create table SurvHey_DB.Aut_Token(
+                                     User_ID bigint primary key,
+                                     Token text not null,
+                                     Expiring_Date date not null,
+                                     foreign key (User_ID) references SurvHey_DB.User(User_ID) on update cascade on delete cascade
+
+);
 insert into survhey_db.User(E_Mail,Password) values('Gur@ke.com','1234');
 insert into survhey_db.User(E_Mail,Password) values('Ka@rotte.de','hallo');
 insert into survhey_db.User(E_Mail,Password) values('Ban@ane.net','bye');
