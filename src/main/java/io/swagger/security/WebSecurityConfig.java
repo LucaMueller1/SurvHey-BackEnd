@@ -25,24 +25,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //@Value("${yourapp.http.api_key}")
     private static final String API_KEY_AUTH_HEADER_NAME = "api_key";
 
-    //@Value("${yourapp.http.auth-token}")
     private String principalRequestValue = "test123";
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         ApiKeyFilter filter = new ApiKeyFilter(API_KEY_AUTH_HEADER_NAME);
-        filter.setAuthenticationManager(new AuthenticationManager() {
-            @Override
-            public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-                String principal = (String) authentication.getPrincipal();
-                if (!principalRequestValue.equals(principal)) {
-                    log.info("API key invalid.");
-                    throw new BadCredentialsException("The API key was not found or not the expected value.");
-                }
-                authentication.setAuthenticated(true);
-                return authentication;
-            }
-        });
+        filter.setAuthenticationManager(new ApiKeyAuthManager());
 
         http.antMatcher("/**").
                 csrf().
