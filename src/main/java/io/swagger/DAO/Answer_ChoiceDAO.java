@@ -1,4 +1,4 @@
-package DAO;
+package io.swagger.DAO;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

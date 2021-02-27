@@ -1,4 +1,4 @@
-package DAO;
+package io.swagger.DAO;
 
 import javax.persistence.*;
 import java.io.IOException;
