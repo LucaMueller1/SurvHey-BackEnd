@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
  * Survey
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T14:36:57.683Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T16:32:59.103Z[GMT]")
 
 
 public class Survey   {
@@ -62,7 +62,7 @@ public class Survey   {
    * Get name
    * @return name
    **/
-  @Schema(required = true, description = "")
+  @Schema(example = "Survey about electric cars", required = true, description = "")
       @NotNull
 
     public String getName() {

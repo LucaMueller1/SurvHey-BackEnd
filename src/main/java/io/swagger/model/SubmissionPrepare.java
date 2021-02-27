@@ -3,7 +3,7 @@ package io.swagger.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.model.QuestionResult;
+import io.swagger.model.Answer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,21 +12,21 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Results
+ * SubmissionPrepare
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T16:32:59.103Z[GMT]")
 
 
-public class Results   {
+public class SubmissionPrepare   {
   @JsonProperty("survey_id")
   private Long surveyId = null;
 
-  @JsonProperty("questionResults")
+  @JsonProperty("answers")
   @Valid
-  private List<QuestionResult> questionResults = null;
+  private List<Answer> answers = new ArrayList<Answer>();
 
-  public Results surveyId(Long surveyId) {
+  public SubmissionPrepare surveyId(Long surveyId) {
     this.surveyId = surveyId;
     return this;
   }
@@ -35,9 +35,8 @@ public class Results   {
    * Get surveyId
    * @return surveyId
    **/
-  @Schema(required = true, description = "")
-      @NotNull
-
+  @Schema(description = "")
+  
     public Long getSurveyId() {
     return surveyId;
   }
@@ -46,31 +45,29 @@ public class Results   {
     this.surveyId = surveyId;
   }
 
-  public Results questionResults(List<QuestionResult> questionResults) {
-    this.questionResults = questionResults;
+  public SubmissionPrepare answers(List<Answer> answers) {
+    this.answers = answers;
     return this;
   }
 
-  public Results addQuestionResultsItem(QuestionResult questionResultsItem) {
-    if (this.questionResults == null) {
-      this.questionResults = new ArrayList<QuestionResult>();
-    }
-    this.questionResults.add(questionResultsItem);
+  public SubmissionPrepare addAnswersItem(Answer answersItem) {
+    this.answers.add(answersItem);
     return this;
   }
 
   /**
-   * Get questionResults
-   * @return questionResults
+   * Get answers
+   * @return answers
    **/
-  @Schema(description = "")
-      @Valid
-    public List<QuestionResult> getQuestionResults() {
-    return questionResults;
+  @Schema(required = true, description = "")
+      @NotNull
+    @Valid
+    public List<Answer> getAnswers() {
+    return answers;
   }
 
-  public void setQuestionResults(List<QuestionResult> questionResults) {
-    this.questionResults = questionResults;
+  public void setAnswers(List<Answer> answers) {
+    this.answers = answers;
   }
 
 
@@ -82,23 +79,23 @@ public class Results   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Results results = (Results) o;
-    return Objects.equals(this.surveyId, results.surveyId) &&
-        Objects.equals(this.questionResults, results.questionResults);
+    SubmissionPrepare submissionPrepare = (SubmissionPrepare) o;
+    return Objects.equals(this.surveyId, submissionPrepare.surveyId) &&
+        Objects.equals(this.answers, submissionPrepare.answers);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(surveyId, questionResults);
+    return Objects.hash(surveyId, answers);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Results {\n");
+    sb.append("class SubmissionPrepare {\n");
     
     sb.append("    surveyId: ").append(toIndentedString(surveyId)).append("\n");
-    sb.append("    questionResults: ").append(toIndentedString(questionResults)).append("\n");
+    sb.append("    answers: ").append(toIndentedString(answers)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -23,7 +24,7 @@ public class SurveyDAO implements Serializable {
     private long User_ID;
 
     @OneToMany(mappedBy = "Survey")
-    private ArrayList<Survey_QuestionDAO> survey_QuestionDAOS;
+    private List<Survey_QuestionDAO> survey_QuestionDAOS;
 
 
 
@@ -70,7 +71,7 @@ public class SurveyDAO implements Serializable {
         User_ID = user_ID;
     }
 
-    public ArrayList<Survey_QuestionDAO> getSurvey_Questions() {
+    public List<Survey_QuestionDAO> getSurvey_Questions() {
         return survey_QuestionDAOS;
     }
 

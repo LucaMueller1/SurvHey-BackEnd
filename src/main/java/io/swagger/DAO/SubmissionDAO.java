@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "SurvHey_DB.Submission")
@@ -26,7 +27,7 @@ public class SubmissionDAO implements Serializable{
     private Timestamp timestamp;
 
     @OneToMany(mappedBy = "Submisson")
-    private ArrayList<AnswerDAO> answerDAOS;
+    private List<AnswerDAO> answerDAOS;
 
 
     //Constructors
@@ -84,7 +85,7 @@ public class SubmissionDAO implements Serializable{
         this.timestamp = timestamp;
     }
 
-    public ArrayList<AnswerDAO> getAnswers() {
+    public List<AnswerDAO> getAnswers() {
         return answerDAOS;
     }
 

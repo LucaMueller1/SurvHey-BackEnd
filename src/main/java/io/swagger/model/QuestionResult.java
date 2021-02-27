@@ -4,48 +4,29 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * AnswerOption
+ * QuestionResult
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T16:32:59.103Z[GMT]")
 
 
-public class AnswerOption   {
-  @JsonProperty("id")
-  private Long id = null;
-
+public class QuestionResult   {
   @JsonProperty("question_id")
   private Long questionId = null;
 
-  @JsonProperty("content")
-  private OneOfAnswerOptionContent content = null;
+  @JsonProperty("choices")
+  @Valid
+  private Map<String, Integer> choices = null;
 
-  public AnswerOption id(Long id) {
-    this.id = id;
-    return this;
-  }
-
-  /**
-   * Get id
-   * @return id
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
-
-    public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public AnswerOption questionId(Long questionId) {
+  public QuestionResult questionId(Long questionId) {
     this.questionId = questionId;
     return this;
   }
@@ -54,9 +35,8 @@ public class AnswerOption   {
    * Get questionId
    * @return questionId
    **/
-  @Schema(required = true, description = "")
-      @NotNull
-
+  @Schema(description = "")
+  
     public Long getQuestionId() {
     return questionId;
   }
@@ -65,24 +45,31 @@ public class AnswerOption   {
     this.questionId = questionId;
   }
 
-  public AnswerOption content(OneOfAnswerOptionContent content) {
-    this.content = content;
+  public QuestionResult choices(Map<String, Integer> choices) {
+    this.choices = choices;
+    return this;
+  }
+
+  public QuestionResult putChoicesItem(String key, Integer choicesItem) {
+    if (this.choices == null) {
+      this.choices = new HashMap<String, Integer>();
+    }
+    this.choices.put(key, choicesItem);
     return this;
   }
 
   /**
-   * Get content
-   * @return content
+   * Get choices
+   * @return choices
    **/
-  @Schema(example = "[\"Tesla\",\"Hyundai\",\"Porsche\"]", required = true, description = "")
-      @NotNull
-
-    public OneOfAnswerOptionContent getContent() {
-    return content;
+  @Schema(example = "{\"Tesla\":0.65,\"Hyundai\":0.15,\"Porsche\":0.2}", description = "")
+  
+    public Map<String, Integer> getChoices() {
+    return choices;
   }
 
-  public void setContent(OneOfAnswerOptionContent content) {
-    this.content = content;
+  public void setChoices(Map<String, Integer> choices) {
+    this.choices = choices;
   }
 
 
@@ -94,25 +81,23 @@ public class AnswerOption   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    AnswerOption answerOption = (AnswerOption) o;
-    return Objects.equals(this.id, answerOption.id) &&
-        Objects.equals(this.questionId, answerOption.questionId) &&
-        Objects.equals(this.content, answerOption.content);
+    QuestionResult questionResult = (QuestionResult) o;
+    return Objects.equals(this.questionId, questionResult.questionId) &&
+        Objects.equals(this.choices, questionResult.choices);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, questionId, content);
+    return Objects.hash(questionId, choices);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class AnswerOption {\n");
+    sb.append("class QuestionResult {\n");
     
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    questionId: ").append(toIndentedString(questionId)).append("\n");
-    sb.append("    content: ").append(toIndentedString(content)).append("\n");
+    sb.append("    choices: ").append(toIndentedString(choices)).append("\n");
     sb.append("}");
     return sb.toString();
   }

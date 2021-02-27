@@ -3,6 +3,7 @@ package io.swagger.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.model.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
@@ -13,12 +14,12 @@ import javax.validation.constraints.*;
  * AuthKey
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T14:36:57.683Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T16:32:59.103Z[GMT]")
 
 
 public class AuthKey   {
-  @JsonProperty("userId")
-  private Long userId = null;
+  @JsonProperty("user")
+  private User user = null;
 
   @JsonProperty("authKey")
   private String authKey = null;
@@ -26,23 +27,24 @@ public class AuthKey   {
   @JsonProperty("expiry")
   private OffsetDateTime expiry = null;
 
-  public AuthKey userId(Long userId) {
-    this.userId = userId;
+  public AuthKey user(User user) {
+    this.user = user;
     return this;
   }
 
   /**
-   * Get userId
-   * @return userId
+   * Get user
+   * @return user
    **/
   @Schema(description = "")
   
-    public Long getUserId() {
-    return userId;
+    @Valid
+    public User getUser() {
+    return user;
   }
 
-  public void setUserId(Long userId) {
-    this.userId = userId;
+  public void setUser(User user) {
+    this.user = user;
   }
 
   public AuthKey authKey(String authKey) {
@@ -54,7 +56,7 @@ public class AuthKey   {
    * Get authKey
    * @return authKey
    **/
-  @Schema(description = "")
+  @Schema(example = "bWFnZ2llOnN1bW1lcXMgs29E", description = "")
   
     public String getAuthKey() {
     return authKey;
@@ -94,14 +96,14 @@ public class AuthKey   {
       return false;
     }
     AuthKey authKey = (AuthKey) o;
-    return Objects.equals(this.userId, authKey.userId) &&
+    return Objects.equals(this.user, authKey.user) &&
         Objects.equals(this.authKey, authKey.authKey) &&
         Objects.equals(this.expiry, authKey.expiry);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(userId, authKey, expiry);
+    return Objects.hash(user, authKey, expiry);
   }
 
   @Override
@@ -109,7 +111,7 @@ public class AuthKey   {
     StringBuilder sb = new StringBuilder();
     sb.append("class AuthKey {\n");
     
-    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
+    sb.append("    user: ").append(toIndentedString(user)).append("\n");
     sb.append("    authKey: ").append(toIndentedString(authKey)).append("\n");
     sb.append("    expiry: ").append(toIndentedString(expiry)).append("\n");
     sb.append("}");

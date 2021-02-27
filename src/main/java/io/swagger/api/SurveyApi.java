@@ -9,6 +9,7 @@ import io.swagger.model.Analysis;
 import io.swagger.model.ApiError;
 import io.swagger.model.Results;
 import io.swagger.model.Submission;
+import io.swagger.model.SubmissionPrepare;
 import io.swagger.model.Survey;
 import io.swagger.model.SurveyPrepare;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,7 +38,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T14:36:57.683Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T16:32:59.103Z[GMT]")
 public interface SurveyApi {
 
     @Operation(summary = "Create new survey", description = "Creates a new survey for the logged-in user", security = {
@@ -60,8 +61,9 @@ public interface SurveyApi {
         @ApiResponse(responseCode = "200", description = "unexpected error", content = @Content(schema = @Schema(implementation = ApiError.class))) })
     @RequestMapping(value = "/survey/{id}/submission",
         produces = { "application/json" }, 
+        consumes = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<Submission> createSurveySubmission(@Parameter(in = ParameterIn.PATH, description = "ID of survey to create a new submission for", required=true, schema=@Schema()) @PathVariable("id") Long id);
+    ResponseEntity<Submission> createSurveySubmission(@Parameter(in = ParameterIn.PATH, description = "ID of survey to create a new submission for", required=true, schema=@Schema()) @PathVariable("id") Long id, @Parameter(in = ParameterIn.DEFAULT, description = "Created submission object for survey", schema=@Schema()) @Valid @RequestBody SubmissionPrepare body);
 
 
     @Operation(summary = "Delete survey by id", description = "Deletes the corresponding survey", security = {
@@ -101,13 +103,13 @@ public interface SurveyApi {
 
     @Operation(summary = "Returns results of the given survey", description = "Returns a more simple representation of survey results for the end-user to view", tags={ "submission" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Results.class)))),
+        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = Results.class))),
         
         @ApiResponse(responseCode = "200", description = "unexpected error", content = @Content(schema = @Schema(implementation = ApiError.class))) })
     @RequestMapping(value = "/survey/{id}/results",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Results>> getSurveyResultsById(@Parameter(in = ParameterIn.PATH, description = "ID of survey to return results for", required=true, schema=@Schema()) @PathVariable("id") Long id);
+    ResponseEntity<Results> getSurveyResultsById(@Parameter(in = ParameterIn.PATH, description = "ID of survey to return results for", required=true, schema=@Schema()) @PathVariable("id") Long id);
 
 
     @Operation(summary = "Returns all submissions for the given survey", description = "Returns a list of all submissions for the given survey", security = {
@@ -130,8 +132,9 @@ public interface SurveyApi {
         @ApiResponse(responseCode = "200", description = "unexpected error", content = @Content(schema = @Schema(implementation = ApiError.class))) })
     @RequestMapping(value = "/survey/{id}",
         produces = { "application/json" }, 
+        consumes = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<Survey> updateSurveyById(@Parameter(in = ParameterIn.PATH, description = "ID of survey to update", required=true, schema=@Schema()) @PathVariable("id") Long id);
+    ResponseEntity<Survey> updateSurveyById(@Parameter(in = ParameterIn.PATH, description = "ID of survey to update", required=true, schema=@Schema()) @PathVariable("id") Long id, @Parameter(in = ParameterIn.DEFAULT, description = "Created survey object", schema=@Schema()) @Valid @RequestBody SurveyPrepare body);
 
 }
 

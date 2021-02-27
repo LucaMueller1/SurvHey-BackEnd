@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
  * ApiError
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T14:36:57.683Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T16:32:59.103Z[GMT]")
 
 
 public class ApiError   {
@@ -34,7 +34,7 @@ public class ApiError   {
    * Get code
    * @return code
    **/
-  @Schema(description = "")
+  @Schema(example = "404", description = "")
   
     public Integer getCode() {
     return code;
@@ -53,7 +53,7 @@ public class ApiError   {
    * Get type
    * @return type
    **/
-  @Schema(description = "")
+  @Schema(example = "Not Found", description = "")
   
     public String getType() {
     return type;
@@ -72,7 +72,7 @@ public class ApiError   {
    * Get message
    * @return message
    **/
-  @Schema(description = "")
+  @Schema(example = "Requested survey not found", description = "")
   
     public String getMessage() {
     return message;

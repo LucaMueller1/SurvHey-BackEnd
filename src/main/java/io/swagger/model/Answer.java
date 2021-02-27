@@ -3,6 +3,7 @@ package io.swagger.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import javax.validation.constraints.*;
  * Answer
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T14:36:57.683Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T16:32:59.103Z[GMT]")
 
 
 public class Answer   {
@@ -23,6 +24,49 @@ public class Answer   {
 
   @JsonProperty("question_id")
   private Long questionId = null;
+
+  /**
+   * Gets or Sets mode
+   */
+  public enum ModeEnum {
+    RADIO("radio"),
+    
+    CHECK("check"),
+    
+    TEXT("text"),
+    
+    RATING("rating"),
+    
+    DROPDOWN("dropdown"),
+    
+    NPS("nps"),
+    
+    CONSENT("consent");
+
+    private String value;
+
+    ModeEnum(String value) {
+      this.value = value;
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static ModeEnum fromValue(String text) {
+      for (ModeEnum b : ModeEnum.values()) {
+        if (String.valueOf(b.value).equals(text)) {
+          return b;
+        }
+      }
+      return null;
+    }
+  }
+  @JsonProperty("mode")
+  private ModeEnum mode = null;
 
   @JsonProperty("choices")
   @Valid
@@ -68,6 +112,25 @@ public class Answer   {
     this.questionId = questionId;
   }
 
+  public Answer mode(ModeEnum mode) {
+    this.mode = mode;
+    return this;
+  }
+
+  /**
+   * Get mode
+   * @return mode
+   **/
+  @Schema(description = "")
+  
+    public ModeEnum getMode() {
+    return mode;
+  }
+
+  public void setMode(ModeEnum mode) {
+    this.mode = mode;
+  }
+
   public Answer choices(List<OneOfAnswerChoicesItems> choices) {
     this.choices = choices;
     return this;
@@ -82,7 +145,7 @@ public class Answer   {
    * Get choices
    * @return choices
    **/
-  @Schema(required = true, description = "")
+  @Schema(example = "[\"Tesla\",\"Hyundai\",\"Porsche\"]", required = true, description = "")
       @NotNull
 
     public List<OneOfAnswerChoicesItems> getChoices() {
@@ -105,12 +168,13 @@ public class Answer   {
     Answer answer = (Answer) o;
     return Objects.equals(this.id, answer.id) &&
         Objects.equals(this.questionId, answer.questionId) &&
+        Objects.equals(this.mode, answer.mode) &&
         Objects.equals(this.choices, answer.choices);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, questionId, choices);
+    return Objects.hash(id, questionId, mode, choices);
   }
 
   @Override
@@ -120,6 +184,7 @@ public class Answer   {
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    questionId: ").append(toIndentedString(questionId)).append("\n");
+    sb.append("    mode: ").append(toIndentedString(mode)).append("\n");
     sb.append("    choices: ").append(toIndentedString(choices)).append("\n");
     sb.append("}");
     return sb.toString();

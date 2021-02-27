@@ -12,38 +12,15 @@ import javax.validation.constraints.*;
  * UserLogin
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T14:36:57.683Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T16:32:59.103Z[GMT]")
 
 
 public class UserLogin   {
-  @JsonProperty("id")
-  private Long id = null;
-
   @JsonProperty("email")
   private String email = null;
 
   @JsonProperty("password")
   private String password = null;
-
-  public UserLogin id(Long id) {
-    this.id = id;
-    return this;
-  }
-
-  /**
-   * Get id
-   * @return id
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
-
-    public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
 
   public UserLogin email(String email) {
     this.email = email;
@@ -74,7 +51,7 @@ public class UserLogin   {
    * Get password
    * @return password
    **/
-  @Schema(required = true, description = "")
+  @Schema(example = "lol123", required = true, description = "")
       @NotNull
 
     public String getPassword() {
@@ -95,14 +72,13 @@ public class UserLogin   {
       return false;
     }
     UserLogin userLogin = (UserLogin) o;
-    return Objects.equals(this.id, userLogin.id) &&
-        Objects.equals(this.email, userLogin.email) &&
+    return Objects.equals(this.email, userLogin.email) &&
         Objects.equals(this.password, userLogin.password);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, email, password);
+    return Objects.hash(email, password);
   }
 
   @Override
@@ -110,7 +86,6 @@ public class UserLogin   {
     StringBuilder sb = new StringBuilder();
     sb.append("class UserLogin {\n");
     
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("}");

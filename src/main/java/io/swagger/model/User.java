@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
  * User
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T14:36:57.683Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T16:32:59.103Z[GMT]")
 
 
 public class User   {
@@ -60,7 +60,7 @@ public class User   {
    * Get firstName
    * @return firstName
    **/
-  @Schema(description = "")
+  @Schema(example = "Luca", description = "")
   
     public String getFirstName() {
     return firstName;
@@ -79,7 +79,7 @@ public class User   {
    * Get lastName
    * @return lastName
    **/
-  @Schema(description = "")
+  @Schema(example = "Mueller", description = "")
   
     public String getLastName() {
     return lastName;
@@ -118,7 +118,7 @@ public class User   {
    * Get password
    * @return password
    **/
-  @Schema(required = true, description = "")
+  @Schema(example = "lol123", required = true, description = "")
       @NotNull
 
     public String getPassword() {

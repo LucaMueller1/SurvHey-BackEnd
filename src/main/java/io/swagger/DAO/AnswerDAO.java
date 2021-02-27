@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -25,7 +26,7 @@ public class AnswerDAO implements Serializable {
     private long Question_ID;
 
     @OneToMany(mappedBy = "Survey_Answer")
-    private ArrayList<Answer_ChoiceDAO> ChoiceList;
+    private List<Answer_ChoiceDAO> ChoiceList;
 
     //Constructors
     public AnswerDAO(long participation_ID, long submission_ID, long question_ID, ArrayList<Answer_ChoiceDAO> choiceList) {
@@ -61,7 +62,7 @@ public class AnswerDAO implements Serializable {
         Question_ID = question_ID;
     }
 
-    public ArrayList<Answer_ChoiceDAO> getChoiceList() {
+    public List<Answer_ChoiceDAO> getChoiceList() {
         return ChoiceList;
     }
 
