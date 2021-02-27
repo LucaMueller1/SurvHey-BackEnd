@@ -55,6 +55,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+      security:
+        - ApiKeyAuth: []
     delete:
       tags:
         - user
@@ -70,6 +72,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+      security:
+        - ApiKeyAuth: []
   /user/login:
     post:
       tags:
@@ -112,6 +116,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+      security:
+        - ApiKeyAuth: []
   /survey:
     post:
       tags:
@@ -138,6 +144,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+      security:
+        - ApiKeyAuth: []
   /surveys:
     get:
       tags:
@@ -160,6 +168,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+      security:
+        - ApiKeyAuth: []
   /surveys/{id}:
     get:
       tags:
@@ -215,6 +225,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+      security:
+        - ApiKeyAuth: []
     delete:
       tags:
         - survey
@@ -238,6 +250,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+      security:
+        - ApiKeyAuth: []
   /surveys/{id}/analysis:
     get:
       tags:
@@ -266,6 +280,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+      security:
+        - ApiKeyAuth: []
   /surveys/{id}/submissions:
     get:
       tags:
@@ -296,6 +312,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+      security:
+        - ApiKeyAuth: []
   /surveys/{id}/results:
     get:
       tags:
@@ -357,7 +375,7 @@ paths:
   /participant/{id}/surveys:
     get:
       tags:
-        - survey
+        - submission
       summary: Return all surveys for the logged in user
       description: All surveys for the corresponding user are returned
       operationId: getParticipantsSurveys
@@ -384,6 +402,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+      security:
+        - ApiKeyAuth: []
 components:
   schemas:
     User:
@@ -614,7 +634,7 @@ components:
         message:
           type: string
   securitySchemes:
-    api_key:
+    ApiKeyAuth:
       type: apiKey
       name: api_key
       in: header
