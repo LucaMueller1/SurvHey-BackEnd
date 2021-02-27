@@ -9,21 +9,15 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * User
+ * UserLogin
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T14:36:57.683Z[GMT]")
 
 
-public class User   {
+public class UserLogin   {
   @JsonProperty("id")
   private Long id = null;
-
-  @JsonProperty("firstName")
-  private String firstName = null;
-
-  @JsonProperty("lastName")
-  private String lastName = null;
 
   @JsonProperty("email")
   private String email = null;
@@ -31,7 +25,7 @@ public class User   {
   @JsonProperty("password")
   private String password = null;
 
-  public User id(Long id) {
+  public UserLogin id(Long id) {
     this.id = id;
     return this;
   }
@@ -51,45 +45,7 @@ public class User   {
     this.id = id;
   }
 
-  public User firstName(String firstName) {
-    this.firstName = firstName;
-    return this;
-  }
-
-  /**
-   * Get firstName
-   * @return firstName
-   **/
-  @Schema(description = "")
-  
-    public String getFirstName() {
-    return firstName;
-  }
-
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public User lastName(String lastName) {
-    this.lastName = lastName;
-    return this;
-  }
-
-  /**
-   * Get lastName
-   * @return lastName
-   **/
-  @Schema(description = "")
-  
-    public String getLastName() {
-    return lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
-
-  public User email(String email) {
+  public UserLogin email(String email) {
     this.email = email;
     return this;
   }
@@ -109,7 +65,7 @@ public class User   {
     this.email = email;
   }
 
-  public User password(String password) {
+  public UserLogin password(String password) {
     this.password = password;
     return this;
   }
@@ -138,27 +94,23 @@ public class User   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    User user = (User) o;
-    return Objects.equals(this.id, user.id) &&
-        Objects.equals(this.firstName, user.firstName) &&
-        Objects.equals(this.lastName, user.lastName) &&
-        Objects.equals(this.email, user.email) &&
-        Objects.equals(this.password, user.password);
+    UserLogin userLogin = (UserLogin) o;
+    return Objects.equals(this.id, userLogin.id) &&
+        Objects.equals(this.email, userLogin.email) &&
+        Objects.equals(this.password, userLogin.password);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, firstName, lastName, email, password);
+    return Objects.hash(id, email, password);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class User {\n");
+    sb.append("class UserLogin {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
-    sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("}");

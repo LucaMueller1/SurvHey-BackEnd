@@ -5,7 +5,10 @@
  */
 package io.swagger.api;
 
+import io.swagger.model.ApiError;
+import io.swagger.model.AuthKey;
 import io.swagger.model.User;
+import io.swagger.model.UserLogin;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -32,74 +35,67 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-21T21:53:09.126Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T14:36:57.683Z[GMT]")
 public interface UserApi {
 
-    @Operation(summary = "Create user", description = "This can only be done by the logged in user.", security = {
-        @SecurityRequirement(name = "api_key")    }, tags={ "user" })
+    @Operation(summary = "Create user", description = "Registers a new user", tags={ "user" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation") })
+        @ApiResponse(responseCode = "200", description = "successful operation"),
+        
+        @ApiResponse(responseCode = "200", description = "unexpected error", content = @Content(schema = @Schema(implementation = ApiError.class))) })
     @RequestMapping(value = "/user",
-        consumes = { "*/*" }, 
+        produces = { "application/json" }, 
+        consumes = { "application/json" }, 
         method = RequestMethod.POST)
     ResponseEntity<Void> createUser(@Parameter(in = ParameterIn.DEFAULT, description = "Created user object", required=true, schema=@Schema()) @Valid @RequestBody User body);
 
 
-    @Operation(summary = "Delete user", description = "This can only be done by the logged in user.", security = {
-        @SecurityRequirement(name = "api_key")    }, tags={ "user" })
+    @Operation(summary = "Delete user", description = "This can only be done by the logged-in user", security = {
+        @SecurityRequirement(name = "ApiKeyAuth")    }, tags={ "user" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "400", description = "Invalid username supplied"),
+        @ApiResponse(responseCode = "200", description = "successful operation"),
         
-        @ApiResponse(responseCode = "404", description = "User not found") })
-    @RequestMapping(value = "/user/{username}",
+        @ApiResponse(responseCode = "200", description = "unexpected error", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+    @RequestMapping(value = "/user",
+        produces = { "application/json" }, 
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteUser(@Parameter(in = ParameterIn.PATH, description = "The name that needs to be deleted", required=true, schema=@Schema()) @PathVariable("username") String username);
+    ResponseEntity<Void> deleteUser();
 
 
-    @Operation(summary = "Get user by user name", description = "", security = {
-        @SecurityRequirement(name = "api_key")    }, tags={ "user" })
+    @Operation(summary = "Get user by api_key", description = "This can only be done by the logged-in user and will return a user object", security = {
+        @SecurityRequirement(name = "ApiKeyAuth")    }, tags={ "user" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = User.class))),
         
-        @ApiResponse(responseCode = "400", description = "Invalid username supplied"),
-        
-        @ApiResponse(responseCode = "404", description = "User not found") })
-    @RequestMapping(value = "/user/{username}",
-        produces = { "application/xml", "application/json" }, 
+        @ApiResponse(responseCode = "200", description = "unexpected error", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+    @RequestMapping(value = "/user",
+        produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<User> getUserByName(@Parameter(in = ParameterIn.PATH, description = "The name that needs to be fetched. Use user1 for testing. ", required=true, schema=@Schema()) @PathVariable("username") String username);
+    ResponseEntity<User> getUser();
 
 
     @Operation(summary = "Logs user into the system", description = "", tags={ "user" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = String.class))),
+        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = AuthKey.class))),
         
-        @ApiResponse(responseCode = "400", description = "Invalid username/password supplied") })
+        @ApiResponse(responseCode = "200", description = "unexpected error", content = @Content(schema = @Schema(implementation = ApiError.class))) })
     @RequestMapping(value = "/user/login",
-        produces = { "application/xml", "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<String> loginUser(@NotNull @Parameter(in = ParameterIn.QUERY, description = "The user name for login" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "username", required = true) String username, @NotNull @Parameter(in = ParameterIn.QUERY, description = "The password for login in clear text" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "password", required = true) String password);
+        produces = { "application/json" }, 
+        consumes = { "application/json" }, 
+        method = RequestMethod.POST)
+    ResponseEntity<AuthKey> loginUser(@Parameter(in = ParameterIn.DEFAULT, description = "Object that stores user login data", required=true, schema=@Schema()) @Valid @RequestBody UserLogin body);
 
 
-    @Operation(summary = "Logs out current logged in user session", description = "", security = {
-        @SecurityRequirement(name = "api_key")    }, tags={ "user" })
+    @Operation(summary = "Logs out current logged in user session", description = "This can only be done by the logged-in user", security = {
+        @SecurityRequirement(name = "ApiKeyAuth")    }, tags={ "user" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation") })
+        @ApiResponse(responseCode = "200", description = "successful operation"),
+        
+        @ApiResponse(responseCode = "200", description = "unexpected error", content = @Content(schema = @Schema(implementation = ApiError.class))) })
     @RequestMapping(value = "/user/logout",
+        produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<Void> logoutUser();
-
-
-    @Operation(summary = "Updated user", description = "This can only be done by the logged in user.", security = {
-        @SecurityRequirement(name = "api_key")    }, tags={ "user" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "400", description = "Invalid user supplied"),
-        
-        @ApiResponse(responseCode = "404", description = "User not found") })
-    @RequestMapping(value = "/user/{username}",
-        consumes = { "*/*" }, 
-        method = RequestMethod.PUT)
-    ResponseEntity<Void> updateUser(@Parameter(in = ParameterIn.PATH, description = "name that need to be updated", required=true, schema=@Schema()) @PathVariable("username") String username, @Parameter(in = ParameterIn.DEFAULT, description = "Updated user object", required=true, schema=@Schema()) @Valid @RequestBody User body);
 
 }
 

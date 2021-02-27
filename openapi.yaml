@@ -4,7 +4,7 @@ info:
   description: 'This is the OAS for the BackEnd of the SurvHey Project.'
   version: 1.0.0
 servers:
-  - url: http://localhost/v2
+  - url: http://localhost:8080/v2
 tags:
   - name: survey
     description: Everything about surveys
@@ -170,7 +170,7 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       security:
         - ApiKeyAuth: []
-  /surveys/{id}:
+  /survey/{id}:
     get:
       tags:
         - survey
@@ -252,7 +252,7 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       security:
         - ApiKeyAuth: []
-  /surveys/{id}/analysis:
+  /survey/{id}/analysis:
     get:
       tags:
         - survey
@@ -282,7 +282,7 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       security:
         - ApiKeyAuth: []
-  /surveys/{id}/submissions:
+  /survey/{id}/submissions:
     get:
       tags:
         - submission
@@ -314,7 +314,7 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       security:
         - ApiKeyAuth: []
-  /surveys/{id}/results:
+  /survey/{id}/results:
     get:
       tags:
         - submission
@@ -344,7 +344,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
-  /surveys/{id}/submission:
+  /survey/{id}/submission:
     post:
       tags:
         - submission

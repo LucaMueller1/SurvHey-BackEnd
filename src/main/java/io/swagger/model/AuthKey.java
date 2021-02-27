@@ -1,0 +1,129 @@
+package io.swagger.model;
+
+import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.threeten.bp.OffsetDateTime;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+
+/**
+ * AuthKey
+ */
+@Validated
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T14:36:57.683Z[GMT]")
+
+
+public class AuthKey   {
+  @JsonProperty("userId")
+  private Long userId = null;
+
+  @JsonProperty("authKey")
+  private String authKey = null;
+
+  @JsonProperty("expiry")
+  private OffsetDateTime expiry = null;
+
+  public AuthKey userId(Long userId) {
+    this.userId = userId;
+    return this;
+  }
+
+  /**
+   * Get userId
+   * @return userId
+   **/
+  @Schema(description = "")
+  
+    public Long getUserId() {
+    return userId;
+  }
+
+  public void setUserId(Long userId) {
+    this.userId = userId;
+  }
+
+  public AuthKey authKey(String authKey) {
+    this.authKey = authKey;
+    return this;
+  }
+
+  /**
+   * Get authKey
+   * @return authKey
+   **/
+  @Schema(description = "")
+  
+    public String getAuthKey() {
+    return authKey;
+  }
+
+  public void setAuthKey(String authKey) {
+    this.authKey = authKey;
+  }
+
+  public AuthKey expiry(OffsetDateTime expiry) {
+    this.expiry = expiry;
+    return this;
+  }
+
+  /**
+   * Get expiry
+   * @return expiry
+   **/
+  @Schema(description = "")
+  
+    @Valid
+    public OffsetDateTime getExpiry() {
+    return expiry;
+  }
+
+  public void setExpiry(OffsetDateTime expiry) {
+    this.expiry = expiry;
+  }
+
+
+  @Override
+  public boolean equals(java.lang.Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    AuthKey authKey = (AuthKey) o;
+    return Objects.equals(this.userId, authKey.userId) &&
+        Objects.equals(this.authKey, authKey.authKey) &&
+        Objects.equals(this.expiry, authKey.expiry);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(userId, authKey, expiry);
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("class AuthKey {\n");
+    
+    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
+    sb.append("    authKey: ").append(toIndentedString(authKey)).append("\n");
+    sb.append("    expiry: ").append(toIndentedString(expiry)).append("\n");
+    sb.append("}");
+    return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(java.lang.Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
+  }
+}

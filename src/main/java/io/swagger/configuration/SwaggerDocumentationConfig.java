@@ -13,7 +13,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-21T21:53:09.126Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T14:36:57.683Z[GMT]")
 @Configuration
 public class SwaggerDocumentationConfig {
 
@@ -30,13 +30,13 @@ public class SwaggerDocumentationConfig {
 
     ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("Swagger Petstore")
-            .description("This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters.")
-            .license("Apache 2.0")
-            .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
+            .title("SurvHey BackEnd")
+            .description("This is the OAS for the BackEnd of the SurvHey Project.")
+            .license("")
+            .licenseUrl("http://unlicense.org")
             .termsOfServiceUrl("")
             .version("1.0.0")
-            .contact(new Contact("","", "apiteam@swagger.io"))
+            .contact(new Contact("","", ""))
             .build();
     }
 
@@ -44,15 +44,15 @@ public class SwaggerDocumentationConfig {
     public OpenAPI openApi() {
         return new OpenAPI()
             .info(new Info()
-                .title("Swagger Petstore")
-                .description("This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters.")
+                .title("SurvHey BackEnd")
+                .description("This is the OAS for the BackEnd of the SurvHey Project.")
                 .termsOfService("")
                 .version("1.0.0")
                 .license(new License()
-                    .name("Apache 2.0")
-                    .url("http://www.apache.org/licenses/LICENSE-2.0.html"))
+                    .name("")
+                    .url("http://unlicense.org"))
                 .contact(new io.swagger.v3.oas.models.info.Contact()
-                    .email("apiteam@swagger.io")));
+                    .email("")));
     }
 
 }
