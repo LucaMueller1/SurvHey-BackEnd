@@ -45,3 +45,11 @@ create table SurvHey_DB.Question_Answer(
                                            foreign key (Answer_Option_ID) references SurvHey_DB.Answer_Option(Answer_Option_ID) on update cascade on delete cascade
 
 );
+
+
+//Testdata
+
+insert into survhey_db.User(E_Mail,Password) values('Gur@ke.com','1234');
+insert into survhey_db.User(E_Mail,Password) values('Ka@rotte.de','hallo');
+insert into survhey_db.User(E_Mail,Password) values('Ban@ane.net','bye');
+insert into survhey_db.User(E_Mail,Password) values('Ap@fel.info','start');
