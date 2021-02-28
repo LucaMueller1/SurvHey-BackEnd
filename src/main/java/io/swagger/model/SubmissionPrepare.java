@@ -3,7 +3,7 @@ package io.swagger.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.model.Answer;
+import io.swagger.model.AnswerOption;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +15,16 @@ import javax.validation.constraints.*;
  * SubmissionPrepare
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T16:32:59.103Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-28T16:38:44.030Z[GMT]")
 
 
 public class SubmissionPrepare   {
-  @JsonProperty("survey_id")
+  @JsonProperty("surveyId")
   private Long surveyId = null;
 
-  @JsonProperty("answers")
+  @JsonProperty("choices")
   @Valid
-  private List<Answer> answers = new ArrayList<Answer>();
+  private List<AnswerOption> choices = new ArrayList<AnswerOption>();
 
   public SubmissionPrepare surveyId(Long surveyId) {
     this.surveyId = surveyId;
@@ -45,29 +45,29 @@ public class SubmissionPrepare   {
     this.surveyId = surveyId;
   }
 
-  public SubmissionPrepare answers(List<Answer> answers) {
-    this.answers = answers;
+  public SubmissionPrepare choices(List<AnswerOption> choices) {
+    this.choices = choices;
     return this;
   }
 
-  public SubmissionPrepare addAnswersItem(Answer answersItem) {
-    this.answers.add(answersItem);
+  public SubmissionPrepare addChoicesItem(AnswerOption choicesItem) {
+    this.choices.add(choicesItem);
     return this;
   }
 
   /**
-   * Get answers
-   * @return answers
+   * Get choices
+   * @return choices
    **/
   @Schema(required = true, description = "")
       @NotNull
     @Valid
-    public List<Answer> getAnswers() {
-    return answers;
+    public List<AnswerOption> getChoices() {
+    return choices;
   }
 
-  public void setAnswers(List<Answer> answers) {
-    this.answers = answers;
+  public void setChoices(List<AnswerOption> choices) {
+    this.choices = choices;
   }
 
 
@@ -81,12 +81,12 @@ public class SubmissionPrepare   {
     }
     SubmissionPrepare submissionPrepare = (SubmissionPrepare) o;
     return Objects.equals(this.surveyId, submissionPrepare.surveyId) &&
-        Objects.equals(this.answers, submissionPrepare.answers);
+        Objects.equals(this.choices, submissionPrepare.choices);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(surveyId, answers);
+    return Objects.hash(surveyId, choices);
   }
 
   @Override
@@ -95,7 +95,7 @@ public class SubmissionPrepare   {
     sb.append("class SubmissionPrepare {\n");
     
     sb.append("    surveyId: ").append(toIndentedString(surveyId)).append("\n");
-    sb.append("    answers: ").append(toIndentedString(answers)).append("\n");
+    sb.append("    choices: ").append(toIndentedString(choices)).append("\n");
     sb.append("}");
     return sb.toString();
   }

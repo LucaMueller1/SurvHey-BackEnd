@@ -15,14 +15,14 @@ import javax.validation.constraints.*;
  * Analysis
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T16:32:59.103Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-28T16:38:44.030Z[GMT]")
 
 
 public class Analysis   {
   @JsonProperty("id")
   private Long id = null;
 
-  @JsonProperty("survey_id")
+  @JsonProperty("surveyId")
   private Long surveyId = null;
 
   @JsonProperty("amount")

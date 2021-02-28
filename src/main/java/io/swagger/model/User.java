@@ -12,82 +12,21 @@ import javax.validation.constraints.*;
  * User
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T16:32:59.103Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-28T16:38:44.030Z[GMT]")
 
 
 public class User   {
-  @JsonProperty("id")
-  private Long id = null;
-
-  @JsonProperty("firstName")
-  private String firstName = null;
-
-  @JsonProperty("lastName")
-  private String lastName = null;
-
   @JsonProperty("email")
   private String email = null;
 
   @JsonProperty("password")
   private String password = null;
 
-  public User id(Long id) {
-    this.id = id;
-    return this;
-  }
+  @JsonProperty("firstName")
+  private String firstName = null;
 
-  /**
-   * Get id
-   * @return id
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
-
-    public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public User firstName(String firstName) {
-    this.firstName = firstName;
-    return this;
-  }
-
-  /**
-   * Get firstName
-   * @return firstName
-   **/
-  @Schema(example = "Luca", description = "")
-  
-    public String getFirstName() {
-    return firstName;
-  }
-
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public User lastName(String lastName) {
-    this.lastName = lastName;
-    return this;
-  }
-
-  /**
-   * Get lastName
-   * @return lastName
-   **/
-  @Schema(example = "Mueller", description = "")
-  
-    public String getLastName() {
-    return lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
+  @JsonProperty("lastName")
+  private String lastName = null;
 
   public User email(String email) {
     this.email = email;
@@ -129,6 +68,44 @@ public class User   {
     this.password = password;
   }
 
+  public User firstName(String firstName) {
+    this.firstName = firstName;
+    return this;
+  }
+
+  /**
+   * Get firstName
+   * @return firstName
+   **/
+  @Schema(example = "Luca", description = "")
+  
+    public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public User lastName(String lastName) {
+    this.lastName = lastName;
+    return this;
+  }
+
+  /**
+   * Get lastName
+   * @return lastName
+   **/
+  @Schema(example = "Mueller", description = "")
+  
+    public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -139,16 +116,15 @@ public class User   {
       return false;
     }
     User user = (User) o;
-    return Objects.equals(this.id, user.id) &&
+    return Objects.equals(this.email, user.email) &&
+        Objects.equals(this.password, user.password) &&
         Objects.equals(this.firstName, user.firstName) &&
-        Objects.equals(this.lastName, user.lastName) &&
-        Objects.equals(this.email, user.email) &&
-        Objects.equals(this.password, user.password);
+        Objects.equals(this.lastName, user.lastName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, firstName, lastName, email, password);
+    return Objects.hash(email, password, firstName, lastName);
   }
 
   @Override
@@ -156,11 +132,10 @@ public class User   {
     StringBuilder sb = new StringBuilder();
     sb.append("class User {\n");
     
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
-    sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
+    sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
+    sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
     sb.append("}");
     return sb.toString();
   }

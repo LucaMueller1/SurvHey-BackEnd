@@ -3,30 +3,30 @@ package io.swagger.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.model.QuestionResult;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Results
+ * SurveyResult
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T16:32:59.103Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-28T16:38:44.030Z[GMT]")
 
 
-public class Results   {
-  @JsonProperty("survey_id")
+public class SurveyResult   {
+  @JsonProperty("surveyId")
   private Long surveyId = null;
 
-  @JsonProperty("questionResults")
+  @JsonProperty("choices")
   @Valid
-  private List<QuestionResult> questionResults = null;
+  private Map<String, Integer> choices = null;
 
-  public Results surveyId(Long surveyId) {
+  public SurveyResult surveyId(Long surveyId) {
     this.surveyId = surveyId;
     return this;
   }
@@ -35,9 +35,8 @@ public class Results   {
    * Get surveyId
    * @return surveyId
    **/
-  @Schema(required = true, description = "")
-      @NotNull
-
+  @Schema(description = "")
+  
     public Long getSurveyId() {
     return surveyId;
   }
@@ -46,31 +45,31 @@ public class Results   {
     this.surveyId = surveyId;
   }
 
-  public Results questionResults(List<QuestionResult> questionResults) {
-    this.questionResults = questionResults;
+  public SurveyResult choices(Map<String, Integer> choices) {
+    this.choices = choices;
     return this;
   }
 
-  public Results addQuestionResultsItem(QuestionResult questionResultsItem) {
-    if (this.questionResults == null) {
-      this.questionResults = new ArrayList<QuestionResult>();
+  public SurveyResult putChoicesItem(String key, Integer choicesItem) {
+    if (this.choices == null) {
+      this.choices = new HashMap<String, Integer>();
     }
-    this.questionResults.add(questionResultsItem);
+    this.choices.put(key, choicesItem);
     return this;
   }
 
   /**
-   * Get questionResults
-   * @return questionResults
+   * Get choices
+   * @return choices
    **/
-  @Schema(description = "")
-      @Valid
-    public List<QuestionResult> getQuestionResults() {
-    return questionResults;
+  @Schema(example = "{\"Tesla\":0.65,\"Hyundai\":0.15,\"Porsche\":0.2}", description = "")
+  
+    public Map<String, Integer> getChoices() {
+    return choices;
   }
 
-  public void setQuestionResults(List<QuestionResult> questionResults) {
-    this.questionResults = questionResults;
+  public void setChoices(Map<String, Integer> choices) {
+    this.choices = choices;
   }
 
 
@@ -82,23 +81,23 @@ public class Results   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Results results = (Results) o;
-    return Objects.equals(this.surveyId, results.surveyId) &&
-        Objects.equals(this.questionResults, results.questionResults);
+    SurveyResult surveyResult = (SurveyResult) o;
+    return Objects.equals(this.surveyId, surveyResult.surveyId) &&
+        Objects.equals(this.choices, surveyResult.choices);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(surveyId, questionResults);
+    return Objects.hash(surveyId, choices);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Results {\n");
+    sb.append("class SurveyResult {\n");
     
     sb.append("    surveyId: ").append(toIndentedString(surveyId)).append("\n");
-    sb.append("    questionResults: ").append(toIndentedString(questionResults)).append("\n");
+    sb.append("    choices: ").append(toIndentedString(choices)).append("\n");
     sb.append("}");
     return sb.toString();
   }

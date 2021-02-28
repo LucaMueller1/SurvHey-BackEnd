@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T16:32:59.103Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-28T16:38:44.030Z[GMT]")
 @RestController
 public class UserApiController implements UserApi {
 
@@ -65,7 +65,7 @@ public class UserApiController implements UserApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<User>(objectMapper.readValue("{\n  \"firstName\" : \"Luca\",\n  \"lastName\" : \"Mueller\",\n  \"password\" : \"lol123\",\n  \"id\" : 0,\n  \"email\" : \"\"\n}", User.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<User>(objectMapper.readValue("{\n  \"firstName\" : \"Luca\",\n  \"lastName\" : \"Mueller\",\n  \"password\" : \"lol123\",\n  \"email\" : \"\"\n}", User.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -79,7 +79,7 @@ public class UserApiController implements UserApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<AuthKey>(objectMapper.readValue("{\n  \"authKey\" : \"bWFnZ2llOnN1bW1lcXMgs29E\",\n  \"expiry\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"user\" : {\n    \"firstName\" : \"Luca\",\n    \"lastName\" : \"Mueller\",\n    \"password\" : \"lol123\",\n    \"id\" : 0,\n    \"email\" : \"\"\n  }\n}", AuthKey.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<AuthKey>(objectMapper.readValue("{\n  \"authKey\" : \"bWFnZ2llOnN1bW1lcXMgs29E\",\n  \"expiry\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"user\" : {\n    \"firstName\" : \"Luca\",\n    \"lastName\" : \"Mueller\",\n    \"password\" : \"lol123\",\n    \"email\" : \"\"\n  }\n}", AuthKey.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<AuthKey>(HttpStatus.INTERNAL_SERVER_ERROR);

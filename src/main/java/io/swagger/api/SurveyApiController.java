@@ -2,11 +2,11 @@ package io.swagger.api;
 
 import io.swagger.model.Analysis;
 import io.swagger.model.ApiError;
-import io.swagger.model.Results;
 import io.swagger.model.Submission;
 import io.swagger.model.SubmissionPrepare;
 import io.swagger.model.Survey;
 import io.swagger.model.SurveyPrepare;
+import io.swagger.model.SurveyResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,7 +38,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T16:32:59.103Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-28T16:38:44.030Z[GMT]")
 @RestController
 public class SurveyApiController implements SurveyApi {
 
@@ -58,7 +58,7 @@ public class SurveyApiController implements SurveyApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Survey>(objectMapper.readValue("{\n  \"name\" : \"Survey about electric cars\",\n  \"questions\" : [ {\n    \"mode\" : \"radio\",\n    \"survey_id\" : 1,\n    \"id\" : 6,\n    \"text\" : \"What brand of electric car would you buy?\",\n    \"answerOptions\" : [ {\n      \"id\" : 5,\n      \"question_id\" : 5,\n      \"content\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ]\n    }, {\n      \"id\" : 5,\n      \"question_id\" : 5,\n      \"content\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ]\n    } ]\n  }, {\n    \"mode\" : \"radio\",\n    \"survey_id\" : 1,\n    \"id\" : 6,\n    \"text\" : \"What brand of electric car would you buy?\",\n    \"answerOptions\" : [ {\n      \"id\" : 5,\n      \"question_id\" : 5,\n      \"content\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ]\n    }, {\n      \"id\" : 5,\n      \"question_id\" : 5,\n      \"content\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ]\n    } ]\n  } ],\n  \"id\" : 0,\n  \"user\" : {\n    \"firstName\" : \"Luca\",\n    \"lastName\" : \"Mueller\",\n    \"password\" : \"lol123\",\n    \"id\" : 0,\n    \"email\" : \"\"\n  }\n}", Survey.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<Survey>(objectMapper.readValue("{\n  \"mode\" : \"radio\",\n  \"name\" : \"Survey about electric cars\",\n  \"id\" : 0,\n  \"user\" : {\n    \"firstName\" : \"Luca\",\n    \"lastName\" : \"Mueller\",\n    \"password\" : \"lol123\",\n    \"email\" : \"\"\n  },\n  \"questionText\" : \"What brand of electric car would you buy?\",\n  \"answerOptions\" : [ {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  }, {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  } ]\n}", Survey.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<Survey>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -72,7 +72,7 @@ public class SurveyApiController implements SurveyApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Submission>(objectMapper.readValue("{\n  \"survey_id\" : 1,\n  \"answers\" : [ {\n    \"mode\" : \"radio\",\n    \"id\" : 5,\n    \"choices\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ],\n    \"question_id\" : 5\n  }, {\n    \"mode\" : \"radio\",\n    \"id\" : 5,\n    \"choices\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ],\n    \"question_id\" : 5\n  } ],\n  \"id\" : 0,\n  \"participant\" : {\n    \"id\" : 6,\n    \"ip_address\" : \"ip_address\"\n  },\n  \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\"\n}", Submission.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<Submission>(objectMapper.readValue("{\n  \"surveyId\" : 6,\n  \"ipAddress\" : \"ipAddress\",\n  \"id\" : 0,\n  \"choices\" : [ {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  }, {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  } ],\n  \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\"\n}", Submission.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<Submission>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -91,7 +91,7 @@ public class SurveyApiController implements SurveyApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Analysis>(objectMapper.readValue("{\n  \"survey_id\" : 6,\n  \"amount\" : 527,\n  \"id\" : 0,\n  \"countries\" : {\n    \"Germany\" : 69,\n    \"USA\" : 420,\n    \"Spain\" : 11,\n    \"Norway\" : 27\n  }\n}", Analysis.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<Analysis>(objectMapper.readValue("{\n  \"surveyId\" : 6,\n  \"amount\" : 527,\n  \"id\" : 0,\n  \"countries\" : {\n    \"Germany\" : 69,\n    \"USA\" : 420,\n    \"Spain\" : 11,\n    \"Norway\" : 27\n  }\n}", Analysis.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<Analysis>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -105,7 +105,7 @@ public class SurveyApiController implements SurveyApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Survey>(objectMapper.readValue("{\n  \"name\" : \"Survey about electric cars\",\n  \"questions\" : [ {\n    \"mode\" : \"radio\",\n    \"survey_id\" : 1,\n    \"id\" : 6,\n    \"text\" : \"What brand of electric car would you buy?\",\n    \"answerOptions\" : [ {\n      \"id\" : 5,\n      \"question_id\" : 5,\n      \"content\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ]\n    }, {\n      \"id\" : 5,\n      \"question_id\" : 5,\n      \"content\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ]\n    } ]\n  }, {\n    \"mode\" : \"radio\",\n    \"survey_id\" : 1,\n    \"id\" : 6,\n    \"text\" : \"What brand of electric car would you buy?\",\n    \"answerOptions\" : [ {\n      \"id\" : 5,\n      \"question_id\" : 5,\n      \"content\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ]\n    }, {\n      \"id\" : 5,\n      \"question_id\" : 5,\n      \"content\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ]\n    } ]\n  } ],\n  \"id\" : 0,\n  \"user\" : {\n    \"firstName\" : \"Luca\",\n    \"lastName\" : \"Mueller\",\n    \"password\" : \"lol123\",\n    \"id\" : 0,\n    \"email\" : \"\"\n  }\n}", Survey.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<Survey>(objectMapper.readValue("{\n  \"mode\" : \"radio\",\n  \"name\" : \"Survey about electric cars\",\n  \"id\" : 0,\n  \"user\" : {\n    \"firstName\" : \"Luca\",\n    \"lastName\" : \"Mueller\",\n    \"password\" : \"lol123\",\n    \"email\" : \"\"\n  },\n  \"questionText\" : \"What brand of electric car would you buy?\",\n  \"answerOptions\" : [ {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  }, {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  } ]\n}", Survey.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<Survey>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -115,25 +115,25 @@ public class SurveyApiController implements SurveyApi {
         return new ResponseEntity<Survey>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Results> getSurveyResultsById(@Parameter(in = ParameterIn.PATH, description = "ID of survey to return results for", required=true, schema=@Schema()) @PathVariable("id") Long id) {
+    public ResponseEntity<SurveyResult> getSurveyResultsById(@Parameter(in = ParameterIn.PATH, description = "ID of survey to return results for", required=true, schema=@Schema()) @PathVariable("id") Long id) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Results>(objectMapper.readValue("{\n  \"survey_id\" : 0,\n  \"questionResults\" : [ {\n    \"choices\" : {\n      \"Tesla\" : 0.65,\n      \"Hyundai\" : 0.15,\n      \"Porsche\" : 0.2\n    },\n    \"question_id\" : 6\n  }, {\n    \"choices\" : {\n      \"Tesla\" : 0.65,\n      \"Hyundai\" : 0.15,\n      \"Porsche\" : 0.2\n    },\n    \"question_id\" : 6\n  } ]\n}", Results.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<SurveyResult>(objectMapper.readValue("{\n  \"surveyId\" : 0,\n  \"choices\" : {\n    \"Tesla\" : 0.65,\n    \"Hyundai\" : 0.15,\n    \"Porsche\" : 0.2\n  }\n}", SurveyResult.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Results>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<SurveyResult>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<Results>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<SurveyResult>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<List<Submission>> getSurveySubmissionsById(@Parameter(in = ParameterIn.PATH, description = "ID of survey to return all submissions for", required=true, schema=@Schema()) @PathVariable("id") Long id) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<List<Submission>>(objectMapper.readValue("[ {\n  \"survey_id\" : 1,\n  \"answers\" : [ {\n    \"mode\" : \"radio\",\n    \"id\" : 5,\n    \"choices\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ],\n    \"question_id\" : 5\n  }, {\n    \"mode\" : \"radio\",\n    \"id\" : 5,\n    \"choices\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ],\n    \"question_id\" : 5\n  } ],\n  \"id\" : 0,\n  \"participant\" : {\n    \"id\" : 6,\n    \"ip_address\" : \"ip_address\"\n  },\n  \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\"\n}, {\n  \"survey_id\" : 1,\n  \"answers\" : [ {\n    \"mode\" : \"radio\",\n    \"id\" : 5,\n    \"choices\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ],\n    \"question_id\" : 5\n  }, {\n    \"mode\" : \"radio\",\n    \"id\" : 5,\n    \"choices\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ],\n    \"question_id\" : 5\n  } ],\n  \"id\" : 0,\n  \"participant\" : {\n    \"id\" : 6,\n    \"ip_address\" : \"ip_address\"\n  },\n  \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\"\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<List<Submission>>(objectMapper.readValue("[ {\n  \"surveyId\" : 6,\n  \"ipAddress\" : \"ipAddress\",\n  \"id\" : 0,\n  \"choices\" : [ {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  }, {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  } ],\n  \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\"\n}, {\n  \"surveyId\" : 6,\n  \"ipAddress\" : \"ipAddress\",\n  \"id\" : 0,\n  \"choices\" : [ {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  }, {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  } ],\n  \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\"\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<List<Submission>>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -147,7 +147,7 @@ public class SurveyApiController implements SurveyApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Survey>(objectMapper.readValue("{\n  \"name\" : \"Survey about electric cars\",\n  \"questions\" : [ {\n    \"mode\" : \"radio\",\n    \"survey_id\" : 1,\n    \"id\" : 6,\n    \"text\" : \"What brand of electric car would you buy?\",\n    \"answerOptions\" : [ {\n      \"id\" : 5,\n      \"question_id\" : 5,\n      \"content\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ]\n    }, {\n      \"id\" : 5,\n      \"question_id\" : 5,\n      \"content\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ]\n    } ]\n  }, {\n    \"mode\" : \"radio\",\n    \"survey_id\" : 1,\n    \"id\" : 6,\n    \"text\" : \"What brand of electric car would you buy?\",\n    \"answerOptions\" : [ {\n      \"id\" : 5,\n      \"question_id\" : 5,\n      \"content\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ]\n    }, {\n      \"id\" : 5,\n      \"question_id\" : 5,\n      \"content\" : [ \"Tesla\", \"Hyundai\", \"Porsche\" ]\n    } ]\n  } ],\n  \"id\" : 0,\n  \"user\" : {\n    \"firstName\" : \"Luca\",\n    \"lastName\" : \"Mueller\",\n    \"password\" : \"lol123\",\n    \"id\" : 0,\n    \"email\" : \"\"\n  }\n}", Survey.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<Survey>(objectMapper.readValue("{\n  \"mode\" : \"radio\",\n  \"name\" : \"Survey about electric cars\",\n  \"id\" : 0,\n  \"user\" : {\n    \"firstName\" : \"Luca\",\n    \"lastName\" : \"Mueller\",\n    \"password\" : \"lol123\",\n    \"email\" : \"\"\n  },\n  \"questionText\" : \"What brand of electric car would you buy?\",\n  \"answerOptions\" : [ {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  }, {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  } ]\n}", Survey.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<Survey>(HttpStatus.INTERNAL_SERVER_ERROR);

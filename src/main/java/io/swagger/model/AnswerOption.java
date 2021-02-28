@@ -12,15 +12,15 @@ import javax.validation.constraints.*;
  * AnswerOption
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-27T16:32:59.103Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-02-28T16:38:44.030Z[GMT]")
 
 
 public class AnswerOption   {
   @JsonProperty("id")
   private Long id = null;
 
-  @JsonProperty("question_id")
-  private Long questionId = null;
+  @JsonProperty("surveyId")
+  private Long surveyId = null;
 
   @JsonProperty("content")
   private OneOfAnswerOptionContent content = null;
@@ -45,24 +45,24 @@ public class AnswerOption   {
     this.id = id;
   }
 
-  public AnswerOption questionId(Long questionId) {
-    this.questionId = questionId;
+  public AnswerOption surveyId(Long surveyId) {
+    this.surveyId = surveyId;
     return this;
   }
 
   /**
-   * Get questionId
-   * @return questionId
+   * Get surveyId
+   * @return surveyId
    **/
   @Schema(required = true, description = "")
       @NotNull
 
-    public Long getQuestionId() {
-    return questionId;
+    public Long getSurveyId() {
+    return surveyId;
   }
 
-  public void setQuestionId(Long questionId) {
-    this.questionId = questionId;
+  public void setSurveyId(Long surveyId) {
+    this.surveyId = surveyId;
   }
 
   public AnswerOption content(OneOfAnswerOptionContent content) {
@@ -74,7 +74,7 @@ public class AnswerOption   {
    * Get content
    * @return content
    **/
-  @Schema(example = "[\"Tesla\",\"Hyundai\",\"Porsche\"]", required = true, description = "")
+  @Schema(example = "Tesla", required = true, description = "")
       @NotNull
 
     public OneOfAnswerOptionContent getContent() {
@@ -96,13 +96,13 @@ public class AnswerOption   {
     }
     AnswerOption answerOption = (AnswerOption) o;
     return Objects.equals(this.id, answerOption.id) &&
-        Objects.equals(this.questionId, answerOption.questionId) &&
+        Objects.equals(this.surveyId, answerOption.surveyId) &&
         Objects.equals(this.content, answerOption.content);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, questionId, content);
+    return Objects.hash(id, surveyId, content);
   }
 
   @Override
@@ -111,7 +111,7 @@ public class AnswerOption   {
     sb.append("class AnswerOption {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    questionId: ").append(toIndentedString(questionId)).append("\n");
+    sb.append("    surveyId: ").append(toIndentedString(surveyId)).append("\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
     sb.append("}");
     return sb.toString();
