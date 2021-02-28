@@ -61,7 +61,7 @@ foreign key (Participation_ID) references SurvHey_DB.Survey_Answer(Participation
 
 );
 
-create table SurvHey_DB.Aut_Token(
+create table SurvHey_DB.Auth_Token(
                                      User_ID bigint primary key,
                                      Token text not null,
                                      Expiring_Date date not null,
