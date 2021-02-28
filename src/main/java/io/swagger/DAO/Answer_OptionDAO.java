@@ -14,8 +14,8 @@ public class Answer_OptionDAO implements Serializable {
     @Column(name = "Answer_Option_ID")
     private long Answer_Option_ID;
 
-    @Column(name = "Question_ID")
-    private long Question_Id;
+    @Column(name = "Survey_ID")
+    private long Survey_ID;
 
     @Column(name = "Answer_Option")
     private String Question_Text;
@@ -24,13 +24,13 @@ public class Answer_OptionDAO implements Serializable {
     //Constructors
     public Answer_OptionDAO(long answer_Option_ID, long question_Id, String question_Text) {
         Answer_Option_ID = answer_Option_ID;
-        Question_Id = question_Id;
+        Survey_ID = question_Id;
         Question_Text = question_Text;
     }
 
     public Answer_OptionDAO() {
         Answer_Option_ID = -1;
-        Question_Id = -1;
+        Survey_ID = -1;
         Question_Text = null;
     }
 
@@ -47,11 +47,11 @@ public class Answer_OptionDAO implements Serializable {
     }
 
     public long getQuestion_Id() {
-        return Question_Id;
+        return Survey_ID;
     }
 
     public void setQuestion_Id(long question_Id) {
-        Question_Id = question_Id;
+        Survey_ID = question_Id;
     }
 
     public String getQuestion_Text() {

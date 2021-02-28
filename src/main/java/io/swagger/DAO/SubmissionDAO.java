@@ -17,39 +17,36 @@ public class SubmissionDAO implements Serializable{
     @Column(name = "Submission_ID")
     private long Submission_ID;
 
-    @Column(name = "Participant_ID")
-    private long Participant_ID;
 
     @Column(name = "Survey_ID")
     private long Survey_ID;
 
-    @Column(name = "Submission_Timestamp")
+    @Column(name = "Timestamp")
     private Timestamp timestamp;
 
+    @Column (name="IP_Adress")
+    private String IP_Adress;
+
     @OneToMany(mappedBy = "Submisson")
-    private List<AnswerDAO> answerDAOS;
+    private List<Answer_ChoiceDAO> answerDAOS;
 
 
     //Constructors
 
-
-    public SubmissionDAO(long submission_ID, long participant_ID, long survey_ID, Timestamp timestamp, ArrayList<AnswerDAO> answerDAOS) {
+    public SubmissionDAO(long submission_ID, long survey_ID, Timestamp timestamp, String IP_Adress, List<Answer_ChoiceDAO> answerDAOS) {
         Submission_ID = submission_ID;
-        Participant_ID = participant_ID;
         Survey_ID = survey_ID;
         this.timestamp = timestamp;
+        this.IP_Adress = IP_Adress;
         this.answerDAOS = answerDAOS;
     }
-
     public SubmissionDAO() {
         Submission_ID = -1;
-        Participant_ID = -1;
         Survey_ID = -1;
         this.timestamp = null;
-        answerDAOS = null;
+        this.IP_Adress = null;
+        this.answerDAOS = null;
     }
-
-
 
     //getter & setter
 
@@ -59,14 +56,6 @@ public class SubmissionDAO implements Serializable{
 
     public void setSubmission_ID(long submission_ID) {
         Submission_ID = submission_ID;
-    }
-
-    public long getParticipant_ID() {
-        return Participant_ID;
-    }
-
-    public void setParticipant_ID(long participant_ID) {
-        Participant_ID = participant_ID;
     }
 
     public long getSurvey_ID() {
@@ -85,11 +74,19 @@ public class SubmissionDAO implements Serializable{
         this.timestamp = timestamp;
     }
 
-    public List<AnswerDAO> getAnswers() {
+    public String getIP_Adress() {
+        return IP_Adress;
+    }
+
+    public void setIP_Adress(String IP_Adress) {
+        this.IP_Adress = IP_Adress;
+    }
+
+    public List<Answer_ChoiceDAO> getAnswerDAOS() {
         return answerDAOS;
     }
 
-    public void setAnswers(ArrayList<AnswerDAO> answerDAOS) {
+    public void setAnswerDAOS(List<Answer_ChoiceDAO> answerDAOS) {
         this.answerDAOS = answerDAOS;
     }
 

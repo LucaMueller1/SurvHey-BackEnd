@@ -13,21 +13,22 @@ import java.io.Serializable;
 @Table(name = "SurvHey_DB.Question_Answer")
 public class Answer_ChoiceDAO implements Serializable {
     @Id
-    @Column(name = "Participation_ID")
-    private long Participation_ID;
+    @Column(name = "Submission_ID")
+    private long Submission_ID;
 
-    @Column(name = "Answer")
-    private String Answer;
+    @Id
+    @Column(name = "Answer_Option_ID")
+    private long Answer_Option_ID;
 
     //Constructors
-    public Answer_ChoiceDAO(long participation_ID, String answer) {
-        Participation_ID = participation_ID;
-        Answer = answer;
+    public Answer_ChoiceDAO(long participation_ID, long Answer_Option_ID) {
+        this.Submission_ID = participation_ID;
+        this.Answer_Option_ID = Answer_Option_ID;
     }
 
     public Answer_ChoiceDAO() {
-        Participation_ID = -1;
-        Answer = null;
+        Submission_ID = -1;
+        Answer_Option_ID = -1;
     }
 
 
@@ -35,19 +36,19 @@ public class Answer_ChoiceDAO implements Serializable {
     //getter & setter
 
     public long getParticipation_ID() {
-        return Participation_ID;
+        return Submission_ID;
     }
 
     public void setParticipation_ID(long participation_ID) {
-        Participation_ID = participation_ID;
+        Submission_ID = participation_ID;
     }
 
-    public String getAnswer() {
-        return Answer;
+    public long getAnswer() {
+        return Answer_Option_ID;
     }
 
-    public void setAnswer(String answer) {
-        Answer = answer;
+    public void setAnswer(long answer) {
+        Answer_Option_ID = answer;
     }
 
     //input & output streams

@@ -11,10 +11,6 @@ import java.io.Serializable;
 public class UserDAO implements Serializable {
 
     @Id
-    @GeneratedValue
-    @Column(name = "User_ID")
-    private long User_ID;
-
     @Column(name = "E_Mail")
     private String E_Mail;
 
@@ -25,14 +21,12 @@ public class UserDAO implements Serializable {
 
     //Constructors
 
-    public UserDAO(long user_ID, String e_Mail, String password) {
-        User_ID = user_ID;
+    public UserDAO(String e_Mail, String password) {
         E_Mail = e_Mail;
         Password = password;
     }
 
     public UserDAO() {
-        User_ID = -1;
         E_Mail = null;
         Password = null;
     }
@@ -48,13 +42,7 @@ public class UserDAO implements Serializable {
         Password = password;
     }
 
-    public long getUser_ID() {
-        return User_ID;
-    }
 
-    public void setUser_ID(long user_ID) {
-        User_ID = user_ID;
-    }
 
     public String getE_Mail() {
         return E_Mail;
