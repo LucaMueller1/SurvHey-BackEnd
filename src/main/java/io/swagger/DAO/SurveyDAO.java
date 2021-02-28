@@ -29,7 +29,7 @@ public class SurveyDAO implements Serializable {
     @Column(name = "Answer_Mode")
     private String Answer_Mode;
 
-    @OneToMany(mappedBy = "Survey")
+    @OneToMany
     @JoinColumn(name = "Survey_ID")
     private List<Answer_OptionDAO> survey_answer_options;
 

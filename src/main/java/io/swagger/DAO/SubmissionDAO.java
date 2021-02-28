@@ -27,8 +27,7 @@ public class SubmissionDAO implements Serializable{
     @Column (name="IP_Adress")
     private String IP_Adress;
 
-    @OneToMany(mappedBy = "Submission")
-    @JoinColumn(name = "Submission_ID")
+    @OneToMany
     private List<Answer_ChoiceDAO> answerDAOS;
 
 
