@@ -15,13 +15,13 @@ public class SurveyDAO implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "Survey_ID")
-    private long Survey_Id;
+    private long id;
 
     @Column(name = "Survey_Name")
     private String Survey_Name;
 
     @Column(name = "E_Mail")
-    private String E_Mail;
+    private String email;
 
     @Column(name = "Question_Text")
     private String Question_Text;
@@ -38,18 +38,18 @@ public class SurveyDAO implements Serializable {
     //Constructors
 
     public SurveyDAO(long survey_Id, String survey_Name, String e_Mail, String question_Text, String answer_Mode, List<Answer_OptionDAO> survey_answer_options) {
-        Survey_Id = survey_Id;
+        id = survey_Id;
         Survey_Name = survey_Name;
-        E_Mail = e_Mail;
+        email = e_Mail;
         Question_Text = question_Text;
         Answer_Mode = answer_Mode;
         this.survey_answer_options = survey_answer_options;
     }
 
     public SurveyDAO() {
-        Survey_Id = -1;
+        id = -1;
         Survey_Name = null;
-        E_Mail = null;
+        email = null;
         Question_Text = null;
         Answer_Mode = null;
         this.survey_answer_options = null;
@@ -57,11 +57,11 @@ public class SurveyDAO implements Serializable {
     //getter & setter
 
     public long getSurvey_Id() {
-        return Survey_Id;
+        return id;
     }
 
     public void setSurvey_Id(long survey_Id) {
-        Survey_Id = survey_Id;
+        id = survey_Id;
     }
 
     public String getSurvey_Name() {
@@ -73,11 +73,11 @@ public class SurveyDAO implements Serializable {
     }
 
     public String getE_Mail() {
-        return E_Mail;
+        return email;
     }
 
     public void setE_Mail(String e_Mail) {
-        E_Mail = e_Mail;
+        email = e_Mail;
     }
 
     public String getQuestion_Text() {
