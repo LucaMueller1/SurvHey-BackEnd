@@ -382,38 +382,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
-  /participant/{id}/surveys:
-    get:
-      tags:
-        - submission
-      summary: Return all surveys for the logged in user
-      description: All surveys for the corresponding user are returned
-      operationId: getParticipantsSurveys
-      parameters:
-        - name: id
-          in: path
-          description: id of participant to fetch surveys from
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Survey'
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-      security:
-        - ApiKeyAuth: []
 components:
   schemas:
     User:
@@ -534,7 +502,7 @@ components:
     Submission:
       required:
         - id
-        - participant
+        - ipAddress
         - surveyId
         - timestamp
         - choices
