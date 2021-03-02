@@ -14,42 +14,45 @@ import java.io.Serializable;
 public class Answer_ChoiceDAO implements Serializable {
     @Id
     @Column(name = "Submission_ID")
-    private long Submission_ID;
+    private long SubmissionID;
 
     @Id
     @Column(name = "Answer_Option_ID")
-    private long Answer_Option_ID;
+    private long AnswerOptionID;
 
     //Constructors
-    public Answer_ChoiceDAO(long participation_ID, long Answer_Option_ID) {
-        this.Submission_ID = participation_ID;
-        this.Answer_Option_ID = Answer_Option_ID;
+
+
+    public Answer_ChoiceDAO(long submissionID, long answerOptionID) {
+        SubmissionID = submissionID;
+        AnswerOptionID = answerOptionID;
     }
 
     public Answer_ChoiceDAO() {
-        Submission_ID = -1;
-        Answer_Option_ID = -1;
+        SubmissionID = -1;
+        AnswerOptionID = -1;
     }
 
 
 
     //getter & setter
 
-    public long getParticipation_ID() {
-        return Submission_ID;
+    public long getSubmissionID() {
+        return SubmissionID;
     }
 
-    public void setParticipation_ID(long participation_ID) {
-        Submission_ID = participation_ID;
+    public void setSubmissionID(long submissionID) {
+        SubmissionID = submissionID;
     }
 
-    public long getAnswer() {
-        return Answer_Option_ID;
+    public long getAnswerOptionID() {
+        return AnswerOptionID;
     }
 
-    public void setAnswer(long answer) {
-        Answer_Option_ID = answer;
+    public void setAnswerOptionID(long answerOptionID) {
+        AnswerOptionID = answerOptionID;
     }
+
 
     //input & output streams
 

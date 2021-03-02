@@ -12,54 +12,55 @@ public class Answer_OptionDAO implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "Answer_Option_ID")
-    private long Answer_Option_ID;
+    private long AnswerOptionID;
 
     @Column(name = "Survey_ID")
-    private long Survey_ID;
+    private long SurveyID;
 
     @Column(name = "Answer_Option")
-    private String Question_Text;
+    private String QuestionText;
 
 
     //Constructors
-    public Answer_OptionDAO(long answer_Option_ID, long question_Id, String question_Text) {
-        Answer_Option_ID = answer_Option_ID;
-        Survey_ID = question_Id;
-        Question_Text = question_Text;
+
+
+    public Answer_OptionDAO(long answerOptionID, long surveyID, String questionText) {
+        AnswerOptionID = answerOptionID;
+        SurveyID = surveyID;
+        QuestionText = questionText;
     }
 
     public Answer_OptionDAO() {
-        Answer_Option_ID = -1;
-        Survey_ID = -1;
-        Question_Text = null;
+        AnswerOptionID = -1;
+        SurveyID = -1;
+        QuestionText = null;
     }
 
 
     //getter & setter
 
-
-    public long getAnswer_Option_ID() {
-        return Answer_Option_ID;
+    public long getAnswerOptionID() {
+        return AnswerOptionID;
     }
 
-    public void setAnswer_Option_ID(long answer_Option_ID) {
-        Answer_Option_ID = answer_Option_ID;
+    public void setAnswerOptionID(long answerOptionID) {
+        AnswerOptionID = answerOptionID;
     }
 
-    public long getQuestion_Id() {
-        return Survey_ID;
+    public long getSurveyID() {
+        return SurveyID;
     }
 
-    public void setQuestion_Id(long question_Id) {
-        Survey_ID = question_Id;
+    public void setSurveyID(long surveyID) {
+        SurveyID = surveyID;
     }
 
-    public String getQuestion_Text() {
-        return Question_Text;
+    public String getQuestionText() {
+        return QuestionText;
     }
 
-    public void setQuestion_Text(String question_Text) {
-        Question_Text = question_Text;
+    public void setQuestionText(String questionText) {
+        QuestionText = questionText;
     }
 
 

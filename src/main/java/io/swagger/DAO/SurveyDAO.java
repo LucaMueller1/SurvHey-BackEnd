@@ -18,90 +18,91 @@ public class SurveyDAO implements Serializable {
     private long id;
 
     @Column(name = "Survey_Name")
-    private String Survey_Name;
+    private String SurveyName;
 
     @Column(name = "E_Mail")
     private String email;
 
     @Column(name = "Question_Text")
-    private String Question_Text;
+    private String QuestionText;
 
     @Column(name = "Answer_Mode")
-    private String Answer_Mode;
+    private String AnswerMode;
 
     @OneToMany
     @JoinColumn(name = "Survey_ID")
-    private List<Answer_OptionDAO> survey_answer_options;
+    private List<Answer_OptionDAO> SurveyAnswerOptions;
 
 
 
     //Constructors
 
-    public SurveyDAO(long survey_Id, String survey_Name, String e_Mail, String question_Text, String answer_Mode, List<Answer_OptionDAO> survey_answer_options) {
-        id = survey_Id;
-        Survey_Name = survey_Name;
-        email = e_Mail;
-        Question_Text = question_Text;
-        Answer_Mode = answer_Mode;
-        this.survey_answer_options = survey_answer_options;
+
+    public SurveyDAO(long id, String surveyName, String email, String questionText, String answerMode, List<Answer_OptionDAO> surveyAnswerOptions) {
+        this.id = id;
+        SurveyName = surveyName;
+        this.email = email;
+        QuestionText = questionText;
+        AnswerMode = answerMode;
+        SurveyAnswerOptions = surveyAnswerOptions;
     }
 
     public SurveyDAO() {
-        id = -1;
-        Survey_Name = null;
-        email = null;
-        Question_Text = null;
-        Answer_Mode = null;
-        this.survey_answer_options = null;
+        this.id = -1;
+        SurveyName = null;
+        this.email = null;
+        QuestionText = null;
+        AnswerMode = null;
+        this.SurveyAnswerOptions = null;
     }
     //getter & setter
 
-    public long getSurvey_Id() {
+    public long getId() {
         return id;
     }
 
-    public void setSurvey_Id(long survey_Id) {
-        id = survey_Id;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getSurvey_Name() {
-        return Survey_Name;
+    public String getSurveyName() {
+        return SurveyName;
     }
 
-    public void setSurvey_Name(String survey_Name) {
-        Survey_Name = survey_Name;
+    public void setSurveyName(String surveyName) {
+        SurveyName = surveyName;
     }
 
-    public String getE_Mail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setE_Mail(String e_Mail) {
-        email = e_Mail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getQuestion_Text() {
-        return Question_Text;
+    public String getQuestionText() {
+        return QuestionText;
     }
 
-    public void setQuestion_Text(String question_Text) {
-        Question_Text = question_Text;
+    public void setQuestionText(String questionText) {
+        QuestionText = questionText;
     }
 
-    public String getAnswer_Mode() {
-        return Answer_Mode;
+    public String getAnswerMode() {
+        return AnswerMode;
     }
 
-    public void setAnswer_Mode(String answer_Mode) {
-        Answer_Mode = answer_Mode;
+    public void setAnswerMode(String answerMode) {
+        AnswerMode = answerMode;
     }
 
-    public List<Answer_OptionDAO> getSurvey_answer_options() {
-        return survey_answer_options;
+    public List<Answer_OptionDAO> getSurveyAnswerOptions() {
+        return SurveyAnswerOptions;
     }
 
-    public void setSurvey_answer_options(List<Answer_OptionDAO> survey_answer_options) {
-        this.survey_answer_options = survey_answer_options;
+    public void setSurveyAnswerOptions(List<Answer_OptionDAO> surveyAnswerOptions) {
+        SurveyAnswerOptions = surveyAnswerOptions;
     }
 
 

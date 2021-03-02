@@ -15,17 +15,17 @@ public class SubmissionDAO implements Serializable{
     @Id
     @GeneratedValue
     @Column(name = "Submission_ID")
-    private long Submission_ID;
+    private long SubmissionID;
 
 
     @Column(name = "Survey_ID")
-    private long Survey_ID;
+    private long SurveyID;
 
     @Column(name = "Timestamp")
     private Timestamp timestamp;
 
     @Column (name="IP_Adress")
-    private String IP_Adress;
+    private String IPadress;
 
     @OneToMany
     private List<Answer_ChoiceDAO> answerDAOS;
@@ -33,37 +33,39 @@ public class SubmissionDAO implements Serializable{
 
     //Constructors
 
-    public SubmissionDAO(long submission_ID, long survey_ID, Timestamp timestamp, String IP_Adress, List<Answer_ChoiceDAO> answerDAOS) {
-        Submission_ID = submission_ID;
-        Survey_ID = survey_ID;
+
+    public SubmissionDAO(long submissionID, long surveyID, Timestamp timestamp, String IPadress, List<Answer_ChoiceDAO> answerDAOS) {
+        SubmissionID = submissionID;
+        SurveyID = surveyID;
         this.timestamp = timestamp;
-        this.IP_Adress = IP_Adress;
+        this.IPadress = IPadress;
         this.answerDAOS = answerDAOS;
     }
+
     public SubmissionDAO() {
-        Submission_ID = -1;
-        Survey_ID = -1;
+        SubmissionID = -1;
+        SurveyID = -1;
         this.timestamp = null;
-        this.IP_Adress = null;
+        this.IPadress = null;
         this.answerDAOS = null;
     }
 
     //getter & setter
 
-    public long getSubmission_ID() {
-        return Submission_ID;
+    public long getSubmissionID() {
+        return SubmissionID;
     }
 
-    public void setSubmission_ID(long submission_ID) {
-        Submission_ID = submission_ID;
+    public void setSubmissionID(long submissionID) {
+        SubmissionID = submissionID;
     }
 
-    public long getSurvey_ID() {
-        return Survey_ID;
+    public long getSurveyID() {
+        return SurveyID;
     }
 
-    public void setSurvey_ID(long survey_ID) {
-        Survey_ID = survey_ID;
+    public void setSurveyID(long surveyID) {
+        SurveyID = surveyID;
     }
 
     public Timestamp getTimestamp() {
@@ -74,12 +76,12 @@ public class SubmissionDAO implements Serializable{
         this.timestamp = timestamp;
     }
 
-    public String getIP_Adress() {
-        return IP_Adress;
+    public String getIPadress() {
+        return IPadress;
     }
 
-    public void setIP_Adress(String IP_Adress) {
-        this.IP_Adress = IP_Adress;
+    public void setIPadress(String IPadress) {
+        this.IPadress = IPadress;
     }
 
     public List<Answer_ChoiceDAO> getAnswerDAOS() {

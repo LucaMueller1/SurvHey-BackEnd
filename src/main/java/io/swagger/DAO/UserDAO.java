@@ -12,7 +12,7 @@ public class UserDAO implements Serializable {
 
     @Id
     @Column(name = "E_Mail")
-    private String E_Mail;
+    private String eMail;
 
     @Column(name = "Password")
     private String Password;
@@ -22,17 +22,25 @@ public class UserDAO implements Serializable {
     //Constructors
 
     public UserDAO(String e_Mail, String password) {
-        E_Mail = e_Mail;
+        eMail = e_Mail;
         Password = password;
     }
 
     public UserDAO() {
-        E_Mail = null;
+        eMail = null;
         Password = null;
     }
 
 
     //getter & setter
+
+    public String geteMail() {
+        return eMail;
+    }
+
+    public void seteMail(String eMail) {
+        this.eMail = eMail;
+    }
 
     public String getPassword() {
         return Password;
@@ -42,15 +50,6 @@ public class UserDAO implements Serializable {
         Password = password;
     }
 
-
-
-    public String getE_Mail() {
-        return E_Mail;
-    }
-
-    public void setE_Mail(String e_Mail) {
-        E_Mail = e_Mail;
-    }
 
     //input & output streams
 
