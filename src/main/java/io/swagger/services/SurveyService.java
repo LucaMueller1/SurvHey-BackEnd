@@ -1,123 +1,44 @@
 package io.swagger.services;
 
-
+import io.swagger.model.AnswerOption;
 import io.swagger.model.Survey;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
+import io.swagger.repository.SurveyRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Service
 public class SurveyService {
 
+    @Autowired
+    private SurveyRepository repository;
 
-    private static SessionFactory factory;
+    public Survey findById(Long id) {
+        Optional<Survey> survey = repository.findById(id);
 
-    public List<Survey> getAllSurveys(String EmailInput) {
-        try {
-
-            factory = new Configuration().configure().addAnnotatedClass(Survey.class).buildSessionFactory();
-        } catch (Throwable ex) {
-            System.err.println("Failed to create sessionFactory object." + ex);
-            throw new ExceptionInInitializerError(ex);
+        if(survey.isPresent()) {
+            return survey.get();
+        } else {
+            return null;
         }
 
-        Session session = factory.openSession();
-        Transaction tx = null;
-
-
-        List<Survey> Results = null;
-        try {
-            tx = session.beginTransaction();
-            String query = "select * from SurvHey_DB.Survey where E_Mail = "+ EmailInput+" ;";
-            Results = session.createQuery(query, Survey.class).list();
-
-
-            tx.commit();
-            session.close();
-        } catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-
-        return Results;
     }
 
-
-
-
-
-
-
-    public Survey getSurvey(long SurveyID_Input) {
-        try {
-
-            factory = new Configuration().configure().addAnnotatedClass(Survey.class).buildSessionFactory();
-        } catch (Throwable ex) {
-            System.err.println("Failed to create sessionFactory object." + ex);
-            throw new ExceptionInInitializerError(ex);
-        }
-
-        Session session = factory.openSession();
-        Transaction tx = null;
-
-
-        Survey Result = null;
-        try {
-            tx = session.beginTransaction();
-            String query = "select * from SurvHey_DB.Survey where Survey_ID = "+ SurveyID_Input+" ;";
-            Result = session.createQuery(query, Survey.class).getSingleResult();
-
-
-            tx.commit();
-            session.close();
-        } catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-
-        return Result;
+    public Survey findByUserEmail(String userEmail) {
+        //Survey survey = repository.findByEmail(userEmail);
+        return null;
     }
 
+    public Survey addSurvey(Survey survey) {
+        Survey createdSurvey = repository.save(survey);
 
-    public Survey createSurvey(Survey Survey_Input) {
-        try {
-
-            factory = new Configuration().configure().addAnnotatedClass(Survey.class).buildSessionFactory();
-        } catch (Throwable ex) {
-            System.err.println("Failed to create sessionFactory object." + ex);
-            throw new ExceptionInInitializerError(ex);
-        }
-
-        Session session = factory.openSession();
-
-
-        try {
-
-            session.save(Survey_Input);
-
-            session.getTransaction().commit();
-            session.close();
-        } catch (HibernateException e) {
-            if (session.getTransaction() != null) {
-                session.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-
-     return Survey_Input;
+        return createdSurvey;
     }
 
 

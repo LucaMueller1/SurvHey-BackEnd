@@ -39,48 +39,9 @@ public class Survey   {
   @JsonProperty("questionText")
   private String questionText = null;
 
-  /**
-   * Gets or Sets mode
-   */
-  public enum ModeEnum {
-    RADIO("radio"),
-    
-    CHECK("check"),
-    
-    RATING("rating"),
-    
-    DROPDOWN("dropdown"),
-    
-    NPS("nps"),
-    
-    CONSENT("consent");
-
-    private String value;
-
-    ModeEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static ModeEnum fromValue(String text) {
-      for (ModeEnum b : ModeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
-
   @Column(name = "Answer_Mode")
   @JsonProperty("mode")
-  private ModeEnum mode = null;
+  private String mode = null;
 
   @OneToOne
   @JoinColumn(name = "E_Mail", referencedColumnName = "E_Mail")
@@ -94,13 +55,17 @@ public class Survey   {
   private List<AnswerOption> answerOptions = new ArrayList<AnswerOption>();
 
 
-  public Survey(Long id, String name, String questionText, ModeEnum mode, User user, @Valid List<AnswerOption> answerOptions) {
+  public Survey(Long id, String name, String questionText, String mode, User user, @Valid List<AnswerOption> answerOptions) {
     this.id = id;
     this.name = name;
     this.questionText = questionText;
     this.mode = mode;
     this.user = user;
     this.answerOptions = answerOptions;
+  }
+
+  public Survey() {
+
   }
 
 
@@ -164,7 +129,7 @@ public class Survey   {
     this.questionText = questionText;
   }
 
-  public Survey mode(ModeEnum mode) {
+  public Survey mode(String mode) {
     this.mode = mode;
     return this;
   }
@@ -176,11 +141,11 @@ public class Survey   {
   @Schema(required = true, description = "")
       @NotNull
 
-    public ModeEnum getMode() {
+    public String getMode() {
     return mode;
   }
 
-  public void setMode(ModeEnum mode) {
+  public void setMode(String mode) {
     this.mode = mode;
   }
 

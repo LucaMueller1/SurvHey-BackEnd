@@ -26,10 +26,9 @@ public class AnswerOption   {
   @JsonProperty("id")
   private Long id = null;
 
-  @ManyToOne
-  @JoinColumn(name = "Survey_ID", insertable = false, updatable = false)
+  @Column(name = "Survey_ID")
   @JsonProperty("surveyId")
-  private Survey survey = null;
+  private Long surveyId = null;
 
   @Column(name = "Answer_Option")
   @JsonProperty("content")
@@ -55,8 +54,8 @@ public class AnswerOption   {
     this.id = id;
   }
 
-  public AnswerOption surveyId(Survey survey) {
-    this.survey = survey;
+  public AnswerOption surveyId(Long surveyId) {
+    this.surveyId = surveyId;
     return this;
   }
 
@@ -67,12 +66,12 @@ public class AnswerOption   {
   @Schema(required = true, description = "")
       @NotNull
 
-    public Survey getSurveyId() {
-    return this.survey;
+    public Long getSurveyId() {
+    return this.surveyId;
   }
 
-  public void setSurveyId(Survey survey) {
-    this.survey = survey;
+  public void setSurveyId(Long surveyId) {
+    this.surveyId = surveyId;
   }
 
   public AnswerOption content(String content) {
@@ -106,13 +105,13 @@ public class AnswerOption   {
     }
     AnswerOption answerOption = (AnswerOption) o;
     return Objects.equals(this.id, answerOption.id) &&
-        Objects.equals(this.survey, answerOption.survey) &&
+        Objects.equals(this.surveyId, answerOption.surveyId) &&
         Objects.equals(this.content, answerOption.content);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, survey, content);
+    return Objects.hash(id, surveyId, content);
   }
 
   @Override
@@ -121,7 +120,7 @@ public class AnswerOption   {
     sb.append("class AnswerOption {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    surveyId: ").append(toIndentedString(survey)).append("\n");
+    sb.append("    surveyId: ").append(toIndentedString(surveyId)).append("\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
     sb.append("}");
     return sb.toString();

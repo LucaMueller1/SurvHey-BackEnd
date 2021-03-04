@@ -25,6 +25,12 @@ public class ApiError   {
   @JsonProperty("message")
   private String message = null;
 
+  public ApiError(Integer code, String type, String message) {
+    this.code = code;
+    this.type = type;
+    this.message = message;
+  }
+
   public ApiError code(Integer code) {
     this.code = code;
     return this;

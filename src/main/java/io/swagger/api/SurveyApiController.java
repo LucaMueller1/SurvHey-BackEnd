@@ -100,17 +100,15 @@ public class SurveyApiController implements SurveyApi {
     }
 
     public ResponseEntity<Survey> getSurveyById(@Parameter(in = ParameterIn.PATH, description = "ID of survey to return", required=true, schema=@Schema()) @PathVariable("id") Long id) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Survey>(objectMapper.readValue("{\n  \"mode\" : \"radio\",\n  \"name\" : \"Survey about electric cars\",\n  \"id\" : 0,\n  \"user\" : {\n    \"firstName\" : \"Luca\",\n    \"lastName\" : \"Mueller\",\n    \"password\" : \"lol123\",\n    \"email\" : \"\"\n  },\n  \"questionText\" : \"What brand of electric car would you buy?\",\n  \"answerOptions\" : [ {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  }, {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  } ]\n}", Survey.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Survey>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        User user = userService.findByEmail("Gur@ke.com");
+
+        Survey survey = surveyService.findById(id);
+
+        if(survey == null) {
+            return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), "Survey not found"), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<Survey>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Survey>(survey, HttpStatus.OK);
     }
 
     public ResponseEntity<SurveyResult> getSurveyResultsById(@Parameter(in = ParameterIn.PATH, description = "ID of survey to return results for", required=true, schema=@Schema()) @PathVariable("id") Long id) {
