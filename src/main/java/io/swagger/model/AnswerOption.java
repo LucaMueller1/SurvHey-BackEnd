@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -14,16 +16,24 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-03-01T12:29:37.288Z[GMT]")
 
-
+@Entity
+@Table(name = "SurvHey_DB.Answer_Option")
 public class AnswerOption   {
+
+  @Id
+  @GeneratedValue
+  @Column(name = "Answer_Option_ID")
   @JsonProperty("id")
   private Long id = null;
 
+  @ManyToOne
+  @JoinColumn(name = "Survey_ID", insertable = false, updatable = false)
   @JsonProperty("surveyId")
-  private Long surveyId = null;
+  private Survey survey = null;
 
+  @Column(name = "Answer_Option")
   @JsonProperty("content")
-  private Object content = null;
+  private String content = null;
 
   public AnswerOption id(Long id) {
     this.id = id;
@@ -45,8 +55,8 @@ public class AnswerOption   {
     this.id = id;
   }
 
-  public AnswerOption surveyId(Long surveyId) {
-    this.surveyId = surveyId;
+  public AnswerOption surveyId(Survey survey) {
+    this.survey = survey;
     return this;
   }
 
@@ -57,15 +67,15 @@ public class AnswerOption   {
   @Schema(required = true, description = "")
       @NotNull
 
-    public Long getSurveyId() {
-    return surveyId;
+    public Survey getSurveyId() {
+    return this.survey;
   }
 
-  public void setSurveyId(Long surveyId) {
-    this.surveyId = surveyId;
+  public void setSurveyId(Survey survey) {
+    this.survey = survey;
   }
 
-  public AnswerOption content(Object content) {
+  public AnswerOption content(String content) {
     this.content = content;
     return this;
   }
@@ -77,11 +87,11 @@ public class AnswerOption   {
   @Schema(example = "Tesla", required = true, description = "")
       @NotNull
 
-    public Object getContent() {
+  public String getContent() {
     return content;
   }
 
-  public void setContent(Object content) {
+  public void setContent(String content) {
     this.content = content;
   }
 
@@ -96,13 +106,13 @@ public class AnswerOption   {
     }
     AnswerOption answerOption = (AnswerOption) o;
     return Objects.equals(this.id, answerOption.id) &&
-        Objects.equals(this.surveyId, answerOption.surveyId) &&
+        Objects.equals(this.survey, answerOption.survey) &&
         Objects.equals(this.content, answerOption.content);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, surveyId, content);
+    return Objects.hash(id, survey, content);
   }
 
   @Override
@@ -111,7 +121,7 @@ public class AnswerOption   {
     sb.append("class AnswerOption {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    surveyId: ").append(toIndentedString(surveyId)).append("\n");
+    sb.append("    surveyId: ").append(toIndentedString(survey)).append("\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
     sb.append("}");
     return sb.toString();

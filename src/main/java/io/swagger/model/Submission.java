@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -19,22 +21,41 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-03-01T12:29:37.288Z[GMT]")
 
 
+@Entity
+@Table(name = "SurvHey_DB.Submission")
 public class Submission   {
+
+  @Id
+  @GeneratedValue
+  @Column(name = "Submission_ID")
   @JsonProperty("id")
   private Long id = null;
 
+  @Column (name="IP_Adress")
   @JsonProperty("ipAddress")
   private String ipAddress = null;
 
+  @Column(name = "Survey_ID")
   @JsonProperty("surveyId")
   private Long surveyId = null;
 
+  @Column(name = "Timestamp")
   @JsonProperty("timestamp")
   private OffsetDateTime timestamp = null;
 
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "Survey_ID")
   @JsonProperty("choices")
   @Valid
   private List<AnswerOption> choices = new ArrayList<AnswerOption>();
+
+  public Submission(Long id, String ipAddress, Long surveyId, OffsetDateTime timestamp, @Valid List<AnswerOption> choices) {
+    this.id = id;
+    this.ipAddress = ipAddress;
+    this.surveyId = surveyId;
+    this.timestamp = timestamp;
+    this.choices = choices;
+  }
 
   public Submission id(Long id) {
     this.id = id;

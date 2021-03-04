@@ -5,6 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -14,17 +19,23 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-03-01T12:29:37.288Z[GMT]")
 
-
+@Entity
+@Table(name="SurvHey_DB.User")
 public class User   {
+  @Id
+  @Column(name = "E_Mail")
   @JsonProperty("email")
   private String email = null;
 
+  @Column(name = "Password")
   @JsonProperty("password")
   private String password = null;
 
+  @Column(name = "First_Name")
   @JsonProperty("firstName")
   private String firstName = null;
 
+  @Column(name = "Last_Name")
   @JsonProperty("lastName")
   private String lastName = null;
 

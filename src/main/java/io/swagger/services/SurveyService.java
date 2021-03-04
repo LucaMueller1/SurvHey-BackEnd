@@ -1,7 +1,5 @@
 package io.swagger.services;
 
-import io.swagger.DAO.Answer_OptionDAO;
-import io.swagger.DAO.SurveyDAO;
 import io.swagger.model.AnswerOption;
 import io.swagger.model.Survey;
 import io.swagger.repository.SurveyRepository;
@@ -21,11 +19,8 @@ public class SurveyService {
     @Autowired
     private SurveyRepository repository;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
-    public SurveyDAO findById(Long id) {
-        Optional<SurveyDAO> survey = repository.findById(id);
+    public Survey findById(Long id) {
+        Optional<Survey> survey = repository.findById(id);
 
         if(survey.isPresent()) {
             return survey.get();
@@ -35,35 +30,17 @@ public class SurveyService {
 
     }
 
-    public SurveyDAO findByUserEmail(String userEmail) {
-        SurveyDAO survey = repository.findByEmail(userEmail);
-        return survey;
+    public Survey findByUserEmail(String userEmail) {
+        //Survey survey = repository.findByEmail(userEmail);
+        return null;
     }
 
-    public Survey addSurvey(SurveyDAO survey) {
-        SurveyDAO createdSurvey = repository.save(survey);
+    public Survey addSurvey(Survey survey) {
+        Survey createdSurvey = repository.save(survey);
         repository.flush();
 
-        return convertToEntity(createdSurvey);
+        return createdSurvey;
     }
 
-    public List<Answer_OptionDAO> toAnswerOptionDAO(List<AnswerOption> list) {
-        List<Answer_OptionDAO> rList = new ArrayList<>();
-
-        for(AnswerOption option: list) {
-            rList.add(new Answer_OptionDAO(option.getId(), null, option.getContent().toString()));
-        }
-        return rList;
-    }
-
-    private Survey convertToEntity(SurveyDAO surveyDTO) {
-        Survey survey = modelMapper.map(surveyDTO, Survey.class);
-        return survey;
-    }
-
-    private SurveyDAO convertToDTO(Survey survey) {
-        SurveyDAO surveyDTO = modelMapper.map(survey, SurveyDAO.class);
-        return surveyDTO;
-    }
 
 }

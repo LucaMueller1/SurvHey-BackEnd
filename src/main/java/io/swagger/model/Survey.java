@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -19,14 +21,21 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-03-01T12:29:37.288Z[GMT]")
 
-
+@Entity
+@Table(name = "SurvHey_DB.Survey")
 public class Survey   {
+
+  @Id
+  @GeneratedValue
+  @Column(name = "Survey_ID")
   @JsonProperty("id")
   private Long id = null;
 
+  @Column(name = "Survey_Name")
   @JsonProperty("name")
   private String name = null;
 
+  @Column(name = "Question_Text")
   @JsonProperty("questionText")
   private String questionText = null;
 
@@ -68,15 +77,32 @@ public class Survey   {
       return null;
     }
   }
+
+  @Column(name = "Answer_Mode")
   @JsonProperty("mode")
   private ModeEnum mode = null;
 
+  @OneToOne
+  @JoinColumn(name = "E_Mail", referencedColumnName = "E_Mail")
   @JsonProperty("user")
   private User user = null;
 
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "Survey_ID")
   @JsonProperty("answerOptions")
   @Valid
   private List<AnswerOption> answerOptions = new ArrayList<AnswerOption>();
+
+
+  public Survey(Long id, String name, String questionText, ModeEnum mode, User user, @Valid List<AnswerOption> answerOptions) {
+    this.id = id;
+    this.name = name;
+    this.questionText = questionText;
+    this.mode = mode;
+    this.user = user;
+    this.answerOptions = answerOptions;
+  }
+
 
   public Survey id(Long id) {
     this.id = id;

@@ -1,15 +1,9 @@
 package io.swagger.api;
 
-import io.swagger.DAO.SurveyDAO;
-import io.swagger.model.Analysis;
-import io.swagger.model.ApiError;
-import io.swagger.model.Submission;
-import io.swagger.model.SubmissionPrepare;
-import io.swagger.model.Survey;
-import io.swagger.model.SurveyPrepare;
-import io.swagger.model.SurveyResult;
+import io.swagger.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.services.SurveyService;
+import io.swagger.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -54,6 +48,9 @@ public class SurveyApiController implements SurveyApi {
     @Autowired
     private SurveyService surveyService;
 
+    @Autowired
+    private UserService userService;
+
     @org.springframework.beans.factory.annotation.Autowired
     public SurveyApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
@@ -62,7 +59,9 @@ public class SurveyApiController implements SurveyApi {
 
     public ResponseEntity<Survey> createSurvey(@Parameter(in = ParameterIn.DEFAULT, description = "Created survey object", schema=@Schema()) @Valid @RequestBody SurveyPrepare body) {
 
-        Survey survey = surveyService.addSurvey(new SurveyDAO(-1, body.getName(), "luca@mueller.com", body.getQuestionText(), body.getMode().name(), surveyService.toAnswerOptionDAO(body.getAnswerOptions())));
+        User user = userService.findByEmail("Gur@ke.com");
+
+        Survey survey = surveyService.addSurvey(new Survey(null, body.getName(), body.getQuestionText(), null, user, body.getAnswerOptions()));
 
         return new ResponseEntity<Survey>(survey, HttpStatus.OK);
     }

@@ -6,6 +6,8 @@ create schema SurvHey_DB;
 create table SurvHey_DB.User
 (
     E_Mail varchar(45) primary key,
+    Last_Name varchar(45),
+    First_Name varchar(45),
     Password text not null
 );
 
@@ -49,7 +51,7 @@ create table SurvHey_DB.Question_Answer(
 
 //Testdata
 
-insert into survhey_db.User(E_Mail,Password) values('Gur@ke.com','1234');
-insert into survhey_db.User(E_Mail,Password) values('Ka@rotte.de','hallo');
-insert into survhey_db.User(E_Mail,Password) values('Ban@ane.net','bye');
-insert into survhey_db.User(E_Mail,Password) values('Ap@fel.info','start');
+insert into survhey_db.User(E_Mail,Password,First_Name,Last_Name) values('Gur@ke.com','1234', 'Lord', 'Gurke');
+insert into survhey_db.User(E_Mail,Password,First_Name,Last_Name) values('Ka@rotte.de','hallo', 'Master', 'Karotte');
+insert into survhey_db.User(E_Mail,Password,First_Name,Last_Name) values('Ban@ane.net','bye', 'Sergant', 'Banane');
+insert into survhey_db.User(E_Mail,Password,First_Name,Last_Name) values('Ap@fel.info','start', 'Emperor', 'Apfel');
