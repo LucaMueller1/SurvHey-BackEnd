@@ -1,5 +1,6 @@
 package io.swagger.api;
 
+import io.swagger.DAO.SurveyDAO;
 import io.swagger.model.Analysis;
 import io.swagger.model.ApiError;
 import io.swagger.model.Submission;
@@ -8,6 +9,7 @@ import io.swagger.model.Survey;
 import io.swagger.model.SurveyPrepare;
 import io.swagger.model.SurveyResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.services.SurveyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -19,6 +21,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +51,9 @@ public class SurveyApiController implements SurveyApi {
 
     private final HttpServletRequest request;
 
+    @Autowired
+    private SurveyService surveyService;
+
     @org.springframework.beans.factory.annotation.Autowired
     public SurveyApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
@@ -55,17 +61,10 @@ public class SurveyApiController implements SurveyApi {
     }
 
     public ResponseEntity<Survey> createSurvey(@Parameter(in = ParameterIn.DEFAULT, description = "Created survey object", schema=@Schema()) @Valid @RequestBody SurveyPrepare body) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Survey>(objectMapper.readValue("{\n  \"mode\" : \"radio\",\n  \"name\" : \"Survey about electric cars\",\n  \"id\" : 0,\n  \"user\" : {\n    \"firstName\" : \"Luca\",\n    \"lastName\" : \"Mueller\",\n    \"password\" : \"lol123\",\n    \"email\" : \"\"\n  },\n  \"questionText\" : \"What brand of electric car would you buy?\",\n  \"answerOptions\" : [ {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  }, {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  } ]\n}", Survey.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Survey>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<Survey>(HttpStatus.NOT_IMPLEMENTED);
+        Survey survey = surveyService.addSurvey(new SurveyDAO(-1, body.getName(), "luca@mueller.com", body.getQuestionText(), body.getMode().name(), surveyService.toAnswerOptionDAO(body.getAnswerOptions())));
+
+        return new ResponseEntity<Survey>(survey, HttpStatus.OK);
     }
 
     public ResponseEntity<Submission> createSurveySubmission(@Parameter(in = ParameterIn.PATH, description = "ID of survey to create a new submission for", required=true, schema=@Schema()) @PathVariable("id") Long id,@Parameter(in = ParameterIn.DEFAULT, description = "Created submission object for survey", schema=@Schema()) @Valid @RequestBody SubmissionPrepare body) {

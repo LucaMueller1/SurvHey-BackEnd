@@ -14,8 +14,9 @@ public class Answer_OptionDAO implements Serializable {
     @Column(name = "Answer_Option_ID")
     private long AnswerOptionID;
 
-    @Column(name = "Survey_ID")
-    private long SurveyID;
+    @ManyToOne
+    @JoinColumn(name = "Survey_ID", insertable = false, updatable = false)
+    private SurveyDAO Survey;
 
     @Column(name = "Answer_Option")
     private String QuestionText;
@@ -24,15 +25,15 @@ public class Answer_OptionDAO implements Serializable {
     //Constructors
 
 
-    public Answer_OptionDAO(long answerOptionID, long surveyID, String questionText) {
+    public Answer_OptionDAO(long answerOptionID, SurveyDAO survey, String questionText) {
         AnswerOptionID = answerOptionID;
-        SurveyID = surveyID;
+        this.Survey = survey;
         QuestionText = questionText;
     }
 
     public Answer_OptionDAO() {
         AnswerOptionID = -1;
-        SurveyID = -1;
+        Survey = null;
         QuestionText = null;
     }
 
@@ -47,12 +48,12 @@ public class Answer_OptionDAO implements Serializable {
         AnswerOptionID = answerOptionID;
     }
 
-    public long getSurveyID() {
-        return SurveyID;
+    public SurveyDAO getSurveyID() {
+        return Survey;
     }
 
-    public void setSurveyID(long surveyID) {
-        SurveyID = surveyID;
+    public void setSurveyID(SurveyDAO survey) {
+        this.Survey = survey;
     }
 
     public String getQuestionText() {

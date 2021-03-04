@@ -29,7 +29,7 @@ public class SurveyDAO implements Serializable {
     @Column(name = "Answer_Mode")
     private String AnswerMode;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "Survey_ID")
     private List<Answer_OptionDAO> SurveyAnswerOptions;
 

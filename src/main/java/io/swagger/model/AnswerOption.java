@@ -23,7 +23,7 @@ public class AnswerOption   {
   private Long surveyId = null;
 
   @JsonProperty("content")
-  private OneOfAnswerOptionContent content = null;
+  private Object content = null;
 
   public AnswerOption id(Long id) {
     this.id = id;
@@ -65,7 +65,7 @@ public class AnswerOption   {
     this.surveyId = surveyId;
   }
 
-  public AnswerOption content(OneOfAnswerOptionContent content) {
+  public AnswerOption content(Object content) {
     this.content = content;
     return this;
   }
@@ -77,11 +77,11 @@ public class AnswerOption   {
   @Schema(example = "Tesla", required = true, description = "")
       @NotNull
 
-    public OneOfAnswerOptionContent getContent() {
+    public Object getContent() {
     return content;
   }
 
-  public void setContent(OneOfAnswerOptionContent content) {
+  public void setContent(Object content) {
     this.content = content;
   }
 
