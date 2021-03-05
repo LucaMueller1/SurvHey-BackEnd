@@ -24,7 +24,7 @@ create table SurvHey_DB.Survey (
 
 create table SurvHey_DB.Answer_Option (
                                           Answer_Option_ID bigint auto_increment primary key,
-                                          Survey_ID bigint not null,
+                                          Survey_ID bigint,
                                           Answer_Option text,
                                           foreign key (Survey_ID) references SurvHey_DB.Survey(Survey_ID) on update cascade on delete cascade
 );
@@ -47,11 +47,3 @@ create table SurvHey_DB.Question_Answer(
                                            foreign key (Answer_Option_ID) references SurvHey_DB.Answer_Option(Answer_Option_ID) on update cascade on delete cascade
 
 );
-
-
-//Testdata
-
-insert into survhey_db.User(E_Mail,Password,First_Name,Last_Name) values('Gur@ke.com','1234', 'Lord', 'Gurke');
-insert into survhey_db.User(E_Mail,Password,First_Name,Last_Name) values('Ka@rotte.de','hallo', 'Master', 'Karotte');
-insert into survhey_db.User(E_Mail,Password,First_Name,Last_Name) values('Ban@ane.net','bye', 'Sergant', 'Banane');
-insert into survhey_db.User(E_Mail,Password,First_Name,Last_Name) values('Ap@fel.info','start', 'Emperor', 'Apfel');
