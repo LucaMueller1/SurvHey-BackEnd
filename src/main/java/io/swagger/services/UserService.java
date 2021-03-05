@@ -15,6 +15,12 @@ public class UserService {
         return repository.findByEmail(email);
     }
 
+    public void createUser(User user) {
+        repository.save(user);
+    }
 
+    public void deleteUser(User user) {
+        repository.delete(user);
+    }
 
 }

@@ -5,6 +5,7 @@ import io.swagger.model.AuthKey;
 import io.swagger.model.User;
 import io.swagger.model.UserLogin;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -16,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +47,9 @@ public class UserApiController implements UserApi {
 
     private final HttpServletRequest request;
 
+    @Autowired
+    private UserService userService;
+
     @org.springframework.beans.factory.annotation.Autowired
     public UserApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
@@ -52,13 +57,13 @@ public class UserApiController implements UserApi {
     }
 
     public ResponseEntity<Void> createUser(@Parameter(in = ParameterIn.DEFAULT, description = "User object to create", required=true, schema=@Schema()) @Valid @RequestBody User body) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        userService.createUser(body);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     public ResponseEntity<Void> deleteUser() {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        //userService.deleteUser();
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     public ResponseEntity<User> getUser() {
