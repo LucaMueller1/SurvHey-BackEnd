@@ -5,6 +5,7 @@ import io.swagger.model.AuthKey;
 import io.swagger.model.User;
 import io.swagger.model.UserLogin;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.services.AuthService;
 import io.swagger.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -50,6 +51,9 @@ public class UserApiController implements UserApi {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuthService authService;
+
     @org.springframework.beans.factory.annotation.Autowired
     public UserApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
@@ -81,17 +85,13 @@ public class UserApiController implements UserApi {
     }
 
     public ResponseEntity<AuthKey> loginUser(@Parameter(in = ParameterIn.DEFAULT, description = "Object that stores user login data", required=true, schema=@Schema()) @Valid @RequestBody UserLogin body) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<AuthKey>(objectMapper.readValue("{\n  \"authKey\" : \"bWFnZ2llOnN1bW1lcXMgs29E\",\n  \"expiry\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"user\" : {\n    \"firstName\" : \"Luca\",\n    \"lastName\" : \"Mueller\",\n    \"password\" : \"lol123\",\n    \"email\" : \"\"\n  }\n}", AuthKey.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<AuthKey>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        //get body and check if credentials are valid
+        AuthKey authKey = authService.login(body);
+        if(authKey == null) {
+            return new ResponseEntity(new ApiError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase(), "Given credentials are incorrect"), HttpStatus.FORBIDDEN);
         }
 
-        return new ResponseEntity<AuthKey>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<AuthKey>(authKey, HttpStatus.OK);
     }
 
     public ResponseEntity<Void> logoutUser() {
