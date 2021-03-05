@@ -1,12 +1,14 @@
 package io.swagger.model;
 
+import java.time.OffsetDateTime;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.model.User;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -16,16 +18,25 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-03-01T12:29:37.288Z[GMT]")
 
-
+@Entity
+@Table(name = "SurvHey_DB.Auth_Key")
 public class AuthKey   {
+
+  @ManyToOne
+  @JoinColumn(name = "E_Mail", referencedColumnName = "E_Mail")
   @JsonProperty("user")
   private User user = null;
 
+  @Id
+  @Column(name = "Auth_Key")
   @JsonProperty("authKey")
   private String authKey = null;
 
+  @Column(name = "Expiry")
   @JsonProperty("expiry")
   private OffsetDateTime expiry = null;
+
+
 
   public AuthKey user(User user) {
     this.user = user;

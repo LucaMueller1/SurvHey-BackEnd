@@ -11,12 +11,20 @@ create table SurvHey_DB.User
     Password text not null
 );
 
+create table SurvHey_DB.Auth_Key
+(
+    Auth_Key varchar(128) primary key,
+    E_Mail varchar(45) not null,
+    Expiry datetime,
+    foreign key (E_Mail) references SurvHey_DB.User(E_Mail) on update cascade on delete cascade
+);
+
 create table SurvHey_DB.Survey (
                                    Survey_ID bigint auto_increment primary key,
                                    E_Mail varchar(45) not null,
                                    Survey_Name text,
                                    Question_Text text,
-                                   Answer_Mode varchar(5),
+                                   Answer_Mode varchar(25),
                                    foreign key (E_Mail) references SurvHey_DB.User(E_Mail) on update cascade on delete cascade
 );
 
