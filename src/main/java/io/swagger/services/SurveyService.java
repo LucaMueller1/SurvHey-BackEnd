@@ -37,9 +37,11 @@ public class SurveyService {
 
     public Survey addSurvey(Survey survey) {
         Survey createdSurvey = repository.save(survey);
+        return findById(createdSurvey.getId());
 
-        return createdSurvey;
+        //return createdSurvey;
     }
+
 
 
 }

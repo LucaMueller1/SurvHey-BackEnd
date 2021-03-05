@@ -59,7 +59,11 @@ public class SurveyApiController implements SurveyApi {
 
     public ResponseEntity<Survey> createSurvey(@Parameter(in = ParameterIn.DEFAULT, description = "Created survey object", schema=@Schema()) @Valid @RequestBody SurveyPrepare body) {
 
-        User user = userService.findByEmail("Gur@ke.com");
+        User user = userService.findByEmail("Ka@rotte.de");
+
+        if(user == null) {
+            System.err.println("USER IS NULL");
+        }
 
         Survey survey = surveyService.addSurvey(new Survey(null, body.getName(), body.getQuestionText(), null, user, body.getAnswerOptions()));
 

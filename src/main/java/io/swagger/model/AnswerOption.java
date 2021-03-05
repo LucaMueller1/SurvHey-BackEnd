@@ -1,6 +1,8 @@
 package io.swagger.model;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,15 +20,16 @@ import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "SurvHey_DB.Answer_Option")
-public class AnswerOption   {
+public class AnswerOption {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "Answer_Option_ID")
   @JsonProperty("id")
   private Long id = null;
 
   @Column(name = "Survey_ID")
+  //@JsonBackReference
   @JsonProperty("surveyId")
   private Long surveyId = null;
 

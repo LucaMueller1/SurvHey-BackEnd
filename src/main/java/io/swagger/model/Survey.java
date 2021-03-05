@@ -1,6 +1,8 @@
 package io.swagger.model;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -26,7 +28,7 @@ import javax.validation.constraints.*;
 public class Survey   {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "Survey_ID")
   @JsonProperty("id")
   private Long id = null;
@@ -43,13 +45,14 @@ public class Survey   {
   @JsonProperty("mode")
   private String mode = null;
 
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name = "E_Mail", referencedColumnName = "E_Mail")
   @JsonProperty("user")
   private User user = null;
 
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "Survey_ID")
+  //@JsonManagedReference
   @JsonProperty("answerOptions")
   @Valid
   private List<AnswerOption> answerOptions = new ArrayList<AnswerOption>();
