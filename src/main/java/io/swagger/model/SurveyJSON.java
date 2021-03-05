@@ -1,21 +1,15 @@
 package io.swagger.model;
 
-import java.util.Objects;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.model.AnswerOption;
-import io.swagger.model.User;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Survey
@@ -23,42 +17,29 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-03-01T12:29:37.288Z[GMT]")
 
-@Entity
-@Table(name = "SurvHey_DB.Survey")
-public class Survey   {
+public class SurveyJSON {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "Survey_ID")
   @JsonProperty("id")
   private Long id = null;
 
-  @Column(name = "Survey_Name")
   @JsonProperty("name")
   private String name = null;
 
-  @Column(name = "Question_Text")
   @JsonProperty("questionText")
   private String questionText = null;
 
-  @Column(name = "Answer_Mode")
   @JsonProperty("mode")
   private String mode = null;
 
-  @ManyToOne
-  @JoinColumn(name = "E_Mail", referencedColumnName = "E_Mail")
   @JsonProperty("user")
   private User user = null;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "Survey_ID")
-  @JsonManagedReference
   @JsonProperty("answerOptions")
   @Valid
   private List<AnswerOption> answerOptions = new ArrayList<AnswerOption>();
 
 
-  public Survey(Long id, String name, String questionText, String mode, User user, @Valid List<AnswerOption> answerOptions) {
+  public SurveyJSON(Long id, String name, String questionText, String mode, User user, @Valid List<AnswerOption> answerOptions) {
     this.id = id;
     this.name = name;
     this.questionText = questionText;
@@ -67,12 +48,12 @@ public class Survey   {
     this.answerOptions = answerOptions;
   }
 
-  public Survey() {
+  public SurveyJSON() {
 
   }
 
 
-  public Survey id(Long id) {
+  public SurveyJSON id(Long id) {
     this.id = id;
     return this;
   }
@@ -92,7 +73,7 @@ public class Survey   {
     this.id = id;
   }
 
-  public Survey name(String name) {
+  public SurveyJSON name(String name) {
     this.name = name;
     return this;
   }
@@ -112,7 +93,7 @@ public class Survey   {
     this.name = name;
   }
 
-  public Survey questionText(String questionText) {
+  public SurveyJSON questionText(String questionText) {
     this.questionText = questionText;
     return this;
   }
@@ -132,7 +113,7 @@ public class Survey   {
     this.questionText = questionText;
   }
 
-  public Survey mode(String mode) {
+  public SurveyJSON mode(String mode) {
     this.mode = mode;
     return this;
   }
@@ -152,7 +133,7 @@ public class Survey   {
     this.mode = mode;
   }
 
-  public Survey user(User user) {
+  public SurveyJSON user(User user) {
     this.user = user;
     return this;
   }
@@ -173,12 +154,12 @@ public class Survey   {
     this.user = user;
   }
 
-  public Survey answerOptions(List<AnswerOption> answerOptions) {
+  public SurveyJSON answerOptions(List<AnswerOption> answerOptions) {
     this.answerOptions = answerOptions;
     return this;
   }
 
-  public Survey addAnswerOptionsItem(AnswerOption answerOptionsItem) {
+  public SurveyJSON addAnswerOptionsItem(AnswerOption answerOptionsItem) {
     this.answerOptions.add(answerOptionsItem);
     return this;
   }
@@ -200,14 +181,14 @@ public class Survey   {
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Survey survey = (Survey) o;
+    SurveyJSON survey = (SurveyJSON) o;
     return Objects.equals(this.id, survey.id) &&
         Objects.equals(this.name, survey.name) &&
         Objects.equals(this.questionText, survey.questionText) &&
@@ -240,7 +221,7 @@ public class Survey   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

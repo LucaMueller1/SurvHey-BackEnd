@@ -5,13 +5,7 @@
  */
 package io.swagger.api;
 
-import io.swagger.model.Analysis;
-import io.swagger.model.ApiError;
-import io.swagger.model.Submission;
-import io.swagger.model.SubmissionPrepare;
-import io.swagger.model.Survey;
-import io.swagger.model.SurveyPrepare;
-import io.swagger.model.SurveyResult;
+import io.swagger.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;

@@ -3,13 +3,12 @@ package io.swagger.model;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
@@ -28,10 +27,11 @@ public class AnswerOption {
   @JsonProperty("id")
   private Long id = null;
 
-  @Column(name = "Survey_ID")
-  //@JsonBackReference
+  @ManyToOne
+  @JoinColumn(name = "Survey_ID", referencedColumnName = "Survey_ID")
+  @JsonBackReference
   @JsonProperty("surveyId")
-  private Long surveyId = null;
+  private Survey survey = null;
 
   @Column(name = "Answer_Option")
   @JsonProperty("content")
@@ -57,8 +57,8 @@ public class AnswerOption {
     this.id = id;
   }
 
-  public AnswerOption surveyId(Long surveyId) {
-    this.surveyId = surveyId;
+  public AnswerOption surveyId(Survey surveyId) {
+    this.survey = surveyId;
     return this;
   }
 
@@ -69,12 +69,12 @@ public class AnswerOption {
   @Schema(required = true, description = "")
       @NotNull
 
-    public Long getSurveyId() {
-    return this.surveyId;
+    public Survey getSurvey() {
+    return this.survey;
   }
 
-  public void setSurveyId(Long surveyId) {
-    this.surveyId = surveyId;
+  public void setSurvey(Survey surveyId) {
+    this.survey = surveyId;
   }
 
   public AnswerOption content(String content) {
@@ -108,13 +108,13 @@ public class AnswerOption {
     }
     AnswerOption answerOption = (AnswerOption) o;
     return Objects.equals(this.id, answerOption.id) &&
-        Objects.equals(this.surveyId, answerOption.surveyId) &&
+        Objects.equals(this.survey, answerOption.survey) &&
         Objects.equals(this.content, answerOption.content);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, surveyId, content);
+    return Objects.hash(id, survey, content);
   }
 
   @Override
@@ -123,7 +123,7 @@ public class AnswerOption {
     sb.append("class AnswerOption {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    surveyId: ").append(toIndentedString(surveyId)).append("\n");
+    sb.append("    surveyId: ").append(toIndentedString(survey)).append("\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
     sb.append("}");
     return sb.toString();
