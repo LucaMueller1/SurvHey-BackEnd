@@ -6,6 +6,7 @@ import io.swagger.repository.SubmissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,23 @@ public class SubmissionService {
     public List<Submission> findAllbySurveyID(long ID){
         return submissionRepository.findBysurveyId(ID);
 
+
+    }
+
+    public boolean checkIfExistBysurveyIDandIpAddress(long surveyID, String IPAdress){
+        List <Submission> submissionList=submissionRepository.findBysurveyId(surveyID);
+        Iterator <Submission>AllList = submissionList.iterator();
+        Submission currentSet;
+        boolean result;
+        while(AllList.hasNext()){
+            currentSet=AllList.next();
+            if(currentSet.getIpAddress()==IPAdress){
+                return true;
+
+            }
+
+        }
+        return false;
 
     }
 

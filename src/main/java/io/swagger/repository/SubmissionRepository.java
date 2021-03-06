@@ -10,4 +10,5 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
         Submission findById(long id);
         List<Submission> findBysurveyId(long ID);
 
+
 }
