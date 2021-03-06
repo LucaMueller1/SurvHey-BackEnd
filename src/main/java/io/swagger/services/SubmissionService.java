@@ -38,7 +38,7 @@ public class SubmissionService {
         List <Submission> submissionList=submissionRepository.findBysurveyId(surveyID);
         Iterator <Submission>AllList = submissionList.iterator();
         Submission currentSet;
-        boolean result;
+
         while(AllList.hasNext()){
             currentSet=AllList.next();
             if(currentSet.getIpAddress()==IPAdress){
