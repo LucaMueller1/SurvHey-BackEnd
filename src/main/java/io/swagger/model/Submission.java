@@ -47,9 +47,9 @@ public class Submission   {
   @JoinColumn(name = "Survey_ID")
   @JsonProperty("choices")
   @Valid
-  private List<AnswerOption> choices = new ArrayList<AnswerOption>();
+  private List<AnswerChoice> choices = new ArrayList<>();
 
-  public Submission(Long id, String ipAddress, Long surveyId, OffsetDateTime timestamp, @Valid List<AnswerOption> choices) {
+  public Submission(Long id, String ipAddress, Long surveyId, OffsetDateTime timestamp, @Valid List<AnswerChoice> choices) {
     this.id = id;
     this.ipAddress = ipAddress;
     this.surveyId = surveyId;
@@ -140,12 +140,12 @@ public class Submission   {
     this.timestamp = timestamp;
   }
 
-  public Submission choices(List<AnswerOption> choices) {
+  public Submission choices(List<AnswerChoice> choices) {
     this.choices = choices;
     return this;
   }
 
-  public Submission addChoicesItem(AnswerOption choicesItem) {
+  public Submission addChoicesItem(AnswerChoice choicesItem) {
     this.choices.add(choicesItem);
     return this;
   }
@@ -157,11 +157,11 @@ public class Submission   {
   @Schema(required = true, description = "")
       @NotNull
     @Valid
-    public List<AnswerOption> getChoices() {
+    public List<AnswerChoice> getChoices() {
     return choices;
   }
 
-  public void setChoices(List<AnswerOption> choices) {
+  public void setChoices(List<AnswerChoice> choices) {
     this.choices = choices;
   }
 

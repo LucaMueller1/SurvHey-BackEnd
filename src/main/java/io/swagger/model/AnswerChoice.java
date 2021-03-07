@@ -1,9 +1,11 @@
 package io.swagger.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
+
 
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-03-01T12:29:37.288Z[GMT]")
@@ -16,38 +18,37 @@ public class AnswerChoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Question_AnswerID")
     @JsonProperty("id")
-    private long QuestionAnswerID=0;
+    private Long id = null;
 
     @ManyToOne
-    @Column(name = "SUBMISSION_ID")
-    @JoinColumn(name = "SUBMISSION_ID", referencedColumnName = "SUBMISSION_ID")
-    @JsonProperty("subID")
+    @JoinColumn(name = "Submission_ID", referencedColumnName = "Submission_ID")
+    @JsonBackReference
+    @JsonProperty("submission")
     private Submission submission = null;
-
 
     @Column(name = "ANSWER")
     @JoinColumn(name = "ANSWER_OPTION_ID", referencedColumnName = "ANSWER_OPTION_ID")
     @JsonProperty("ANSWER")
     private AnswerOption Answer = null;
 
-    public AnswerChoice(long questionAnswerID, Submission submissionID, AnswerOption answer) {
-        QuestionAnswerID = questionAnswerID;
+    public AnswerChoice(Long questionAnswerID, Submission submissionID, AnswerOption answer) {
+        id = questionAnswerID;
         this.submission = submissionID;
         Answer = answer;
     }
 
     public AnswerChoice() {
-        QuestionAnswerID = 0;
+        id = null;
         this.submission = null;
         Answer = null;
     }
 
-    public Long getQuestionAnswerID() {
-        return QuestionAnswerID;
+    public Long getID() {
+        return id;
     }
 
-    public void setQuestionAnswerID(Long questionAnswerID) {
-        QuestionAnswerID = questionAnswerID;
+    public void setID(Long questionAnswerID) {
+        id = questionAnswerID;
     }
 
     public Submission getSubmission() {
@@ -66,3 +67,4 @@ public class AnswerChoice {
         Answer = answer;
     }
 }
+
