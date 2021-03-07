@@ -26,7 +26,7 @@ public class AnswerChoice {
     @JsonProperty("submission")
     private Submission submission = null;
 
-    @Column(name = "ANSWER")
+    @OneToOne
     @JoinColumn(name = "ANSWER_OPTION_ID", referencedColumnName = "ANSWER_OPTION_ID")
     @JsonProperty("ANSWER")
     private AnswerOption Answer = null;
