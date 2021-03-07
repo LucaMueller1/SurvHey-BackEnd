@@ -2,11 +2,10 @@ package io.swagger.services;
 
 import io.swagger.model.AnswerOption;
 import io.swagger.model.Survey;
+import io.swagger.model.User;
 import io.swagger.repository.SurveyRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.text.ParseException;
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -30,15 +29,12 @@ public class SurveyService {
 
     }
 
-    public Survey findByUserEmail(String userEmail) {
-        //Survey survey = repository.findByEmail(userEmail);
-        return null;
+    public List<Survey> findByUser(User user) {
+        return surveyRepository.findAllByUser(user);
     }
 
     public Survey addSurvey(Survey survey) {
-        Survey createdSurvey = surveyRepository.save(survey);
-        surveyRepository.flush();
-        return createdSurvey;
+        return surveyRepository.save(survey);
     }
 
 }

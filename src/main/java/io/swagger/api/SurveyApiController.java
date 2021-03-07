@@ -67,12 +67,6 @@ public class SurveyApiController implements SurveyApi {
 
         Survey survey = surveyService.addSurvey(new Survey(null, body.getName(), body.getQuestionText(), body.getMode().name(), user, body.getAnswerOptions()));
 
-        System.out.println(survey.getId());
-
-        if(survey.getAnswerOptions().get(0).getSurvey() == null) {
-            System.err.println("ERROR");
-        }
-
         return new ResponseEntity<Survey>(survey, HttpStatus.OK);
     }
 
