@@ -33,8 +33,12 @@ public class SurveyService {
         return surveyRepository.findAllByUser(user);
     }
 
-    public Survey addSurvey(Survey survey) {
+    public Survey addOrUpdateSurvey(Survey survey) {
         return surveyRepository.save(survey);
+    }
+
+    public void deleteSurvey(Survey survey) {
+        surveyRepository.delete(survey);
     }
 
 }

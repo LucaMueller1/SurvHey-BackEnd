@@ -17,21 +17,16 @@ public class SubmissionService {
     private SubmissionRepository submissionRepository;
 
     public Submission findByID(long ID){
-
         return submissionRepository.findById(ID);
     }
 
-    public Submission createSubmission(Submission submission){
-        Submission createdSubmission=submissionRepository.save(submission);
-        submissionRepository.flush();
-        return createdSubmission;
+    public Submission addOrUpdateSubmission(Submission submission){
+        return submissionRepository.save(submission);
 
     }
 
     public List<Submission> findAllbySurveyID(long ID){
         return submissionRepository.findBysurveyId(ID);
-
-
     }
 
     public boolean checkIfExistBysurveyIDandIpAddress(long surveyID, String IPAdress){

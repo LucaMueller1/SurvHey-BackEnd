@@ -57,6 +57,8 @@ public class Submission   {
     this.choices = choices;
   }
 
+  public Submission() {}
+
   public Submission id(Long id) {
     this.id = id;
     return this;

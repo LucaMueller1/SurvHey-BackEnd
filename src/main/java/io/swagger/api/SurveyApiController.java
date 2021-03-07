@@ -65,7 +65,7 @@ public class SurveyApiController implements SurveyApi {
             System.err.println("USER IS NULL");
         }
 
-        Survey survey = surveyService.addSurvey(new Survey(null, body.getName(), body.getQuestionText(), body.getMode().name(), user, body.getAnswerOptions()));
+        Survey survey = surveyService.addOrUpdateSurvey(new Survey(null, body.getName(), body.getQuestionText(), body.getMode().name(), user, body.getAnswerOptions()));
 
         return new ResponseEntity<Survey>(survey, HttpStatus.OK);
     }
@@ -85,20 +85,16 @@ public class SurveyApiController implements SurveyApi {
     }
 
     public ResponseEntity<Void> deleteSurveyById(@Parameter(in = ParameterIn.PATH, description = "ID of survey to update", required=true, schema=@Schema()) @PathVariable("id") Long id) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        Survey survey = surveyService.findById(id);
+        if(survey == null) {
+            return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), "Survey not found"), HttpStatus.NOT_FOUND);
+        }
+        surveyService.deleteSurvey(survey);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     public ResponseEntity<Analysis> getSurveyAnalysisById(@Parameter(in = ParameterIn.PATH, description = "ID of survey to return an analysis for", required=true, schema=@Schema()) @PathVariable("id") Long id) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Analysis>(objectMapper.readValue("{\n  \"surveyId\" : 6,\n  \"amount\" : 527,\n  \"id\" : 0,\n  \"countries\" : {\n    \"Germany\" : 69,\n    \"USA\" : 420,\n    \"Spain\" : 11,\n    \"Norway\" : 27\n  }\n}", Analysis.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Analysis>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
         return new ResponseEntity<Analysis>(HttpStatus.NOT_IMPLEMENTED);
     }
@@ -116,45 +112,34 @@ public class SurveyApiController implements SurveyApi {
     }
 
     public ResponseEntity<SurveyResult> getSurveyResultsById(@Parameter(in = ParameterIn.PATH, description = "ID of survey to return results for", required=true, schema=@Schema()) @PathVariable("id") Long id) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<SurveyResult>(objectMapper.readValue("{\n  \"surveyId\" : 0,\n  \"choices\" : {\n    \"Tesla\" : 0.65,\n    \"Hyundai\" : 0.15,\n    \"Porsche\" : 0.2\n  }\n}", SurveyResult.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<SurveyResult>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
         return new ResponseEntity<SurveyResult>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<List<Submission>> getSurveySubmissionsById(@Parameter(in = ParameterIn.PATH, description = "ID of survey to return all submissions for", required=true, schema=@Schema()) @PathVariable("id") Long id) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<Submission>>(objectMapper.readValue("[ {\n  \"surveyId\" : 6,\n  \"ipAddress\" : \"ipAddress\",\n  \"id\" : 0,\n  \"choices\" : [ {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  }, {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  } ],\n  \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\"\n}, {\n  \"surveyId\" : 6,\n  \"ipAddress\" : \"ipAddress\",\n  \"id\" : 0,\n  \"choices\" : [ {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  }, {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  } ],\n  \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\"\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<Submission>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
         return new ResponseEntity<List<Submission>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<Survey> updateSurveyById(@Parameter(in = ParameterIn.PATH, description = "ID of survey to update", required=true, schema=@Schema()) @PathVariable("id") Long id,@Parameter(in = ParameterIn.DEFAULT, description = "Created survey object", schema=@Schema()) @Valid @RequestBody SurveyPrepare body) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Survey>(objectMapper.readValue("{\n  \"mode\" : \"radio\",\n  \"name\" : \"Survey about electric cars\",\n  \"id\" : 0,\n  \"user\" : {\n    \"firstName\" : \"Luca\",\n    \"lastName\" : \"Mueller\",\n    \"password\" : \"lol123\",\n    \"email\" : \"\"\n  },\n  \"questionText\" : \"What brand of electric car would you buy?\",\n  \"answerOptions\" : [ {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  }, {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  } ]\n}", Survey.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Survey>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        User user = userService.findByEmail("Gur@ke.com");
+
+        Survey survey = surveyService.findById(id);
+
+        if(survey == null) {
+            return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), "Survey not found"), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<Survey>(HttpStatus.NOT_IMPLEMENTED);
+        survey.setName(body.getName());
+        survey.setQuestionText(body.getQuestionText());
+        survey.setMode(body.getMode().name());
+        survey.getAnswerOptions().clear();
+        survey.getAnswerOptions().addAll(body.getAnswerOptions());
+
+        surveyService.addOrUpdateSurvey(survey);
+
+
+        return new ResponseEntity<Survey>(HttpStatus.OK);
     }
 
 }

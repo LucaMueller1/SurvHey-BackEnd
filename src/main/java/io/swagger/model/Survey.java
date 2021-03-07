@@ -50,7 +50,7 @@ public class Survey   {
   @JsonProperty("user")
   private User user = null;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "Survey_ID")
   @JsonManagedReference
   @JsonProperty("answerOptions")

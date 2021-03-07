@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.Column;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -25,6 +27,10 @@ public class SubmissionPrepare   {
   @JsonProperty("choices")
   @Valid
   private List<AnswerOption> choices = new ArrayList<AnswerOption>();
+
+  @Column(name="IP_Adress")
+  @JsonProperty("ipAddress")
+  private String ipAddress = null;
 
   public SubmissionPrepare surveyId(Long surveyId) {
     this.surveyId = surveyId;
@@ -69,6 +75,22 @@ public class SubmissionPrepare   {
   public void setChoices(List<AnswerOption> choices) {
     this.choices = choices;
   }
+
+  /**
+   * Get ipAddress
+   * @return ipAddress
+   **/
+  @Schema(required = true, description = "")
+  @NotNull
+
+  public String getIpAddress() {
+    return ipAddress;
+  }
+
+  public void setIpAddress(String ipAddress) {
+    this.ipAddress = ipAddress;
+  }
+
 
 
   @Override

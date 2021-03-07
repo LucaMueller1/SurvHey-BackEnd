@@ -467,8 +467,6 @@ components:
             $ref: '#/components/schemas/AnswerOption'
     AnswerOption:
       required:
-        - id
-        - surveyId
         - content
       type: object
       properties:
@@ -532,6 +530,9 @@ components:
         surveyId:
           type: integer
           format: int64
+        ipAddress:
+          type: string
+          format: ipv4
         choices:
           type: array
           items:
