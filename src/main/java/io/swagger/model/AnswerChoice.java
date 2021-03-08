@@ -1,5 +1,5 @@
 package io.swagger.model;
-
+/*
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.validation.annotation.Validated;
@@ -67,4 +67,4 @@ public class AnswerChoice {
         Answer = answer;
     }
 }
-
+*/

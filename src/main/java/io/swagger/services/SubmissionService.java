@@ -22,7 +22,6 @@ public class SubmissionService {
 
     public Submission addOrUpdateSubmission(Submission submission){
         return submissionRepository.save(submission);
-
     }
 
     public List<Submission> findAllbySurveyID(long ID){

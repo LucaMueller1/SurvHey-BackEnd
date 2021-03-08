@@ -2,6 +2,7 @@ package io.swagger.api;
 
 import io.swagger.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.services.SubmissionService;
 import io.swagger.services.SurveyService;
 import io.swagger.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,6 +33,7 @@ import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +52,9 @@ public class SurveyApiController implements SurveyApi {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SubmissionService submissionService;
 
     @org.springframework.beans.factory.annotation.Autowired
     public SurveyApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -71,21 +76,20 @@ public class SurveyApiController implements SurveyApi {
     }
 
     public ResponseEntity<Submission> createSurveySubmission(@Parameter(in = ParameterIn.PATH, description = "ID of survey to create a new submission for", required=true, schema=@Schema()) @PathVariable("id") Long id,@Parameter(in = ParameterIn.DEFAULT, description = "Created submission object for survey", schema=@Schema()) @Valid @RequestBody SubmissionPrepare body) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Submission>(objectMapper.readValue("{\n  \"surveyId\" : 6,\n  \"ipAddress\" : \"ipAddress\",\n  \"id\" : 0,\n  \"choices\" : [ {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  }, {\n    \"surveyId\" : 1,\n    \"id\" : 6,\n    \"content\" : \"Tesla\"\n  } ],\n  \"timestamp\" : \"2000-01-23T04:56:07.000+00:00\"\n}", Submission.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Submission>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        Survey survey = surveyService.findById(id);
+
+        if(survey == null) {
+            return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), "Survey not found"), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<Submission>(HttpStatus.NOT_IMPLEMENTED);
+        Submission submission = submissionService.addOrUpdateSubmission(new Submission(null, body.getIpAddress(), body.getSurveyId(), OffsetDateTime.now(), body.getChoices()));
+
+        return new ResponseEntity<Submission>(submission, HttpStatus.OK);
     }
 
     public ResponseEntity<Void> deleteSurveyById(@Parameter(in = ParameterIn.PATH, description = "ID of survey to update", required=true, schema=@Schema()) @PathVariable("id") Long id) {
         Survey survey = surveyService.findById(id);
+
         if(survey == null) {
             return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), "Survey not found"), HttpStatus.NOT_FOUND);
         }
