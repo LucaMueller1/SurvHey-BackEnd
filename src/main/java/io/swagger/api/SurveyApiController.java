@@ -77,6 +77,16 @@ public class SurveyApiController implements SurveyApi {
             return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), "Survey not found"), HttpStatus.NOT_FOUND);
         }
 
+        //check if user with ipAddress already participated in this survey
+        if(submissionService.didAlreadyParticipate(survey, body.getIpAddress())) {
+            return new ResponseEntity(new ApiError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase(), "You have already participated in this survey"), HttpStatus.FORBIDDEN);
+        }
+
+        //check if answerOptions exist
+        if(!surveyService.validAnswerOptions(survey, body.getChoices())) {
+            return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), "AnswerOptions of survey not found"), HttpStatus.NOT_FOUND);
+        }
+
         Submission submission = submissionService.addOrUpdateSubmission(new Submission(null, body.getIpAddress(), body.getSurveyId(), OffsetDateTime.now(), body.getChoices()));
 
         return new ResponseEntity<Submission>(submission, HttpStatus.OK);

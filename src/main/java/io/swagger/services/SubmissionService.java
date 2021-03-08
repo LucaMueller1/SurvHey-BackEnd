@@ -28,21 +28,10 @@ public class SubmissionService {
         return submissionRepository.findBysurveyId(ID);
     }
 
-    public boolean checkIfExistBysurveyIDandIpAddress(long surveyID, String IPAdress){
-        List <Submission> submissionList=submissionRepository.findBysurveyId(surveyID);
-        Iterator <Submission>AllList = submissionList.iterator();
-        Submission currentSet;
+    public boolean didAlreadyParticipate(Survey survey, String ipAddress){
+        List<Submission> list = submissionRepository.findAllBySurveyIdAndIpAddress(survey.getId(), ipAddress);
 
-        while(AllList.hasNext()){
-            currentSet=AllList.next();
-            if(currentSet.getIpAddress()==IPAdress){
-                return true;
-
-            }
-
-        }
-        return false;
-
+        return list.size() != 0;
     }
 
 }

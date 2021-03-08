@@ -123,7 +123,7 @@ public class AnswerOption {
     sb.append("class AnswerOption {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    surveyId: ").append(toIndentedString(survey)).append("\n");
+    sb.append("    surveyId: ").append(toIndentedString(survey.getId())).append("\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
     sb.append("}");
     return sb.toString();
