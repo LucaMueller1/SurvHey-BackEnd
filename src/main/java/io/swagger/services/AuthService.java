@@ -8,7 +8,9 @@ import io.swagger.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.time.OffsetDateTime;
+import java.util.Base64;
 import java.util.Optional;
 
 @Service
@@ -19,6 +21,9 @@ public class AuthService {
 
     @Autowired
     private AuthKeyRepository authRepository;
+
+    private static final SecureRandom secureRandom = new SecureRandom(); //threadsafe
+    private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder(); //threadsafe
 
     public AuthKey login(UserLogin credentials) {
         User user = userRepository.findByEmail(credentials.getEmail());
@@ -33,7 +38,7 @@ public class AuthService {
         AuthKey authKey = new AuthKey();
         authKey.setUser(user);
         authKey.setExpiry(OffsetDateTime.now().plusHours(12));
-        authKey.setAuthKey("htregemgrhntmowgwrgomwe");
+        authKey.setAuthKey(generateNewToken());
 
         return authRepository.save(authKey);
     }
@@ -49,6 +54,12 @@ public class AuthService {
                 return true;
             }
         }
+    }
+
+    private static String generateNewToken() {
+        byte[] randomBytes = new byte[24];
+        secureRandom.nextBytes(randomBytes);
+        return base64Encoder.encodeToString(randomBytes);
     }
 
 }
