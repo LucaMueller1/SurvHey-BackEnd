@@ -32,6 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 disable().
                 sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).
                 and()
+                .cors()
+                .and()
                 .headers().frameOptions().disable().
                 and()
                 .addFilter(filter)
