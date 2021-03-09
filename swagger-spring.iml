@@ -61,7 +61,6 @@
     <orderEntry type="library" name="Maven: io.springfox:springfox-oas:3.0.0" level="project" />
     <orderEntry type="library" name="Maven: io.swagger.core.v3:swagger-annotations:2.1.2" level="project" />
     <orderEntry type="library" name="Maven: io.swagger.core.v3:swagger-models:2.1.2" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.11.3" level="project" />
     <orderEntry type="library" name="Maven: io.springfox:springfox-spi:3.0.0" level="project" />
     <orderEntry type="library" name="Maven: io.springfox:springfox-schema:3.0.0" level="project" />
     <orderEntry type="library" name="Maven: io.springfox:springfox-core:3.0.0" level="project" />
@@ -143,5 +142,11 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.3.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aspects:5.3.1" level="project" />
     <orderEntry type="library" name="Maven: org.mindrot:jbcrypt:0.4" level="project" />
+    <orderEntry type="library" name="Maven: com.maxmind.geoip2:geoip2:2.15.0" level="project" />
+    <orderEntry type="library" name="Maven: com.maxmind.db:maxmind-db:2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.5.13" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.4.13" level="project" />
+    <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.15" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.11.3" level="project" />
   </component>
 </module>
