@@ -21,7 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final Logger log = LoggerFactory.getLogger(WebSecurityConfig.class);
 
     @Value("${survhey.auth.api-key.name}")
-    private static final String API_KEY_AUTH_HEADER_NAME = "api_key";
+    private String API_KEY_AUTH_HEADER_NAME;
 
     @Autowired
     private AuthService authService;

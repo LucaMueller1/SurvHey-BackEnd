@@ -25,6 +25,15 @@ public class AuthService {
     private static final SecureRandom secureRandom = new SecureRandom(); //threadsafe
     private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder(); //threadsafe
 
+    public AuthKey getAuthKeyById(String key) {
+        Optional<AuthKey> authKey = authRepository.findById(key);
+        if(authKey.isPresent()) {
+            return authKey.get();
+        } else {
+            return null;
+        }
+    }
+
     public AuthKey login(UserLogin credentials) {
         User user = userRepository.findByEmail(credentials.getEmail());
         if(user == null) {
@@ -43,17 +52,35 @@ public class AuthService {
         return authRepository.save(authKey);
     }
 
-    public boolean isAuthKeyValid(String authKey) {
-        Optional<AuthKey> key = authRepository.findById(authKey);
-        if(!key.isPresent()) {
+    public User getUserByKey(String key) {
+        Optional<AuthKey> authKey = authRepository.findById(key);
+
+        if(!authKey.isPresent()) {
+            return null;
+        } else {
+            if(authKey.get().getExpiry().isBefore(OffsetDateTime.now())) {
+                return null;
+            } else {
+                return authKey.get().getUser();
+            }
+        }
+    }
+
+    public boolean isAuthKeyValid(String key) {
+        Optional<AuthKey> authKey = authRepository.findById(key);
+        if(!authKey.isPresent()) {
             return false;
         } else {
-            if(key.get().getExpiry().isBefore(OffsetDateTime.now())) {
+            if(authKey.get().getExpiry().isBefore(OffsetDateTime.now())) {
                 return false;
             } else {
                 return true;
             }
         }
+    }
+
+    public void deleteAuthKey(AuthKey authKey) {
+        authRepository.delete(authKey);
     }
 
     private static String generateNewToken() {
