@@ -5,6 +5,7 @@ import io.swagger.model.User;
 import io.swagger.model.UserLogin;
 import io.swagger.repository.AuthKeyRepository;
 import io.swagger.repository.UserRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,17 +40,15 @@ public class AuthService {
         if(user == null) {
             return null;
         }
-        if(!credentials.getPassword().equals(user.getPassword())) {
-            return null;
+
+        if(BCrypt.checkpw(credentials.getPassword(), user.getPassword())) {
+            AuthKey authKey = new AuthKey();
+            authKey.setUser(user);
+            authKey.setExpiry(OffsetDateTime.now().plusHours(12));
+            authKey.setAuthKey(generateNewToken());
+            return authRepository.save(authKey);
         }
-        //check if credentials are correct
-
-        AuthKey authKey = new AuthKey();
-        authKey.setUser(user);
-        authKey.setExpiry(OffsetDateTime.now().plusHours(12));
-        authKey.setAuthKey(generateNewToken());
-
-        return authRepository.save(authKey);
+        return null;
     }
 
     public User getUserByKey(String key) {
@@ -88,5 +87,6 @@ public class AuthService {
         secureRandom.nextBytes(randomBytes);
         return base64Encoder.encodeToString(randomBytes);
     }
+
 
 }
