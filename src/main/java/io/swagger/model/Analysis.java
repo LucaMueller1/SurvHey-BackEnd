@@ -30,7 +30,14 @@ public class Analysis   {
 
   @JsonProperty("countries")
   @Valid
-  private Map<String, Integer> countries = null;
+  private Map<String, Long> countries = null;
+
+  public Analysis(Long id, Long surveyId, Long amount, @Valid Map<String, Long> countries) {
+    this.id = id;
+    this.surveyId = surveyId;
+    this.amount = amount;
+    this.countries = countries;
+  }
 
   public Analysis id(Long id) {
     this.id = id;
@@ -91,14 +98,14 @@ public class Analysis   {
     this.amount = amount;
   }
 
-  public Analysis countries(Map<String, Integer> countries) {
+  public Analysis countries(Map<String, Long> countries) {
     this.countries = countries;
     return this;
   }
 
-  public Analysis putCountriesItem(String key, Integer countriesItem) {
+  public Analysis putCountriesItem(String key, Long countriesItem) {
     if (this.countries == null) {
-      this.countries = new HashMap<String, Integer>();
+      this.countries = new HashMap<String, Long>();
     }
     this.countries.put(key, countriesItem);
     return this;
@@ -110,11 +117,11 @@ public class Analysis   {
    **/
   @Schema(example = "{\"Germany\":69,\"USA\":420,\"Spain\":11,\"Norway\":27}", description = "")
   
-    public Map<String, Integer> getCountries() {
+    public Map<String, Long> getCountries() {
     return countries;
   }
 
-  public void setCountries(Map<String, Integer> countries) {
+  public void setCountries(Map<String, Long> countries) {
     this.countries = countries;
   }
 
