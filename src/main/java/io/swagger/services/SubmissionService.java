@@ -1,16 +1,11 @@
 package io.swagger.services;
 
-import io.swagger.model.Analysis;
-import io.swagger.model.Submission;
-import io.swagger.model.Survey;
-import io.swagger.model.SurveyResult;
+import io.swagger.model.*;
 import io.swagger.repository.SubmissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class SubmissionService {
@@ -41,7 +36,22 @@ public class SubmissionService {
     }
 
     public SurveyResult getResults(Survey survey) {
-        return null;
+        SurveyResult result = new SurveyResult();
+
+        result.surveyId(survey.getId()); // Set SurveyResult survey id by given survey
+
+        List<Submission> submissions = findAllBySurveyID(survey.getId()); // Get all submissions
+        HashMap<String, Integer> frequency = new HashMap();
+
+        for (Submission submission : submissions) { // for each submission
+            List<AnswerOption> choices = submission.getChoices(); // get all submitted choices from the submission
+            for (AnswerOption choice : choices) {   // for each submitted choice
+                frequency.putIfAbsent(choice.getContent(), 0);  // if answer option is not counted yet, add key to frequency hash map
+                frequency.put(choice.getContent(), frequency.get(choice.getContent()) + 1); // update counter for answer option
+            }
+        }
+        result.setChoices(frequency);
+        return result;
     }
 
 }
