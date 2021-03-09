@@ -57,10 +57,6 @@ public class SubmissionService {
         List<String> countries = locations.stream().map(GeoIP::getCountry).collect(Collectors.toList());
         Map<String, Long> countedCountries = countries.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-        for(String item : countedCountries.keySet()) {
-            System.out.println(item + " count: " + countedCountries.get(item));
-        }
-
         Long sum = countedCountries.values().stream().reduce(0L, Long::sum);
 
         Analysis analysis = new Analysis(0L, survey.getId(), sum, countedCountries);
