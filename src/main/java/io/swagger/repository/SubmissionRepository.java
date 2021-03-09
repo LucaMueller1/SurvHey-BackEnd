@@ -9,7 +9,7 @@ import java.util.List;
 public interface SubmissionRepository extends JpaRepository<Submission, Long> {
 
         Submission findById(long id);
-        List<Submission> findBysurveyId(long ID);
+        List<Submission> findAllBySurveyId(Long Id);
 
         List<Submission> findAllBySurveyIdAndIpAddress(Long surveyId, String ipAddress);
 

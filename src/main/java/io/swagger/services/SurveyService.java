@@ -1,5 +1,6 @@
 package io.swagger.services;
 
+import io.swagger.model.Analysis;
 import io.swagger.model.AnswerOption;
 import io.swagger.model.Survey;
 import io.swagger.model.User;
