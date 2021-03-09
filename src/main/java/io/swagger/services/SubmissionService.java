@@ -1,7 +1,9 @@
 package io.swagger.services;
 
+import io.swagger.model.Analysis;
 import io.swagger.model.Submission;
 import io.swagger.model.Survey;
+import io.swagger.model.SurveyResult;
 import io.swagger.repository.SubmissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,28 +24,24 @@ public class SubmissionService {
 
     public Submission addOrUpdateSubmission(Submission submission){
         return submissionRepository.save(submission);
-
     }
 
-    public List<Submission> findAllbySurveyID(long ID){
-        return submissionRepository.findBysurveyId(ID);
+    public List<Submission> findAllBySurveyID(Long id){
+        return submissionRepository.findAllBySurveyId(id);
     }
 
-    public boolean checkIfExistBysurveyIDandIpAddress(long surveyID, String IPAdress){
-        List <Submission> submissionList=submissionRepository.findBysurveyId(surveyID);
-        Iterator <Submission>AllList = submissionList.iterator();
-        Submission currentSet;
+    public boolean didAlreadyParticipate(Survey survey, String ipAddress){
+        List<Submission> list = submissionRepository.findAllBySurveyIdAndIpAddress(survey.getId(), ipAddress);
 
-        while(AllList.hasNext()){
-            currentSet=AllList.next();
-            if(currentSet.getIpAddress()==IPAdress){
-                return true;
+        return list.size() != 0;
+    }
 
-            }
+    public Analysis getAnalysis(Survey survey) {
+        return null;
+    }
 
-        }
-        return false;
-
+    public SurveyResult getResults(Survey survey) {
+        return null;
     }
 
 }

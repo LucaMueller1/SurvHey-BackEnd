@@ -4,6 +4,7 @@ import io.swagger.model.ApiError;
 import io.swagger.model.Survey;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.model.User;
+import io.swagger.services.AuthService;
 import io.swagger.services.SurveyService;
 import io.swagger.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,15 +19,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,6 +35,7 @@ import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-03-01T12:29:37.288Z[GMT]")
 @RestController
+@CrossOrigin
 public class SurveysApiController implements SurveysApi {
 
     private static final Logger log = LoggerFactory.getLogger(SurveysApiController.class);
@@ -47,11 +44,17 @@ public class SurveysApiController implements SurveysApi {
 
     private final HttpServletRequest request;
 
+    @Value("${survhey.auth.api-key.name}")
+    private String API_KEY_AUTH_HEADER_NAME;
+
     @Autowired
     private SurveyService surveyService;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AuthService authService;
 
     @org.springframework.beans.factory.annotation.Autowired
     public SurveysApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -60,10 +63,9 @@ public class SurveysApiController implements SurveysApi {
     }
 
     public ResponseEntity<List<Survey>> getSurveys() {
-        User user = userService.findByEmail("Ka@rotte.de");
+        User user = authService.getUserByKey(request.getHeader(API_KEY_AUTH_HEADER_NAME));
 
         List<Survey> surveys = surveyService.findByUser(user);
-
 
         return new ResponseEntity<List<Survey>>(surveys, HttpStatus.OK);
     }

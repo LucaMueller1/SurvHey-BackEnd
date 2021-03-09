@@ -1,5 +1,6 @@
 package io.swagger.model;
 
+import java.time.OffsetDateTime;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -7,7 +8,6 @@ import io.swagger.model.AnswerOption;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
-import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
@@ -26,7 +26,7 @@ import javax.validation.constraints.*;
 public class Submission   {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "Submission_ID")
   @JsonProperty("id")
   private Long id = null;
@@ -43,13 +43,17 @@ public class Submission   {
   @JsonProperty("timestamp")
   private OffsetDateTime timestamp = null;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "Survey_ID")
+  @ManyToMany
+  @JoinTable(
+          name = "SurvHey_DB.Question_Answer",
+          joinColumns = { @JoinColumn(name = "Submission_ID") },
+          inverseJoinColumns = { @JoinColumn(name = "ANSWER_OPTION_ID") }
+  )
   @JsonProperty("choices")
   @Valid
-  private List<AnswerChoice> choices = new ArrayList<>();
+  private List<AnswerOption> choices = new ArrayList<>();
 
-  public Submission(Long id, String ipAddress, Long surveyId, OffsetDateTime timestamp, @Valid List<AnswerChoice> choices) {
+  public Submission(Long id, String ipAddress, Long surveyId, OffsetDateTime timestamp, @Valid List<AnswerOption> choices) {
     this.id = id;
     this.ipAddress = ipAddress;
     this.surveyId = surveyId;
@@ -140,12 +144,12 @@ public class Submission   {
     this.timestamp = timestamp;
   }
 
-  public Submission choices(List<AnswerChoice> choices) {
+  public Submission choices(List<AnswerOption> choices) {
     this.choices = choices;
     return this;
   }
 
-  public Submission addChoicesItem(AnswerChoice choicesItem) {
+  public Submission addChoicesItem(AnswerOption choicesItem) {
     this.choices.add(choicesItem);
     return this;
   }
@@ -157,11 +161,11 @@ public class Submission   {
   @Schema(required = true, description = "")
       @NotNull
     @Valid
-    public List<AnswerChoice> getChoices() {
+    public List<AnswerOption> getChoices() {
     return choices;
   }
 
-  public void setChoices(List<AnswerChoice> choices) {
+  public void setChoices(List<AnswerOption> choices) {
     this.choices = choices;
   }
 

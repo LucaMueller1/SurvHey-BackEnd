@@ -14,19 +14,17 @@ import org.springframework.stereotype.Component;
 public class ApiKeyAuthManager implements AuthenticationManager {
     private static final Logger log = LoggerFactory.getLogger(ApiKeyAuthManager.class);
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
 
-    public ApiKeyAuthManager() {
-
+    public ApiKeyAuthManager(AuthService authService) {
+        this.authService = authService;
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String principal = (String) authentication.getPrincipal();  //contains given key
+        String principal = (String) authentication.getPrincipal();  //contains given api_key
 
-        // !authService.isAuthKeyValid(principal)
-        if (!true == true) {
+        if (!authService.isAuthKeyValid(principal)) {
             throw new BadCredentialsException("The API key was not found or not the expected value.");
         } else {
             log.info("Successfully authenticated with key: " + principal);
