@@ -41,28 +41,16 @@ public class AuthService {
             return null;
         }
 
-        if(BCrypt.checkpw(credentials.getPassword(), user.getPassword()))
-        {
+        if(BCrypt.checkpw(credentials.getPassword(), user.getPassword())) {
             AuthKey authKey = new AuthKey();
             authKey.setUser(user);
             authKey.setExpiry(OffsetDateTime.now().plusHours(12));
-            authKey.setAuthKey("htregemgrhntmowgwrgomwe");
+            authKey.setAuthKey(generateNewToken());
             return authRepository.save(authKey);
         }
-        AuthKey authKey = new AuthKey();
-        authKey.setUser(user);
-        authKey.setExpiry(OffsetDateTime.now().plusHours(12));
-        authKey.setAuthKey(generateNewToken());
-
-        return authRepository.save(authKey);
-    }
-
         return null;
     }
 
-    public boolean isAuthKeyValid(String authKey) {
-        Optional<AuthKey> key = authRepository.findById(authKey);
-        if(!key.isPresent()) {
     public User getUserByKey(String key) {
         Optional<AuthKey> authKey = authRepository.findById(key);
 
@@ -99,5 +87,6 @@ public class AuthService {
         secureRandom.nextBytes(randomBytes);
         return base64Encoder.encodeToString(randomBytes);
     }
+
 
 }
