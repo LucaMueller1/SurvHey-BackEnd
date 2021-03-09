@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,9 @@ public class UserApiController implements UserApi {
     }
 
     public ResponseEntity<Void> createUser(@Parameter(in = ParameterIn.DEFAULT, description = "User object to create", required=true, schema=@Schema()) @Valid @RequestBody User body) {
+        String pwd = body.getPassword();
+        String hashed = BCrypt.hashpw(pwd, BCrypt.gensalt());
+        body.setPassword(hashed);
         userService.createUser(body);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
