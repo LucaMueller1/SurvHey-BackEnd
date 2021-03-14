@@ -25,6 +25,8 @@ create table SurvHey_DB.Survey (
                                    Survey_Name text,
                                    Question_Text text,
                                    Answer_Mode varchar(25),
+                                   Color_Accent text,
+                                   Color_Background text,
                                    foreign key (E_Mail) references SurvHey_DB.User(E_Mail) on update cascade on delete cascade
 );
 
