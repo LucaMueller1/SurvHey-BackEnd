@@ -28,9 +28,10 @@ public class SubmissionPrepare   {
   @Valid
   private List<AnswerOption> choices = new ArrayList<AnswerOption>();
 
-  @Column(name="IP_Adress")
-  @JsonProperty("ipAddress")
-  private String ipAddress = null;
+
+  @JsonProperty("participant")
+  @Valid
+  private Participant participant = null;
 
   public SubmissionPrepare surveyId(Long surveyId) {
     this.surveyId = surveyId;
@@ -61,6 +62,10 @@ public class SubmissionPrepare   {
     return this;
   }
 
+
+
+
+
   /**
    * Get choices
    * @return choices
@@ -76,22 +81,18 @@ public class SubmissionPrepare   {
     this.choices = choices;
   }
 
-  /**
-   * Get ipAddress
-   * @return ipAddress
-   **/
+
+  //Getter and Setter Participants
   @Schema(required = true, description = "")
   @NotNull
-
-  public String getIpAddress() {
-    return ipAddress;
+  @Valid
+  public Participant getParticipant() {
+    return participant;
   }
 
-  public void setIpAddress(String ipAddress) {
-    this.ipAddress = ipAddress;
+  public void setParticipant(Participant participant) {
+    this.participant = participant;
   }
-
-
 
   @Override
   public boolean equals(java.lang.Object o) {

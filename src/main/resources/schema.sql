@@ -36,14 +36,19 @@ create table SurvHey_DB.Answer_Option (
                                           Answer_Option text,
                                           foreign key (Survey_ID) references SurvHey_DB.Survey(Survey_ID) on update cascade on delete cascade
 );
-
+create table SurvHey_DB.Survey_Participant (
+                                    Participant_ID bigint auto_increment primary key,
+                                    IP_Adress text,
+                                    Cookie_ID text
+);
 
 create table SurvHey_DB.Submission (
                                        Submission_ID bigint auto_increment primary key,
                                        Survey_ID bigint not null,
-                                       IP_Adress text not null,
                                        Timestamp timestamp,
-                                       foreign key (Survey_ID) references Survey(Survey_ID) on update cascade on delete cascade
+                                       Participant_ID bigint,
+                                       foreign key (Survey_ID) references Survey(Survey_ID) on update cascade on delete cascade,
+                                       foreign key (Participant_ID) references Survey_Participant(Participant_ID) on update cascade on delete cascade
 );
 
 
@@ -55,3 +60,4 @@ create table SurvHey_DB.Question_Answer(
                                            foreign key (Answer_Option_ID) references SurvHey_DB.Answer_Option(Answer_Option_ID) on update cascade on delete cascade
 
 );
+

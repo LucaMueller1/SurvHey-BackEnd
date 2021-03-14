@@ -2,10 +2,7 @@ package io.swagger.api;
 
 import io.swagger.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.services.AuthService;
-import io.swagger.services.SubmissionService;
-import io.swagger.services.SurveyService;
-import io.swagger.services.UserService;
+import io.swagger.services.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -59,6 +56,9 @@ public class SurveyApiController implements SurveyApi {
     @Autowired
     private AuthService authService;
 
+    @Autowired
+    private ParticipantService participantService;
+
     @org.springframework.beans.factory.annotation.Autowired
     public SurveyApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
@@ -74,14 +74,22 @@ public class SurveyApiController implements SurveyApi {
     }
 
     public ResponseEntity<Submission> createSurveySubmission(@Parameter(in = ParameterIn.PATH, description = "ID of survey to create a new submission for", required=true, schema=@Schema()) @PathVariable("id") Long id,@Parameter(in = ParameterIn.DEFAULT, description = "Created submission object for survey", schema=@Schema()) @Valid @RequestBody SubmissionPrepare body) {
+
         Survey survey = surveyService.findById(id);
 
         if(survey == null) {
             return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), "Survey not found"), HttpStatus.NOT_FOUND);
         }
 
+        Participant participant= participantService.getByCookieID(body.getParticipant().getCookieID());
+
+        if (participant==null){
+            participant =participantService.createOrUpdateParticipant(body.getParticipant());
+        }
+
         //check if user with ipAddress already participated in this survey
-        if(submissionService.didAlreadyParticipate(survey, body.getIpAddress())) {
+
+        if(submissionService.didAlreadyParticipate(participant,survey)) {
             return new ResponseEntity(new ApiError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase(), "You have already participated in this survey"), HttpStatus.FORBIDDEN);
         }
 
@@ -89,8 +97,8 @@ public class SurveyApiController implements SurveyApi {
         if(!surveyService.validAnswerOptions(survey, body.getChoices())) {
             return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), "AnswerOptions of survey not found"), HttpStatus.NOT_FOUND);
         }
-
-        Submission submission = submissionService.addOrUpdateSubmission(new Submission(null, body.getIpAddress(), body.getSurveyId(), OffsetDateTime.now(), body.getChoices()));
+        System.out.println(body.getParticipant().getIpAddress());
+        Submission submission = submissionService.addOrUpdateSubmission(new Submission(null, body.getSurveyId(), OffsetDateTime.now(), body.getChoices(), participant));
 
         return new ResponseEntity<Submission>(submission, HttpStatus.OK);
     }

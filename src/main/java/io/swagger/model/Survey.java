@@ -58,6 +58,8 @@ public class Survey   {
   private List<AnswerOption> answerOptions = new ArrayList<AnswerOption>();
 
 
+
+
   public Survey(Long id, String name, String questionText, String mode, User user, @Valid List<AnswerOption> answerOptions) {
     this.id = id;
     this.name = name;
