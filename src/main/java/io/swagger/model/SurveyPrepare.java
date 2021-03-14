@@ -67,6 +67,36 @@ public class SurveyPrepare   {
   @JsonProperty("mode")
   private ModeEnum mode = null;
 
+  @JsonProperty("backgroundColor")
+  private String color_background = null;
+
+  /**
+   * Get backgroundColor
+   * @return backgroundColor
+   **/
+  @Schema(required = true, description = "")
+  @NotNull
+  public String getBackgroundColor() {
+    return color_background;
+  }
+
+  public void setBackgroundColor(String color_background) {this.color_background = color_background; }
+
+  @JsonProperty("accentColor")
+  private String color_accent = null;
+
+  /**
+   * Get getAccentColor
+   * @return getAccentColor
+   **/
+  @Schema(required = true, description = "")
+  @NotNull
+  public String getAccentColor() {
+    return color_accent;
+  }
+
+  public void setAccentColor(String color_accent) {this.color_accent = color_accent; }
+
   @JsonProperty("answerOptions")
   @Valid
   private List<AnswerOption> answerOptions = new ArrayList<AnswerOption>();
