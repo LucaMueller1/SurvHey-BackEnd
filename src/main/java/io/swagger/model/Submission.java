@@ -31,9 +31,13 @@ public class Submission   {
   @JsonProperty("id")
   private Long id = null;
 
-  @Column (name="IP_Adress")
-  @JsonProperty("ipAddress")
-  private String ipAddress = null;
+
+  @ManyToOne (cascade = CascadeType.ALL)
+  @JoinColumn(name = "Participant_ID", referencedColumnName = "Participant_ID")
+  @JsonProperty("participant")
+  @Valid
+  private Participant participant = null;
+
 
   @Column(name = "Survey_ID")
   @JsonProperty("surveyId")
@@ -53,12 +57,12 @@ public class Submission   {
   @Valid
   private List<AnswerOption> choices = new ArrayList<>();
 
-  public Submission(Long id, String ipAddress, Long surveyId, OffsetDateTime timestamp, @Valid List<AnswerOption> choices) {
+  public Submission(Long id, Long surveyId, OffsetDateTime timestamp, @Valid List<AnswerOption> choices, @Valid Participant participant) {
     this.id = id;
-    this.ipAddress = ipAddress;
     this.surveyId = surveyId;
     this.timestamp = timestamp;
     this.choices = choices;
+    this.participant = participant;
   }
 
   public Submission() {}
@@ -83,10 +87,10 @@ public class Submission   {
     this.id = id;
   }
 
-  public Submission ipAddress(String ipAddress) {
+ /* public Submission ipAddress(String ipAddress) {
     this.ipAddress = ipAddress;
     return this;
-  }
+  }*/
 
   /**
    * Get ipAddress
@@ -95,13 +99,6 @@ public class Submission   {
   @Schema(required = true, description = "")
       @NotNull
 
-    public String getIpAddress() {
-    return ipAddress;
-  }
-
-  public void setIpAddress(String ipAddress) {
-    this.ipAddress = ipAddress;
-  }
 
   public Submission surveyId(Long surveyId) {
     this.surveyId = surveyId;
@@ -127,6 +124,21 @@ public class Submission   {
     this.timestamp = timestamp;
     return this;
   }
+
+/**
+ * Get participant
+ * @return participant
+ **/
+@Schema(required = true, description = "")
+@NotNull
+  public Participant getParticipant() {
+    return participant;
+  }
+
+  public void setParticipant(Participant participant) {
+    this.participant = participant;
+  }
+
 
   /**
    * Get timestamp
@@ -180,7 +192,7 @@ public class Submission   {
     }
     Submission submission = (Submission) o;
     return Objects.equals(this.id, submission.id) &&
-        Objects.equals(this.ipAddress, submission.ipAddress) &&
+        Objects.equals(this.participant, submission.participant) &&
         Objects.equals(this.surveyId, submission.surveyId) &&
         Objects.equals(this.timestamp, submission.timestamp) &&
         Objects.equals(this.choices, submission.choices);
@@ -188,7 +200,7 @@ public class Submission   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, ipAddress, surveyId, timestamp, choices);
+    return Objects.hash(id, participant, surveyId, timestamp, choices);
   }
 
   @Override
@@ -197,7 +209,7 @@ public class Submission   {
     sb.append("class Submission {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    ipAddress: ").append(toIndentedString(ipAddress)).append("\n");
+    sb.append("    ipAddress: ").append(toIndentedString(participant)).append("\n");
     sb.append("    surveyId: ").append(toIndentedString(surveyId)).append("\n");
     sb.append("    timestamp: ").append(toIndentedString(timestamp)).append("\n");
     sb.append("    choices: ").append(toIndentedString(choices)).append("\n");

@@ -3,6 +3,7 @@ package io.swagger.services;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import io.swagger.model.*;
 import io.swagger.model.*;
+import io.swagger.repository.ParticipantRepository;
 import io.swagger.repository.SubmissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,9 +26,14 @@ public class SubmissionService {
     @Autowired
     private GeoLocationService geoLocationService;
 
+    @Autowired
+    private ParticipantService participantService ;
+
     public Submission findByID(long ID){
         return submissionRepository.findById(ID);
     }
+
+
 
     public Submission addOrUpdateSubmission(Submission submission){
         return submissionRepository.save(submission);
@@ -37,15 +43,17 @@ public class SubmissionService {
         return submissionRepository.findAllBySurveyId(id);
     }
 
-    public boolean didAlreadyParticipate(Survey survey, String ipAddress){
-        List<Submission> list = submissionRepository.findAllBySurveyIdAndIpAddress(survey.getId(), ipAddress);
+    public boolean didAlreadyParticipate(Participant participant, Survey survey){
 
-        return list.size() != 0;
+        List<Submission> list = submissionRepository.findAllBySurveyIdAndParticipant(survey.getId(), participant);
+        return list.size() !=0;
     }
 
     public Analysis getAnalysis(Survey survey) {
         List<Submission> submissions = submissionRepository.findAllBySurveyId(survey.getId());
-        List<String> ipList = submissions.stream().map(Submission::getIpAddress).collect(Collectors.toList());
+        Iterator <Submission> subIterator= submissions.iterator();
+        List<String> ipList = submissions.stream().map(Submission::getParticipant).map(Participant::getIpAddress).collect(Collectors.toList());
+
 
         List<GeoIP> locations = null;
         try {
@@ -56,6 +64,9 @@ public class SubmissionService {
             e.printStackTrace();
         }
 
+        if(locations==null){
+            return null;
+        }
         List<String> countries = locations.stream().map(GeoIP::getCountry).collect(Collectors.toList());
         Map<String, Long> countedCountries = countries.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
