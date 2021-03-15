@@ -74,7 +74,7 @@ public class SurveyApiController implements SurveyApi {
     }
 
     public ResponseEntity<Submission> createSurveySubmission(@Parameter(in = ParameterIn.PATH, description = "ID of survey to create a new submission for", required=true, schema=@Schema()) @PathVariable("id") Long id,@Parameter(in = ParameterIn.DEFAULT, description = "Created submission object for survey", schema=@Schema()) @Valid @RequestBody SubmissionPrepare body) {
-        // !!!!Prüfung ob die Question_AnswerID zur Survey passt fehlt noch!!!!!!!!!!
+
         Survey survey = surveyService.findById(id);
 
         if(survey == null) {
