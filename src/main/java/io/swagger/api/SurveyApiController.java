@@ -68,7 +68,7 @@ public class SurveyApiController implements SurveyApi {
     public ResponseEntity<Survey> createSurvey(@Parameter(in = ParameterIn.DEFAULT, description = "Created survey object", schema=@Schema()) @Valid @RequestBody SurveyPrepare body) {
         User user = authService.getUserByKey(request.getHeader(API_KEY_AUTH_HEADER_NAME));
 
-        Survey survey = surveyService.addOrUpdateSurvey(new Survey(null, body.getName(), body.getQuestionText(), body.getMode().name(), user, body.getAnswerOptions()));
+        Survey survey = surveyService.addOrUpdateSurvey(new Survey(null, body.getName(), body.getQuestionText(), body.getMode().name(), body.getBackgroundColor(), body.getAccentColor(), user, body.getAnswerOptions()));
 
         return new ResponseEntity<Survey>(survey, HttpStatus.OK);
     }
@@ -188,6 +188,8 @@ public class SurveyApiController implements SurveyApi {
         survey.setMode(body.getMode().name());
         survey.getAnswerOptions().clear();
         survey.getAnswerOptions().addAll(body.getAnswerOptions());
+        survey.setAccentColor(body.getAccentColor());
+        survey.setBackgroundColor(body.getBackgroundColor());
 
         Survey rSurvey = surveyService.addOrUpdateSurvey(survey);
 

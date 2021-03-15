@@ -45,6 +45,14 @@ public class Survey   {
   @JsonProperty("mode")
   private String mode = null;
 
+  @Column(name = "Color_Background")
+  @JsonProperty("backgroundColor")
+  private String backgroundColor = null;
+
+  @Column(name = "Color_Accent")
+  @JsonProperty("accentColor")
+  private String accentColor = null;
+
   @ManyToOne
   @JoinColumn(name = "E_Mail", referencedColumnName = "E_Mail")
   @JsonProperty("user")
@@ -58,11 +66,11 @@ public class Survey   {
   private List<AnswerOption> answerOptions = new ArrayList<AnswerOption>();
 
 
-
-
-  public Survey(Long id, String name, String questionText, String mode, User user, @Valid List<AnswerOption> answerOptions) {
+  public Survey(Long id, String name, String questionText, String mode, String backgroundColor, String accentColor, User user, @Valid List<AnswerOption> answerOptions) {
     this.id = id;
     this.name = name;
+    this.backgroundColor = backgroundColor;
+    this.accentColor = accentColor;
     this.questionText = questionText;
     this.mode = mode;
     this.user = user;
@@ -98,6 +106,30 @@ public class Survey   {
     this.name = name;
     return this;
   }
+
+  /**
+   * Get backgroundColor
+   * @return backgroundColor
+   **/
+  @Schema(required = true, description = "")
+  @NotNull
+  public String getBackgroundColor() {
+    return backgroundColor;
+  }
+
+  public void setBackgroundColor(String backgroundColor) {this.backgroundColor = backgroundColor; }
+
+  /**
+   * Get getAccentColor
+   * @return getAccentColor
+   **/
+  @Schema(required = true, description = "")
+  @NotNull
+  public String getAccentColor() {
+    return accentColor;
+  }
+
+  public void setAccentColor(String accentColor) {this.accentColor = accentColor; }
 
   /**
    * Get name
