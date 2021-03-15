@@ -43,8 +43,7 @@ public class SubmissionService {
         return submissionRepository.findAllBySurveyId(id);
     }
 
-    public boolean didAlreadyParticipate(Participant participant, Survey survey){
-
+    public boolean didAlreadyParticipate(Participant participant, Survey survey) {
         List<Submission> list = submissionRepository.findAllBySurveyIdAndParticipant(survey.getId(), participant);
         return list.size() !=0;
     }
@@ -53,7 +52,6 @@ public class SubmissionService {
         List<Submission> submissions = submissionRepository.findAllBySurveyId(survey.getId());
         Iterator <Submission> subIterator= submissions.iterator();
         List<String> ipList = submissions.stream().map(Submission::getParticipant).map(Participant::getIpAddress).collect(Collectors.toList());
-
 
         List<GeoIP> locations = null;
         try {

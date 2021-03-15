@@ -81,15 +81,21 @@ public class SurveyApiController implements SurveyApi {
             return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), "Survey not found"), HttpStatus.NOT_FOUND);
         }
 
-        Participant participant= participantService.getByCookieID(body.getParticipant().getCookieID());
+        Participant participant = participantService.getByCookieID(body.getParticipant().getCookieID());
 
-        if (participant==null){
-            participant =participantService.createOrUpdateParticipant(body.getParticipant());
+        if (participant == null) {
+            //save participant first
+            body.getParticipant().setCookieID(participantService.generateNewCookie());
+            participant = participantService.createOrUpdateParticipant(body.getParticipant());
+        }
+
+        //no cookie supplied
+        if(participant.getCookieID() == null) {
+            participant.setCookieID(participantService.generateNewCookie());
         }
 
         //check if user with ipAddress already participated in this survey
-
-        if(submissionService.didAlreadyParticipate(participant,survey)) {
+        if(submissionService.didAlreadyParticipate(participant, survey)) {
             return new ResponseEntity(new ApiError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase(), "You have already participated in this survey"), HttpStatus.FORBIDDEN);
         }
 
@@ -97,7 +103,7 @@ public class SurveyApiController implements SurveyApi {
         if(!surveyService.validAnswerOptions(survey, body.getChoices())) {
             return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), "AnswerOptions of survey not found"), HttpStatus.NOT_FOUND);
         }
-        System.out.println(body.getParticipant().getIpAddress());
+
         Submission submission = submissionService.addOrUpdateSubmission(new Submission(null, body.getSurveyId(), OffsetDateTime.now(), body.getChoices(), participant));
 
         return new ResponseEntity<Submission>(submission, HttpStatus.OK);
