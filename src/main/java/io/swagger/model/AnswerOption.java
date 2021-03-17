@@ -37,6 +37,18 @@ public class AnswerOption {
   @JsonProperty("content")
   private String content = null;
 
+  public AnswerOption(Long id, Survey survey, String content) {
+    this.id = id;
+    this.survey = survey;
+    this.content = content;
+  }
+
+  public AnswerOption() {
+    this.id = null;
+    this.survey = null;
+    this.content = null;
+  }
+
   public AnswerOption id(Long id) {
     this.id = id;
     return this;

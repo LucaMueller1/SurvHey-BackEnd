@@ -44,6 +44,20 @@ public class User   {
     return this;
   }
 
+  public User(String email, String password, String firstName, String lastName) {
+    this.email = email;
+    this.password = password;
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+
+  public User() {
+    this.email = null;
+    this.password = null;
+    this.firstName = null;
+    this.lastName = null;
+  }
+
   /**
    * Get email
    * @return email
