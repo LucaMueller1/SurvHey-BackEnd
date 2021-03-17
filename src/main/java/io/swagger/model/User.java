@@ -1,6 +1,8 @@
 package io.swagger.model;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,7 +30,7 @@ public class User   {
   private String email = null;
 
   @Column(name = "Password")
-  @JsonProperty("password")
+  //JSON annotation at setter -> hide getter
   private String password = null;
 
   @Column(name = "First_Name")
@@ -85,10 +87,12 @@ public class User   {
   @Schema(example = "lol123", required = true, description = "")
       @NotNull
 
+    @JsonIgnore
     public String getPassword() {
     return password;
   }
 
+  @JsonProperty("password")
   public void setPassword(String password) {
     this.password = password;
   }
