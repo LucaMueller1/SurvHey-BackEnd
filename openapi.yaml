@@ -418,7 +418,6 @@ components:
           example: lol123
     Survey:
       required:
-        - id
         - name
         - user
         - questionText
@@ -438,6 +437,12 @@ components:
         mode:
           type: string
           enum: [radio, check, rating, dropdown, nps, consent]
+        backgroundColor:
+          type: string
+          example: "#9bfe55"
+        accentColor:
+          type: string
+          example: "#8d55fe"
         user:
           $ref: '#/components/schemas/User'
         answerOptions:
@@ -499,8 +504,6 @@ components:
             Porsche: 0.2
     Submission:
       required:
-        - id
-        - ipAddress
         - surveyId
         - timestamp
         - choices
@@ -509,9 +512,8 @@ components:
         id:
           type: integer
           format: int64
-        ipAddress:
-          type: string
-          format: ipv4
+        participant:
+          $ref: '#/components/schemas/Participant'
         surveyId:
           type: integer
           format: int64
@@ -530,13 +532,23 @@ components:
         surveyId:
           type: integer
           format: int64
-        ipAddress:
-          type: string
-          format: ipv4
+        participant:
+          $ref: '#/components/schemas/Participant'
         choices:
           type: array
           items:
             $ref: '#/components/schemas/AnswerOption'
+    Participant:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        IP:
+          type: string
+          format: ipv4
+        Cookie:
+          type: string
     Analysis:
       required:
         - id
