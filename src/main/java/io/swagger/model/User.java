@@ -29,6 +29,7 @@ public class User   {
   @JsonProperty("email")
   private String email = null;
 
+
   @Column(name = "Password")
   //JSON annotation at setter -> hide getter
   private String password = null;
