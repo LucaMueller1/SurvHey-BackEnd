@@ -58,7 +58,7 @@ public class Survey   {
   @JsonProperty("user")
   private User user = null;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
   @JoinColumn(name = "Survey_ID")
   @JsonManagedReference
   @JsonProperty("answerOptions")
@@ -265,7 +265,7 @@ public class Survey   {
     sb.append("    questionText: ").append(toIndentedString(questionText)).append("\n");
     sb.append("    mode: ").append(toIndentedString(mode)).append("\n");
     sb.append("    user: ").append(toIndentedString(user)).append("\n");
-    sb.append("    answerOptions: ").append(toIndentedString(answerOptions)).append("\n");
+    sb.append("    answerOptions: ").append(toIndentedString(answerOptions.toString())).append("\n");
     sb.append("}");
     return sb.toString();
   }

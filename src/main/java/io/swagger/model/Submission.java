@@ -47,7 +47,7 @@ public class Submission   {
   @JsonProperty("timestamp")
   private OffsetDateTime timestamp = null;
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
           name = "SurvHey_DB.Question_Answer",
           joinColumns = { @JoinColumn(name = "Submission_ID") },
