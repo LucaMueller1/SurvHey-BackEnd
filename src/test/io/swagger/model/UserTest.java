@@ -35,7 +35,7 @@ class UserTest {
 
 
         while(amount_of_users==0) {
-            amount_of_users = r.nextInt(1000);
+            amount_of_users = r.nextInt(100000);
 
         }
         System.out.println("Users: "+amount_of_users);

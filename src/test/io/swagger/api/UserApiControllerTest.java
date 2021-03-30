@@ -1,110 +1,77 @@
 package io.swagger.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.swagger.model.User;
-import io.swagger.repository.*;
-import io.swagger.services.AuthService;
-import io.swagger.services.ParticipantService;
-import io.swagger.services.SubmissionService;
-import io.swagger.services.UserService;
+import io.swagger.services.*;
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.json.JacksonTester;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpMethod;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
-import java.net.URI;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-/*@ExtendWith(SpringExtension.class)*/
-@WebMvcTest
 @RunWith(SpringRunner.class)
-//@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@Transactional
+@AutoConfigureMockMvc
+
 class UserApiControllerTest {
 
 
-    @Autowired private MockMvc mockMvc;
+    @Autowired
+    private AuthService authService;
+    @Autowired
+    private GeoLocationService geoLocationService;
 
-    @Autowired private ObjectMapper objectMapper;
-
-
-    @MockBean
-    private UserService personService;
-
-    @MockBean
-    private UserRepository userRepository;
-
-    @MockBean
-    private SurveyRepository sr;
-
-    @MockBean
-    private SubmissionRepository SubR;
-
-    @MockBean
-    private SubmissionService SS;
-
-    @MockBean
-    private AuthKeyRepository akr;
-
-    @MockBean
-    private AuthService as;
-
-    @MockBean
+    @Autowired
     private ParticipantService participantService;
+    @Autowired
+    private SubmissionService submissionService;
 
-    @MockBean
-    private ParticipantRepository pr;
+    @Autowired
+    private SurveyService surveyService;
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
+    @Autowired
+    private ObjectMapper mapper;
+
+    @Autowired
+    private MockMvc mockMvc;
 
 
-    private JacksonTester<User> jsonTester;
+    @Before
+    public void init() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-    private User userModel;
-
-   /* @Before
-    public void setup() {
-        JacksonTester.initFields(this, objectMapper);
-        userModel = new User();
-    }*/
+    }
 
     @Test
     void createUser() throws Exception {
+        User u1= new User("123@gmx.de","aaa","bbb","ccc");
+        System.out.println(mapper.writeValueAsString(u1));
 
-        JacksonTester.initFields(this, objectMapper);
-        userModel = new User("aaa","bbb","ccc","ddd");
+        MockHttpServletResponse response=mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(u1))).andReturn().getResponse();
+        System.out.println(response.getStatus());
 
-
-       /* MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addParameter("email","aaa");
-        request.addParameter("password","bbb");
-        request.addParameter("firstName","ccc");
-        request.addParameter("lastName","ddd");
-        request.*/
-
-        final String personDTOJson = jsonTester.write(userModel).getJson();
-        //MockHttpServletRequestBuilder as = new MockHttpServletRequestBuilder(post(new URI()));
-        System.out.println(mockMvc
-                .perform(post("http://localhost:8080/v2").content(personDTOJson).contentType(APPLICATION_JSON_UTF8)).andReturn().getResponse().getContentAsString());
-                //.andExpect(status().isCreated()));
-
-        System.out.println(personService.findByEmail("aaa"));
-
-
+        if (userService.findByEmail("123@gmx.de")==null)
+        {
+            System.out.println(" objekt ist null");
+        }
+        System.out.println(userService.findByEmail("123@gmx.de").toString());
 
         }
 
@@ -127,3 +94,4 @@ class UserApiControllerTest {
     void logoutUser() {
     }
 }
+
