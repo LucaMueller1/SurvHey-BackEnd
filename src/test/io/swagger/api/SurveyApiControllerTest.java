@@ -66,7 +66,7 @@ class SurveyApiControllerTest {
 
 
         Survey s1=new Survey(null,"Hallo","Hallo?","nps",null,null,u1,null);
-        MockHttpServletResponse response=mockMvc.perform(post("/survey").header("'api_key':"+ ).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(s1))).andReturn().getResponse();
+        MockHttpServletResponse response=mockMvc.perform(post("/survey").header("'api_key':" ).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(s1))).andReturn().getResponse();
         System.out.println(response.getContentAsString());
         System.out.println(response.getStatus());
 
