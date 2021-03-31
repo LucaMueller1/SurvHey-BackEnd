@@ -61,6 +61,7 @@ public class UserApiController implements UserApi {
     }
 
     public ResponseEntity<Void> createUser(@Parameter(in = ParameterIn.DEFAULT, description = "User object to create", required=true, schema=@Schema()) @Valid @RequestBody User body) {
+
         String pwd = body.getPassword();
         String hashed = BCrypt.hashpw(pwd, BCrypt.gensalt());
         body.setPassword(hashed);

@@ -32,6 +32,7 @@ public class User   {
 
   @Column(name = "Password")
   //JSON annotation at setter -> hide getter
+  @JsonProperty("password")
   private String password = null;
 
   @Column(name = "First_Name")
@@ -93,7 +94,7 @@ public class User   {
     return password;
   }
 
-  @JsonProperty("password")
+  //@JsonProperty("password")
   public void setPassword(String password) {
     this.password = password;
   }
