@@ -3,6 +3,7 @@ package io.swagger.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.model.User;
 import io.swagger.services.*;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -14,17 +15,15 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@Transactional
 @AutoConfigureMockMvc
-
 class UserApiControllerTest {
 
 
@@ -62,24 +61,29 @@ class UserApiControllerTest {
     @Test
     void createUser() throws Exception {
         User u1= new User("123@gmx.de","aaa","bbb","ccc");
-        System.out.println(mapper.writeValueAsString(u1));
 
         MockHttpServletResponse response=mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(u1))).andReturn().getResponse();
-        System.out.println(response.getStatus());
-
-        if (userService.findByEmail("123@gmx.de")==null)
-        {
-            System.out.println(" objekt ist null");
-        }
-        System.out.println(userService.findByEmail("123@gmx.de").toString());
+        assertEquals(response.getStatus(),200);
 
         }
-
-
 
 
     @Test
-    void deleteUser() {
+    void deleteUser() throws Exception{
+        User u1= new User("123@gmx.de","aaa","bbb","ccc");
+        System.out.println(mapper.writeValueAsString(u1));
+
+        //create User
+        mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(u1)));
+
+        //login User
+        MockHttpServletResponse response=mockMvc.perform(post("/user/login").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(u1))).andReturn().getResponse();
+        JSONObject jsonObject=new JSONObject(response.getContentAsString());
+        System.out.println(response.getContentAsString());
+        String authKey= jsonObject.getString("authKey");
+        System.out.println(authKey);
+
+
     }
 
     @Test
@@ -87,11 +91,53 @@ class UserApiControllerTest {
     }
 
     @Test
-    void loginUser() {
+    void loginUserCorrectly() throws Exception {
+        User u1= new User("123@gmx.de","aaa","bbb","ccc");
+        System.out.println(mapper.writeValueAsString(u1));
+
+        //create User
+        mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(u1)));
+
+        //login User
+        MockHttpServletResponse response=mockMvc.perform(post("/user/login").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(u1))).andReturn().getResponse();
+        System.out.println(response.getContentAsString());
+
+        assertEquals(response.getStatus(),200);
+
+
     }
+    @Test
+    void loginUserNotCorrectly_wrongPassword() throws Exception {
+        User u1= new User("123@gmx.de","aaa","bbb","ccc");
+        System.out.println(mapper.writeValueAsString(u1));
+
+
+        //create User
+        mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(u1)));
+
+        //wrong password for login
+        User u2= new User("123@gmx.de","bbb","bbb","ccc");
+
+        //login User
+        MockHttpServletResponse response=mockMvc.perform(post("/user/login").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(u2))).andReturn().getResponse();
+        System.out.println(response.getContentAsString());
+        System.out.println(response.getStatus());
+
+
+        JSONObject responseBody = new JSONObject(response.getContentAsString());
+
+        //assert that the access is forbidden
+        assertEquals(response.getStatus(),403);
+        assertEquals(responseBody.getString("type"),"Forbidden");
+
+    }
+
+
 
     @Test
     void logoutUser() {
+
+
     }
 }
 
