@@ -101,7 +101,8 @@ class UserApiControllerTest {
         //login User
         MockHttpServletResponse response=mockMvc.perform(post("/user/login").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(u1))).andReturn().getResponse();
         System.out.println(response.getContentAsString());
-
+        JSONObject responseBody = new JSONObject(response.getContentAsString());
+        System.out.println(responseBody.getString("authKey"));
         assertEquals(response.getStatus(),200);
 
 
