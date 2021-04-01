@@ -210,17 +210,13 @@ class SurveyApiControllerTest {
 
     }
 
-    @Test
-    void getSurveyAnalysisById() {
-    }
+
 
     @Test
     void getSurveyById() {
     }
 
-    @Test
-    void getSurveyResultsById() {
-    }
+
 
     @Test
     void getSurveySubmissionsById() throws Exception {
