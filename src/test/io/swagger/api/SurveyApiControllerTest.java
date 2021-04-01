@@ -6,6 +6,7 @@ import io.swagger.model.*;
 import io.swagger.services.ParticipantService;
 import io.swagger.services.SubmissionService;
 import io.swagger.services.SurveyService;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
@@ -19,6 +20,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.time.OffsetDateTime;
@@ -32,6 +34,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
+@Transactional
 class SurveyApiControllerTest {
 
 
@@ -141,14 +144,9 @@ class SurveyApiControllerTest {
         assertEquals(responseCreation.getStatus(),200);
 
         //test DB-data
-
-
         assertEquals(1,submission1.getChoices().size());
         assertEquals("answer1",submission1.getChoices().get(0).getContent());
         assertEquals("149.178.222.175",submission1.getParticipant().getIpAddress());
-
-
-
 
 
 
@@ -192,8 +190,8 @@ class SurveyApiControllerTest {
         responseBody= new JSONObject(responseCreation.getContentAsString());
 
         //assert that the type is forbidden and the http response is 403 -> submission is not allowed two times
-        assertEquals(responseCreation.getStatus(),403);
-        assertEquals(responseBody.getString("type"),"Forbidden");
+        assertEquals(403,responseCreation.getStatus());
+        assertEquals("Forbidden",responseBody.getString("type"));
     }
 
 
@@ -229,13 +227,30 @@ class SurveyApiControllerTest {
         // take the response and parse it into a jsonObject
         JSONObject responseJson= new JSONObject(responseCreation.getContentAsString());
 
-        //test response values
 
+        //test response values
         assertEquals("Hallo",responseJson.getString("name"));
         assertEquals("Hallo?",responseJson.getString("questionText"));
         assertEquals("#FFFFFF",responseJson.getString("backgroundColor"));
         assertEquals("#EEEEEE",responseJson.getString("accentColor"));
+        assertEquals("nps",responseJson.getString("mode"));
         assertEquals(200,responseCreation.getStatus());
+
+        //parse answer options for testing
+        JSONArray answerOptionsJson=responseJson.getJSONArray("answerOptions");
+
+        // test answerOptions
+        assertEquals("answer1",answerOptionsJson.getJSONObject(0).getString("content"));
+        assertEquals("answer2",answerOptionsJson.getJSONObject(1).getString("content"));
+        assertEquals("answer3",answerOptionsJson.getJSONObject(2).getString("content"));
+
+        //parse user for testing
+        responseJson=responseJson.getJSONObject("user");
+
+        //test user
+        assertEquals("123@gmx.de",responseJson.getString("email"));
+        assertEquals("bbb",responseJson.getString("firstName"));
+        assertEquals("ccc",responseJson.getString("lastName"));
 
     }
 
