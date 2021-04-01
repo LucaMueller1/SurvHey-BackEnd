@@ -7,49 +7,35 @@ import io.swagger.model.*;
 import io.swagger.services.*;
 import org.json.JSONObject;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.servlet.http.Part;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class SurveyAPIControllerResultsTest {
 
-    @Autowired
-    private AuthService authService;
-    @Autowired
-    private GeoLocationService geoLocationService;
-
-    @Autowired
-    private ParticipantService participantService;
-    @Autowired
-    private SubmissionService submissionService;
 
     @Autowired
     private SurveyService surveyService;
-    @Autowired
-    private UserService userService;
+
+
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -73,16 +59,10 @@ public class SurveyAPIControllerResultsTest {
     private String authKey;
 
 
-
-
-
     @Before
-    public void init () throws Exception{
+    public void init (){
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-
-
     }
-
 
     @Test
     void getSurveyResultsById() throws Exception{
@@ -96,7 +76,6 @@ public class SurveyAPIControllerResultsTest {
 
         JSONObject choices = new JSONObject(jsonObject.getString("choices"));
 
-
         int answer1=choices.getInt("answer1");
         int answer2=choices.getInt("answer2");
         int answer3=choices.getInt("answer3");
@@ -105,8 +84,7 @@ public class SurveyAPIControllerResultsTest {
         int answer2ofList = countAnswerOptionsofAList(this.choices,"answer2");
         int answer3ofList = countAnswerOptionsofAList(this.choices,"answer3");
 
-
-        //expect 50 participations and the http response status 200
+        //expect 50 participation and the http response status 200
         assertEquals(50,answer1+answer3+answer2);
         assertEquals(200,response.getStatus());
 
@@ -114,8 +92,9 @@ public class SurveyAPIControllerResultsTest {
         assertEquals(answer1ofList,answer1);
         assertEquals(answer2ofList,answer2);
         assertEquals(answer3ofList,answer3);
-
     }
+
+
     @Test
     void getSurveyAnalysisById() throws Exception{
         //prepare this test with test data
@@ -128,9 +107,6 @@ public class SurveyAPIControllerResultsTest {
     }
 
     void prepare() throws Exception{
-
-
-
         //prepare a survey
 
         //create a user
@@ -144,7 +120,7 @@ public class SurveyAPIControllerResultsTest {
         authKey = responseBody.getString("authKey");
 
 
-        //create Answeroptions
+        //create answerOptions
         List<AnswerOption> answerOptionList=new ArrayList<>();
         answerOptionList.add(new AnswerOption(null,null,"answer1"));
         answerOptionList.add(new AnswerOption(null,null,"answer2"));
@@ -166,7 +142,7 @@ public class SurveyAPIControllerResultsTest {
         //create 50 random Submissions
         for (int i = 0;i<50;i++){
 
-            //generate a random number to set the choice of one answerOption -> set the bound to 2 to rest in index of answeroptions list
+            //generate a random number to set the choice of one answerOption -> set the bound to 2 to rest in index of answerOptions list
             int answer_choice_index= r.nextInt(3);
 
 
@@ -181,7 +157,7 @@ public class SurveyAPIControllerResultsTest {
             //generate a random ipv4 address for the participant
             String ip= 93+"."+r.nextInt(255)+"."+r.nextInt(255)+"."+r.nextInt(255);
 
-            //add ip adress to the list
+            //add ip address to the list
             ipAddress.add(ip);
 
             //create participant
@@ -201,25 +177,17 @@ public class SurveyAPIControllerResultsTest {
             participants.add(participantParsed);
 
         }
-
     }
     private int countAnswerOptionsofAList(List<AnswerOption> answerOptions, String stringToCount){
         int count=0;
-        for(int i =0; i< answerOptions.size();i++){
-            AnswerOption current= answerOptions.get(i);
+        for (AnswerOption current : answerOptions) {
             String content = current.getContent();
 
-            if(content.equals(stringToCount)){
+            if (content.equals(stringToCount)) {
                 count++;
-
             }
-
-
         }
         return count;
-
     }
-
-
 
 }
