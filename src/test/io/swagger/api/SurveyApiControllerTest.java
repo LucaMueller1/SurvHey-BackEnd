@@ -76,7 +76,7 @@ class SurveyApiControllerTest {
         JSONObject responseJson= new JSONObject(responseCreation.getContentAsString());
 
         //test response values
-        assertEquals(1,responseJson.getInt("id"));
+
         assertEquals("Hallo",responseJson.getString("name"));
         assertEquals("Hallo?",responseJson.getString("questionText"));
         assertEquals("#FFFFFF",responseJson.getString("backgroundColor"));
@@ -141,12 +141,12 @@ class SurveyApiControllerTest {
         assertEquals(responseCreation.getStatus(),200);
 
         //test DB-data
-        assertEquals(1,submission1.getId());
-        assertEquals(1,submission1.getSurveyId());
+
+
         assertEquals(1,submission1.getChoices().size());
         assertEquals("answer1",submission1.getChoices().get(0).getContent());
         assertEquals("149.178.222.175",submission1.getParticipant().getIpAddress());
-        assertEquals(1,submission1.getChoices().get(0).getId());
+
 
 
 
@@ -230,7 +230,7 @@ class SurveyApiControllerTest {
         JSONObject responseJson= new JSONObject(responseCreation.getContentAsString());
 
         //test response values
-        assertEquals(1,responseJson.getInt("id"));
+
         assertEquals("Hallo",responseJson.getString("name"));
         assertEquals("Hallo?",responseJson.getString("questionText"));
         assertEquals("#FFFFFF",responseJson.getString("backgroundColor"));
