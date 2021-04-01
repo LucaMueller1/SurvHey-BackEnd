@@ -79,13 +79,33 @@ class SurveyApiControllerTest {
         // take the response and parse it into a jsonObject
         JSONObject responseJson= new JSONObject(responseCreation.getContentAsString());
 
-        //tests
+        //test response values
         assertEquals(1,responseJson.getInt("id"));
         assertEquals("Hallo",responseJson.getString("name"));
         assertEquals("Hallo?",responseJson.getString("questionText"));
         assertEquals("#FFFFFF",responseJson.getString("backgroundColor"));
         assertEquals("#EEEEEE",responseJson.getString("accentColor"));
         assertEquals(200,responseCreation.getStatus());
+
+
+        //load survey from db
+        s1=surveyService.findById(responseJson.getLong("id"));
+
+        //test values from db
+        assertEquals("Hallo",s1.getName());
+        assertEquals("Hallo?",s1.getQuestionText());
+        assertEquals("#FFFFFF",s1.getBackgroundColor());
+        assertEquals("#EEEEEE",s1.getAccentColor());
+
+        //test related answerOptions
+        assertEquals(3,s1.getAnswerOptions().size());
+        assertEquals("answer1",s1.getAnswerOptions().get(0).getContent());
+        assertEquals("answer2",s1.getAnswerOptions().get(1).getContent());
+        assertEquals("answer3",s1.getAnswerOptions().get(2).getContent());
+
+        //test related user
+        assertEquals(u1.getEmail(),s1.getUser().getEmail());
+
 
     }
 
@@ -115,8 +135,27 @@ class SurveyApiControllerTest {
         Submission submission = new Submission(null,s1.getId(), OffsetDateTime.now(),choices,participant);
         responseCreation=mockMvc.perform(post("/survey/{id}/submission",responseBody.getString("id")).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(submission))).andReturn().getResponse();
 
-        //test
+        //parse response in a JsonObject and load it from DB
+        JSONObject responseJson=new JSONObject(responseCreation.getContentAsString());
+        Submission submission1 =submissionService.findByID(responseJson.getLong("id"));
+
+
+
+        //test API-Call response
         assertEquals(responseCreation.getStatus(),200);
+
+        //test DB-data
+        assertEquals(1,submission1.getId());
+        assertEquals(1,submission1.getSurveyId());
+        assertEquals(1,submission1.getChoices().size());
+        assertEquals("answer1",submission1.getChoices().get(0).getContent());
+        assertEquals("149.178.222.175",submission1.getParticipant().getIpAddress());
+        assertEquals(1,submission1.getChoices().get(0).getId());
+
+
+
+
+
     }
 
 
@@ -189,6 +228,17 @@ class SurveyApiControllerTest {
         Survey s1=createSurveyforTesting();
         s1 =surveyService.addOrUpdateSurvey(s1);
         MockHttpServletResponse responseCreation=mockMvc.perform(get("/survey/{id}",s1.getId()).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(s1))).andReturn().getResponse();
+
+
+        // take the response and parse it into a jsonObject
+        JSONObject responseJson= new JSONObject(responseCreation.getContentAsString());
+
+        //test response values
+        assertEquals(1,responseJson.getInt("id"));
+        assertEquals("Hallo",responseJson.getString("name"));
+        assertEquals("Hallo?",responseJson.getString("questionText"));
+        assertEquals("#FFFFFF",responseJson.getString("backgroundColor"));
+        assertEquals("#EEEEEE",responseJson.getString("accentColor"));
         assertEquals(200,responseCreation.getStatus());
 
     }
