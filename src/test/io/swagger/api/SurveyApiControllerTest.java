@@ -1,14 +1,14 @@
 package io.swagger.api;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import io.swagger.model.*;
-import io.swagger.services.*;
+import io.swagger.services.ParticipantService;
+import io.swagger.services.SubmissionService;
+import io.swagger.services.SurveyService;
 import org.json.JSONObject;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +25,9 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertNotEquals;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -44,8 +42,6 @@ class SurveyApiControllerTest {
 
     @Autowired
     private SurveyService surveyService;
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -62,7 +58,7 @@ class SurveyApiControllerTest {
 
 
     @Before
-    public void init () throws Exception{
+    public void init (){
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
@@ -127,7 +123,7 @@ class SurveyApiControllerTest {
         //Load full survey
         s1=surveyService.findById(responseBody.getLong("id"));
 
-        //setup a choice list for submission with the first provided answeroption of the survey
+        //setup a choice list for submission with the first provided answerOption of the survey
         List<AnswerOption> choices = new ArrayList<>();
         choices.add(s1.getAnswerOptions().get(0));
 
@@ -165,8 +161,7 @@ class SurveyApiControllerTest {
         createUserAndLogin();
 
         //create survey
-        Survey s1=createSurveyforTesting();//new Survey(null,"Hallo","Hallo?","nps","#FFFFFF","#EEEEEE",u1,answerOptionList);
-        List<AnswerOption> answerOptionList=s1.getAnswerOptions();
+        Survey s1=createSurveyforTesting();
         MockHttpServletResponse responseCreation=mockMvc.perform(post("/survey").header("api_key",authKey).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(s1))).andReturn().getResponse();
 
         //parse data out of survey creation response
@@ -177,7 +172,7 @@ class SurveyApiControllerTest {
         //Load full survey
         s1=surveyService.findById(responseBody.getLong("id"));
 
-        //setup a choice list for submission with the first provided answeroption of the survey
+        //setup a choice list for submission with the first provided answerOption of the survey
         List<AnswerOption> choices = new ArrayList<>();
         choices.add(s1.getAnswerOptions().get(0));
 
@@ -214,10 +209,11 @@ class SurveyApiControllerTest {
         MockHttpServletResponse responseCreation=mockMvc.perform(delete("/survey/{id}",s1.getId()).header("api_key",authKey).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(s1))).andReturn().getResponse();
         boolean proofIfSurveyIsNullAfterDelete = surveyService.findById(s1.getId())==null;
 
-        //assert that the survey exists befor delete and not exist after
-        assertEquals(true,proofIfSurveyIsNullAfterDelete);
-        assertEquals(false,proofIfSurveyIsNullBeforeDelete);
-        assertNotEquals(proofIfSurveyIsNullAfterDelete,proofIfSurveyIsNullBeforeDelete);
+        //assert that the survey exists before delete and not exist after
+        assertEquals(200,responseCreation.getStatus());
+        Assertions.assertTrue(proofIfSurveyIsNullAfterDelete);
+        Assertions.assertFalse(proofIfSurveyIsNullBeforeDelete);
+
     }
 
 
@@ -249,7 +245,7 @@ class SurveyApiControllerTest {
         //prepare user
         createUserAndLogin();
 
-        //create survey with the function and get the answeroptions
+        //create survey with the function and get the answerOptions
         Survey s1=createSurveyforTesting();
         List<AnswerOption> answerOptionList=s1.getAnswerOptions();
         MockHttpServletResponse responseCreation=mockMvc.perform(post("/survey").header("api_key",authKey).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(s1))).andReturn().getResponse();
@@ -262,18 +258,18 @@ class SurveyApiControllerTest {
         //Load full survey
         Survey survey=surveyService.findById(responseBody.getLong("id"));
 
-        //set choices of submission due to clear existing answeroptions list and add one of the loaded survey as a choice
+        //set choices of submission due to clear existing answerOptions list and add one of the loaded survey as a choice
         answerOptionList.clear();
         answerOptionList.add(survey.getAnswerOptions().get(0));
 
         Submission submission = new Submission(null,survey.getId(), OffsetDateTime.now(),answerOptionList,participant);
-        responseCreation=mockMvc.perform(post("/survey/{id}/submission",responseBody.getString("id")).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(submission))).andReturn().getResponse();
+        mockMvc.perform(post("/survey/{id}/submission",responseBody.getString("id")).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(submission))).andReturn().getResponse();
 
 
         //setup of a new submission
         participant.setIpAddress("168.178.192.3");
         submission = new Submission(null,survey.getId(), OffsetDateTime.now(),answerOptionList,participant);
-        responseCreation=mockMvc.perform(post("/survey/{id}/submission",responseBody.getString("id")).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(submission))).andReturn().getResponse();
+        mockMvc.perform(post("/survey/{id}/submission",responseBody.getString("id")).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(submission))).andReturn().getResponse();
 
         //get all submissions
         responseCreation=mockMvc.perform(get("/survey/{id}/submissions",responseBody.getString("id")).header("api_key",authKey).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(survey))).andReturn().getResponse();
@@ -312,10 +308,10 @@ class SurveyApiControllerTest {
         responseBody2 =new JSONObject(responseCreation.getContentAsString());
 
         //test the results -> compared with first survey object : all of the changes means that properties will be not equal compared to each other
-        assertNotEquals(s1.getName(),responseBody2.getString("name"));
-        assertNotEquals(s1.getQuestionText(),responseBody2.getString("questionText"));
-        assertNotEquals(s1.getBackgroundColor(),responseBody2.getString("backgroundColor"));
-        assertNotEquals(s1.getAccentColor(),responseBody2.getString("accentColor"));
+        Assertions.assertNotEquals(s1.getName(),responseBody2.getString("name"));
+        Assertions.assertNotEquals(s1.getQuestionText(),responseBody2.getString("questionText"));
+        Assertions.assertNotEquals(s1.getBackgroundColor(),responseBody2.getString("backgroundColor"));
+        Assertions.assertNotEquals(s1.getAccentColor(),responseBody2.getString("accentColor"));
     }
 
     private void createUserAndLogin() throws Exception{
