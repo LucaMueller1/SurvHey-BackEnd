@@ -1,5 +1,6 @@
-package io.swagger.model;
+package io.swagger.model_services_repository_Tests;
 
+import io.swagger.model.*;
 import io.swagger.repository.SurveyRepository;
 import io.swagger.repository.UserRepository;
 import io.swagger.services.SubmissionService;

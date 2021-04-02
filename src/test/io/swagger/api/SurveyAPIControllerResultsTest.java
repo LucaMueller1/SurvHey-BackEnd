@@ -155,7 +155,7 @@ public class SurveyAPIControllerResultsTest {
             localAnswerOptionList.add(answerOptionChoice);
 
             //generate a random ipv4 address for the participant
-            String ip= 93+"."+r.nextInt(255)+"."+r.nextInt(255)+"."+r.nextInt(255);
+            String ip= 92+"."+r.nextInt(255)+"."+r.nextInt(255)+"."+r.nextInt(255);
 
             //add ip address to the list
             ipAddress.add(ip);

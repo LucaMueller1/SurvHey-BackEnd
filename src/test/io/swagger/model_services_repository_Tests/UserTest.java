@@ -1,5 +1,6 @@
-package io.swagger.model;
+package io.swagger.model_services_repository_Tests;
 
+import io.swagger.model.User;
 import io.swagger.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

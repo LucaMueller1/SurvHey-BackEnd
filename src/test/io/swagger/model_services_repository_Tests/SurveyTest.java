@@ -1,5 +1,8 @@
-package io.swagger.model;
+package io.swagger.model_services_repository_Tests;
 
+import io.swagger.model.AnswerOption;
+import io.swagger.model.Survey;
+import io.swagger.model.User;
 import io.swagger.repository.SurveyRepository;
 import io.swagger.repository.UserRepository;
 import io.swagger.services.SurveyService;
