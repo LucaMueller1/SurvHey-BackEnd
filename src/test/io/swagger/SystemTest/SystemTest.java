@@ -130,7 +130,7 @@ public class SystemTest {
         for(int i = 0 ; i<amountOfSurveys;i++){
 
             String authKey=userListWithAuthKey.get(userService.findByEmail(surveys.get(i).getUser().getEmail()));
-            System.out.println(authKey);
+
             MockHttpServletResponse responseCreation=mockMvc.perform(post("/survey").header("api_key",authKey).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(surveys.get(i)))).andReturn().getResponse();
 
             // take the response and parse it into a jsonObject
@@ -160,7 +160,7 @@ public class SystemTest {
 
             }
 
-               //test related user
+            //test related user
             assertEquals(surveys.get(i).getUser().getEmail(),dbSurvey.getUser().getEmail());
 
 
@@ -169,11 +169,11 @@ public class SystemTest {
 
         }
 
-        System.out.println(createdSurveys.toString());
+        //(createdSurveys.toString());
 
 
         //create submissions
-        generateSubmissions(1000);
+        generateSubmissions(10000);
 
         for(int i =0 ; i<submissionList.size();i++){
 
@@ -183,32 +183,77 @@ public class SystemTest {
 
             assertEquals(200,response.getStatus());
 
-            //load created submission and store it into the created submissions List
-            createdSubmissions.add(submissionService.findByID(responseJson.getLong("id")));
+            //load created submission
+            Submission submission = submissionService.findByID(responseJson.getLong("id"));
+            //add submission it into the created submissions List
+            createdSubmissions.add(submission);
+
+            //test if data is parsed correctly in the db
+            assertEquals(submissionList.get(i).getChoices().size(),submission.getChoices().size());
+            assertEquals(submissionList.get(i).getParticipant().getIpAddress(), submission.getParticipant().getIpAddress());
+
+            //test choices content
+            for (int j = 0 ; j< submissionList.get(i).getChoices().size(); j++) {
+                assertEquals(submissionList.get(i).getChoices().get(j).getContent(), submission.getChoices().get(j).getContent());
+            }
 
         }
-        System.out.println(createdSubmissions.toString());
+        //System.out.println(createdSubmissions.toString());
 
 
         //get results and analysis
-        System.out.println("*********************************************************************");
         for(int i = 0 ; i<createdSurveys.size();i++){
             response=mockMvc.perform(get("/survey/{id}/results",createdSurveys.get(i).getId()).contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse();
+            assertEquals(200,response.getStatus());
 
-            //System.out.println(response.getContentAsString());
+            System.out.println(response.getContentAsString());
+            List<Submission> submissionsOfCurrentSurvey = new ArrayList<>();
+
+            //add submissions of current survey in a local list
+            for (int j =0 ; j<submissionList.size();j++){
+
+                if (submissionList.get(j).getSurveyId()==createdSurveys.get(i).getId()) {
+                    submissionsOfCurrentSurvey.add(submissionList.get(j));
+                }
+            }
+
+            //count Choices and compare it with the results
+            for (int j = 0; j<createdSurveys.get(i).getAnswerOptions().size();j++){
+
+                //iterate over all AnswerOptions of this survey
+                AnswerOption currentAnswerOption=  createdSurveys.get(i).getAnswerOptions().get(j);
+                int amountOfChoicesOfCurrentAnswerOption=0;
+
+
+                for(int k =0 ; k<submissionsOfCurrentSurvey.size();k++){
+                    //if a choice is equal to the current answerOption -> counter++
+
+                    if(currentAnswerOption.getContent()==submissionsOfCurrentSurvey.get(k).getChoices().get(0).getContent()){
+                        amountOfChoicesOfCurrentAnswerOption++;
+
+                    }
+                }
+
+                //parse response into a JsonObject for assertEquals
+                JSONObject jsonResults = new JSONObject(response.getContentAsString());
+                jsonResults=new JSONObject(jsonResults.getString("choices"));
+
+                //test every answerOption if response submission amount is correct
+                assertEquals(jsonResults.getInt(currentAnswerOption.getContent()),amountOfChoicesOfCurrentAnswerOption);
+
+            }
 
             response=mockMvc.perform(get("/survey/{id}/analysis",createdSurveys.get(i).getId()).header("api_key",userListWithAuthKey.get(userService.findByEmail(createdSurveys.get(i).getUser().getEmail()))).contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse();
-
-
             System.out.println(response.getContentAsString());
 
 
 
         }
 
-        /*while (true){
+        while (true){
             Thread.sleep(100000000);
-        }*/
+
+        }
 
 
     }
@@ -228,19 +273,15 @@ public class SystemTest {
             answerOptionsListForSubmissions.add(tempAnswerOption);
 
             //create Participant with random generated IPv4-Address
-            Participant participant = new Participant(null,(88)+"."+r.nextInt(255)+"."+r.nextInt(255)+"."+r.nextInt(255),null);
+            Participant participant = new Participant(null,88+"."+r.nextInt(255)+"."+r.nextInt(255)+"."+r.nextInt(255),null);
 
             //create a new Submission
             Submission submission = new Submission(null,survey.getId(), OffsetDateTime.now(),tempAnswerOption,participant);
 
-            System.out.println(submission.toString());
             submissionList.add(submission);
 
 
         }
-
-
-
 
 
 
@@ -258,11 +299,7 @@ public class SystemTest {
 
     private void generateSurveys(int amountOfSurveysToCreate){
 
-
-
         amountOfSurveys=amountOfSurveysToCreate;
-
-
 
         for(int i =0; i<amountOfSurveysToCreate;i++) {
 
@@ -282,7 +319,7 @@ public class SystemTest {
 
     private String stringGenerator(int len){
         // create a string of all characters
-        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!§$%&/()=?*@'+#,.-;:_ ";
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!$%&/()=?*@'+#,.-;:_ ";
 
         // create random string builder
         StringBuilder sb = new StringBuilder();
