@@ -20,10 +20,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import springfox.documentation.spring.web.json.Json;
 
 import java.time.OffsetDateTime;
 import java.util.*;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -111,7 +113,6 @@ public class SystemTest {
 
             response=mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON).content(jsonObjectRegister.toString())).andReturn().getResponse();
 
-
             //test if the user is inside the db
             assertEquals(response.getStatus(),200);
             assertNotNull(userService.findByEmail(userList.get(i).getEmail()));
@@ -149,6 +150,13 @@ public class SystemTest {
 
             Survey dbSurvey = surveyService.findById(responseJson.getLong("id"));
             assertNotNull(dbSurvey);
+
+            //test response
+            System.out.println(responseCreation.getContentAsString());
+            JSONObject js=new JSONObject(responseJson.getString("user"));
+            //test if password is responded
+            assertFalse(js.has("password"));
+
             assertEquals(200,responseCreation.getStatus());
 
 
@@ -181,7 +189,7 @@ public class SystemTest {
 
 
         //create submissions
-        generateSubmissions(10000);
+        generateSubmissions(100);
 
         for(int i =0 ; i<submissionList.size();i++){
 
@@ -247,6 +255,9 @@ public class SystemTest {
                 jsonResults=new JSONObject(jsonResults.getString("choices"));
 
                 //test every answerOption if response submission amount is correct
+                //problem!!!!!: wenn keine submission für eine answerOption gegeben worden ist, dann wird das nicht zuurückgegeben
+                System.out.println(currentAnswerOption.getContent());
+                System.out.println(amountOfChoicesOfCurrentAnswerOption);
                 assertEquals(jsonResults.getInt(currentAnswerOption.getContent()),amountOfChoicesOfCurrentAnswerOption);
 
             }
