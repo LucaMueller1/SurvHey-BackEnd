@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, properties = "spring.h2.console.enabled=true")
 @AutoConfigureMockMvc
 public class SystemTest {
 //one test method, approach: create users -> login Users -> create surveys -> submit -> analyze survey submissions
@@ -91,7 +91,8 @@ public class SystemTest {
     @Test
     public void SystemTest() throws Exception{
 
-        generateUsers(5);
+
+        generateUsers(50);
 
         MockHttpServletResponse response=null;
         JSONObject jsonObjectForCreatedUser;
@@ -123,10 +124,8 @@ public class SystemTest {
         }
 
         //generate surveys
-        generateSurveys(10);
+        generateSurveys(100);
 
-
-        //create a list to store the created surveys
 
         for(int i = 0 ; i<amountOfSurveys;i++){
 
@@ -137,9 +136,33 @@ public class SystemTest {
             // take the response and parse it into a jsonObject
             JSONObject responseJson= new JSONObject(responseCreation.getContentAsString());
 
-            //test if survey is stored in the db
-            assertNotNull(surveyService.findById(responseJson.getLong("id")));
+            //test if survey is stored in the db -> load survey from DB -> compare it with the parsed data
+
+            Survey dbSurvey = surveyService.findById(responseJson.getLong("id"));
+            assertNotNull(dbSurvey);
             assertEquals(200,responseCreation.getStatus());
+
+
+            //test values from db -> compare parsed data with database data
+            assertEquals(surveys.get(i).getName(),dbSurvey.getName());
+            assertEquals(surveys.get(i).getQuestionText(),dbSurvey.getQuestionText());
+            assertEquals(surveys.get(i).getBackgroundColor(),dbSurvey.getBackgroundColor());
+            assertEquals(surveys.get(i).getAccentColor(),dbSurvey.getAccentColor());
+
+            //test related answerOptions
+            int AmountAnswerOptionsOfSurvey= surveys.get(i).getAnswerOptions().size();
+            // test if all AnswerOptions are stored in the DB
+            assertEquals(AmountAnswerOptionsOfSurvey,dbSurvey.getAnswerOptions().size());
+
+            //Test of the content of answerOptions for each answerOptions
+            for(int j = 0 ;j<AmountAnswerOptionsOfSurvey;j++){
+                assertEquals(surveys.get(i).getAnswerOptions().get(j).getContent(),dbSurvey.getAnswerOptions().get(j).getContent());
+
+            }
+
+               //test related user
+            assertEquals(surveys.get(i).getUser().getEmail(),dbSurvey.getUser().getEmail());
+
 
             //add the whole survey to created surveys list
             createdSurveys.add(surveyService.findById(responseJson.getLong("id")));
@@ -158,6 +181,8 @@ public class SystemTest {
             response=mockMvc.perform(post("/survey/{id}/submission",submissionList.get(i).getSurveyId()).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(submissionList.get(i)))).andReturn().getResponse();
             JSONObject responseJson=new JSONObject(response.getContentAsString());
 
+            assertEquals(200,response.getStatus());
+
             //load created submission and store it into the created submissions List
             createdSubmissions.add(submissionService.findByID(responseJson.getLong("id")));
 
@@ -170,7 +195,7 @@ public class SystemTest {
         for(int i = 0 ; i<createdSurveys.size();i++){
             response=mockMvc.perform(get("/survey/{id}/results",createdSurveys.get(i).getId()).contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse();
 
-            System.out.println(response.getContentAsString());
+            //System.out.println(response.getContentAsString());
 
             response=mockMvc.perform(get("/survey/{id}/analysis",createdSurveys.get(i).getId()).header("api_key",userListWithAuthKey.get(userService.findByEmail(createdSurveys.get(i).getUser().getEmail()))).contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse();
 
@@ -181,16 +206,10 @@ public class SystemTest {
 
         }
 
+        /*while (true){
+            Thread.sleep(100000000);
+        }*/
 
-
-
-        /*
-        System.out.println(userList.toString());
-        System.out.println("***********************************************************");
-        System.out.println(surveys.toString());
-        System.out.println(surveys.get(0).getAnswerOptions().get(0).getContent());
-        */
-        //Problem möglicherweise: AnswerOptions landen nicht im Survey in der funktion generate Surveys
 
     }
 
@@ -209,7 +228,7 @@ public class SystemTest {
             answerOptionsListForSubmissions.add(tempAnswerOption);
 
             //create Participant with random generated IPv4-Address
-            Participant participant = new Participant(null,92+"."+r.nextInt(255)+"."+r.nextInt(255)+"."+r.nextInt(255),null);
+            Participant participant = new Participant(null,(88)+"."+r.nextInt(255)+"."+r.nextInt(255)+"."+r.nextInt(255),null);
 
             //create a new Submission
             Submission submission = new Submission(null,survey.getId(), OffsetDateTime.now(),tempAnswerOption,participant);
