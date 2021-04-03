@@ -331,10 +331,17 @@ class SurveyApiControllerTest {
 
     private void createUserAndLogin() throws Exception{
         u1= new User("123@gmx.de","aaa","bbb","ccc");
-        mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(u1))).andReturn().getResponse();
 
-        //user login
-        MockHttpServletResponse response=mockMvc.perform(post("/user/login").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(u1))).andReturn().getResponse();
+
+        //add password property for Registration
+        JSONObject jsonObjectRegister= new JSONObject(mapper.writeValueAsString(u1));
+        jsonObjectRegister.put("password","aaa");
+
+        //create User
+        mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON).content(jsonObjectRegister.toString()));
+
+        //login User
+        MockHttpServletResponse response=mockMvc.perform(post("/user/login").contentType(MediaType.APPLICATION_JSON).content(jsonObjectRegister.toString())).andReturn().getResponse();
 
         //parse authKey
         JSONObject responseBody = new JSONObject(response.getContentAsString());

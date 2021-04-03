@@ -3,10 +3,8 @@ package io.swagger.model_services_repository_Tests;
 import io.swagger.model.AnswerOption;
 import io.swagger.model.Survey;
 import io.swagger.model.User;
-import io.swagger.repository.SurveyRepository;
 import io.swagger.repository.UserRepository;
 import io.swagger.services.SurveyService;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -30,8 +28,7 @@ class SurveyTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private SurveyRepository surveyRepository;
+
 
     Random r = new Random();
     //Needed Userproperties
@@ -49,8 +46,7 @@ class SurveyTest {
         while (amount_of_surveys==0){
         amount_of_surveys = r.nextInt(100);
         }
-        System.out.println("Surveys: "+amount_of_surveys);
-        System.out.println("Users: "+ amount_of_users);
+
         List<Survey> survey= new ArrayList<>();
         List<AnswerOption> answerOptions= new ArrayList<>();
         List<Integer> amount_per_Survey = new ArrayList<>();
@@ -60,7 +56,7 @@ class SurveyTest {
 
             //Maximal 10 unterschiedliche Antwortmöglichkeiten
             int amount_answer_options =r.nextInt(9)+1;
-            System.out.println("Answer options: "+amount_answer_options);
+
             amount_per_Survey.add(amount_answer_options);
 
             //Erstellung der Antwortmöglichkeiten
@@ -89,15 +85,12 @@ class SurveyTest {
         for(int i = 0; i<survey.size();i++){
 
             Survey currentS= surveyService.findById(survey.get(i).getId());
-            System.out.println("DB: "+currentS.toString());
-            //System.out.println("DB: "+currentS.getAnswerOptions().toString());
+
             //Test, ob gleiche Anzahl Antwortmöglichkeiten zurückgeliefert werden
             assertEquals(amount_per_Survey.get(i),currentS.getAnswerOptions().size());
 
         }
     }
-
-
 
 
 

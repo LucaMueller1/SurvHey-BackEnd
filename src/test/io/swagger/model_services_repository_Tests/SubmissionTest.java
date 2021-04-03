@@ -11,14 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.servlet.http.Part;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @RunWith(SpringRunner.class)
@@ -31,8 +28,6 @@ class SubmissionTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private SurveyRepository surveyRepository;
 
     @Autowired
     private SubmissionService submissionService;
@@ -63,8 +58,7 @@ class SubmissionTest {
         while (amount_of_submissions==0){
             amount_of_submissions=r.nextInt(1000);
         }
-        System.out.println("Submissions: "+ amount_of_submissions);
-        System.out.println("Survey: "+ amount_of_surveys);
+
         for(int j =0; j<= amount_of_submissions;j++){
         //Prepare submission
         //Choose a random survey for a submission

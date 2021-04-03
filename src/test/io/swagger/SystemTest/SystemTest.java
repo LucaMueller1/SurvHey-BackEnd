@@ -24,6 +24,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.time.OffsetDateTime;
 import java.util.*;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -92,7 +93,7 @@ public class SystemTest {
     public void SystemTest() throws Exception{
 
 
-        generateUsers(50);
+        generateUsers(10);
 
         MockHttpServletResponse response=null;
         JSONObject jsonObjectForCreatedUser;
@@ -101,15 +102,23 @@ public class SystemTest {
         //create user and login -> safe in Map user & authKey
         for(int i = 0 ; i<amountofUsers;i++){
 
-            response=mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(userList.get(i)))).andReturn().getResponse();
+
+            //add password property for Registration
+            JSONObject jsonObjectRegister= new JSONObject(mapper.writeValueAsString(userList.get(i)));
+            jsonObjectRegister.put("password",userList.get(i).getPassword());
+
+
+
+            response=mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON).content(jsonObjectRegister.toString())).andReturn().getResponse();
+
 
             //test if the user is inside the db
             assertEquals(response.getStatus(),200);
             assertNotNull(userService.findByEmail(userList.get(i).getEmail()));
 
             //login current user
-            response=mockMvc.perform(post("/user/login").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(userList.get(i)))).andReturn().getResponse();
-
+            response=mockMvc.perform(post("/user/login").contentType(MediaType.APPLICATION_JSON).content(jsonObjectRegister.toString())).andReturn().getResponse();
+            //System.out.println(response.getContentAsString());
             //create jsonObject to parse authKey
             jsonObjectForCreatedUser= new JSONObject(response.getContentAsString());
 
@@ -169,7 +178,6 @@ public class SystemTest {
 
         }
 
-        //(createdSurveys.toString());
 
 
         //create submissions
@@ -250,10 +258,10 @@ public class SystemTest {
 
         }
 
-        while (true){
+        /*while (true){
             Thread.sleep(100000000);
 
-        }
+        }*/
 
 
     }
