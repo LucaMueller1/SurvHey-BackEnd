@@ -1,11 +1,11 @@
 
-
+image: alpine
 stages:
   - build
 
 build:
   stage: build
-  script: ./mvnw package
+  script:
   artifacts:
     paths:
       - target/survhey-0.0.1-SNAPSHOT.jar
