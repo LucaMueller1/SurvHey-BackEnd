@@ -1,4 +1,4 @@
-image: java:15.0.2
+image: java:11
 
 stages:
   - build
