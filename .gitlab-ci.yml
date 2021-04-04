@@ -8,5 +8,4 @@ build:
   script:
     -echo "something"
   artifacts:
-    paths:
-      - target/survhey-0.0.1-SNAPSHOT.jar
+
