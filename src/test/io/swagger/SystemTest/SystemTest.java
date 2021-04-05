@@ -305,6 +305,7 @@ public class SystemTest {
             userList.add(new User(stringGenerator(45), stringGenerator(r.nextInt(30)), stringGenerator(r.nextInt(20)), stringGenerator(r.nextInt(35))));
         }
 
+
     }
 
     private void generateSurveys(int amountOfSurveysToCreate){
