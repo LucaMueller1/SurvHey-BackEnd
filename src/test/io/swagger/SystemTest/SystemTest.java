@@ -95,7 +95,7 @@ public class SystemTest {
     public void SystemTest() throws Exception{
 
 
-        generateUsers(10);
+        generateUsers(100);
 
         MockHttpServletResponse response=null;
         JSONObject jsonObjectForCreatedUser;
@@ -152,7 +152,6 @@ public class SystemTest {
             assertNotNull(dbSurvey);
 
             //test response
-            System.out.println(responseCreation.getContentAsString());
             JSONObject js=new JSONObject(responseJson.getString("user"));
             //test if password is responded
             assertFalse(js.has("password"));
@@ -189,7 +188,7 @@ public class SystemTest {
 
 
         //create submissions
-        generateSubmissions(100);
+        generateSubmissions(10000);
 
         for(int i =0 ; i<submissionList.size();i++){
 
@@ -214,7 +213,7 @@ public class SystemTest {
             }
 
         }
-        //System.out.println(createdSubmissions.toString());
+
 
 
         //get results and analysis
@@ -222,7 +221,6 @@ public class SystemTest {
             response=mockMvc.perform(get("/survey/{id}/results",createdSurveys.get(i).getId()).contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse();
             assertEquals(200,response.getStatus());
 
-            System.out.println(response.getContentAsString());
             List<Submission> submissionsOfCurrentSurvey = new ArrayList<>();
 
             //add submissions of current survey in a local list
@@ -255,17 +253,12 @@ public class SystemTest {
                 jsonResults=new JSONObject(jsonResults.getString("choices"));
 
                 //test every answerOption if response submission amount is correct
-                //problem!!!!!: wenn keine submission für eine answerOption gegeben worden ist, dann wird das nicht zuurückgegeben
-                System.out.println(currentAnswerOption.getContent());
-                System.out.println(amountOfChoicesOfCurrentAnswerOption);
+
                 assertEquals(jsonResults.getInt(currentAnswerOption.getContent()),amountOfChoicesOfCurrentAnswerOption);
 
             }
 
             response=mockMvc.perform(get("/survey/{id}/analysis",createdSurveys.get(i).getId()).header("api_key",userListWithAuthKey.get(userService.findByEmail(createdSurveys.get(i).getUser().getEmail()))).contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse();
-            System.out.println(response.getContentAsString());
-
-
 
         }
 
@@ -301,8 +294,6 @@ public class SystemTest {
 
 
         }
-
-
 
     }
 

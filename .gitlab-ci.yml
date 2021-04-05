@@ -1,11 +1,16 @@
+image: maven:3-jdk-11
 
-image: alpine
 stages:
   - build
 
-build:
-  stage: build
-  script:
-    -echo "something"
-  artifacts:
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
+cache:
+  paths:
+    - .m2/repository/
+    - target/
+
+maven-build-stage:
+  stage: build
+  script: mvn clean install
