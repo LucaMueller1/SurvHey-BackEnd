@@ -1,16 +1,11 @@
 image: maven:3-jdk-11
 
-stages:
-  - build
-
-variables:
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-
-cache:
-  paths:
-    - .m2/repository/
-    - target/
-
-maven-build-stage:
+build:
   stage: build
-  script: mvn clean install
+  script:
+    - mvn compile
+
+test:
+  stage: test
+  script:
+    - mvn clean test
