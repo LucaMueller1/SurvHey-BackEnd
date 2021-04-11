@@ -1,4 +1,4 @@
-drop schema if exists SurvHey_DB;
+
 create schema SurvHey_DB;
 
 

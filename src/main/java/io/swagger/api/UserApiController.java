@@ -82,6 +82,7 @@ public class UserApiController implements UserApi {
 
     public ResponseEntity<AuthKey> loginUser(@Parameter(in = ParameterIn.DEFAULT, description = "Object that stores user login data", required=true, schema=@Schema()) @Valid @RequestBody UserLogin body) {
         //get body and check if credentials are valid
+
         AuthKey authKey = authService.login(body);
         if(authKey == null) {
             return new ResponseEntity(new ApiError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase(), "Given credentials are incorrect"), HttpStatus.FORBIDDEN);

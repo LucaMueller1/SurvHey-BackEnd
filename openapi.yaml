@@ -499,9 +499,9 @@ components:
           additionalProperties:
             type: integer
           example:
-            Tesla: 0.65
-            Hyundai: 0.15
-            Porsche: 0.2
+            Tesla: 420
+            Hyundai: 38
+            Porsche: 69
     Submission:
       required:
         - surveyId

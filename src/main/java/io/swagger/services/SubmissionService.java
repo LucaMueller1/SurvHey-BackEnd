@@ -90,6 +90,11 @@ public class SubmissionService {
                 frequency.put(choice.getContent(), frequency.get(choice.getContent()) + 1); // update counter for answer option
             }
         }
+
+        for(AnswerOption option : survey.getAnswerOptions()) {
+            frequency.putIfAbsent(option.getContent(), 0);
+        }
+
         result.setChoices(frequency);
         return result;
     }
