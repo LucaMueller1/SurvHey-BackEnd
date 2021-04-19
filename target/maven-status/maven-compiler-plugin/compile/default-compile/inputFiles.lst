@@ -1,4 +1,3 @@
-/Users/lucamueller/IdeaProjects/SurvHey-BackEnd/src/main/java/io/swagger/model/AnswerChoice.java
 /Users/lucamueller/IdeaProjects/SurvHey-BackEnd/src/main/java/io/swagger/model/ApiError.java
 /Users/lucamueller/IdeaProjects/SurvHey-BackEnd/src/main/java/io/swagger/security/WebSecurityConfig.java
 /Users/lucamueller/IdeaProjects/SurvHey-BackEnd/src/main/java/io/swagger/model/Analysis.java
@@ -20,8 +19,11 @@
 /Users/lucamueller/IdeaProjects/SurvHey-BackEnd/src/main/java/io/swagger/repository/SubmissionRepository.java
 /Users/lucamueller/IdeaProjects/SurvHey-BackEnd/src/main/java/io/swagger/services/AuthService.java
 /Users/lucamueller/IdeaProjects/SurvHey-BackEnd/src/main/java/io/swagger/services/SubmissionService.java
+/Users/lucamueller/IdeaProjects/SurvHey-BackEnd/src/main/java/io/swagger/repository/ParticipantRepository.java
 /Users/lucamueller/IdeaProjects/SurvHey-BackEnd/src/main/java/io/swagger/configuration/SwaggerDocumentationConfig.java
 /Users/lucamueller/IdeaProjects/SurvHey-BackEnd/src/main/java/io/swagger/api/UserApiController.java
+/Users/lucamueller/IdeaProjects/SurvHey-BackEnd/src/main/java/io/swagger/services/ParticipantService.java
+/Users/lucamueller/IdeaProjects/SurvHey-BackEnd/src/main/java/io/swagger/model/Participant.java
 /Users/lucamueller/IdeaProjects/SurvHey-BackEnd/src/main/java/io/swagger/repository/AuthKeyRepository.java
 /Users/lucamueller/IdeaProjects/SurvHey-BackEnd/src/main/java/io/swagger/api/ApiOriginFilter.java
 /Users/lucamueller/IdeaProjects/SurvHey-BackEnd/src/main/java/io/swagger/configuration/JacksonConfiguration.java
