@@ -95,7 +95,7 @@ public class SystemTest {
     public void SystemTest() throws Exception{
 
 
-        generateUsers(100);
+        generateUsers(5);
 
         MockHttpServletResponse response=null;
         JSONObject jsonObjectForCreatedUser;
@@ -134,7 +134,7 @@ public class SystemTest {
         }
 
         //generate surveys
-        generateSurveys(100);
+        generateSurveys(70);
 
 
         for(int i = 0 ; i<amountOfSurveys;i++){
@@ -188,7 +188,7 @@ public class SystemTest {
 
 
         //create submissions
-        generateSubmissions(10000);
+        generateSubmissions(300);
 
         for(int i =0 ; i<submissionList.size();i++){
 
@@ -260,6 +260,7 @@ public class SystemTest {
 
             response=mockMvc.perform(get("/survey/{id}/analysis",createdSurveys.get(i).getId()).header("api_key",userListWithAuthKey.get(userService.findByEmail(createdSurveys.get(i).getUser().getEmail()))).contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse();
 
+            System.out.println(response.getContentAsString());
         }
 
         /*while (true){
@@ -304,7 +305,7 @@ public class SystemTest {
         for(int i =0; i<amountOfUserToCreate;i++) {
             userList.add(new User(stringGenerator(45), stringGenerator(r.nextInt(30)), stringGenerator(r.nextInt(20)), stringGenerator(r.nextInt(35))));
         }
-
+        System.out.println(userList.toString());
 
     }
 
