@@ -32,7 +32,7 @@ public class Submission   {
   private Long id = null;
 
 
-  @ManyToOne (cascade = CascadeType.ALL)
+  @ManyToOne (cascade = CascadeType.ALL,fetch = FetchType.EAGER)
   @JoinColumn(name = "Participant_ID", referencedColumnName = "Participant_ID")
   @JsonProperty("participant")
   @Valid

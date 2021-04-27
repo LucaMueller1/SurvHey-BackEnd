@@ -183,7 +183,7 @@ class SurveyApiControllerTest {
         String cookie= cookieParticipant.getString("Cookie");
 
         //setup of a new submission, but with the already stored participant -> cookie as the identifier -> get participant by cookie
-        submission = new Submission(null,s1.getId(), OffsetDateTime.now(),choices,participantService.getByCookieID(cookie));
+        submission = new Submission(null,s1.getId(), OffsetDateTime.now(),choices,participantService.getByCookieID(cookie).get(0));
         responseCreation=mockMvc.perform(post("/survey/{id}/submission",responseBody.getString("id")).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(submission))).andReturn().getResponse();
 
         //create a new json object with the response

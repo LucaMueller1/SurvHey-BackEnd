@@ -11,7 +11,10 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
 
     Participant findById(long id);
 
-    Participant findByCookieID(String cookieID);
+    List<Participant> findAllByCookieID(String cookieID);
 
     List<Participant> findAllByIpAddress(String IP);
+
+
+    Participant findParticipantByIpAddressAndCookieID(String IP, String cookieID);
 }

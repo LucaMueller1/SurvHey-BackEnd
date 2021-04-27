@@ -24,8 +24,12 @@ public class ParticipantService {
        return participantRepository.findById(id);
     }
 
-    public Participant getByCookieID(String cookie){
-        return participantRepository.findByCookieID(cookie);
+    public List<Participant> getByCookieID(String cookie){
+        return participantRepository.findAllByCookieID(cookie);
+    }
+
+    public Participant getByCookieIDAndByIP(String cookie, String IP){
+        return participantRepository.findParticipantByIpAddressAndCookieID(IP,cookie);
     }
 
     public List<Participant> getByIP(String IP){

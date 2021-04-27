@@ -2,8 +2,6 @@ package io.swagger.services;
 
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import io.swagger.model.*;
-import io.swagger.model.*;
-import io.swagger.repository.ParticipantRepository;
 import io.swagger.repository.SubmissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +10,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.*;
@@ -36,7 +33,9 @@ public class SubmissionService {
 
 
     public Submission addOrUpdateSubmission(Submission submission){
-        return submissionRepository.save(submission);
+        Submission submission1 =submissionRepository.save(submission);
+        //submissionRepository.flush();
+        return submission1;
     }
 
     public List<Submission> findAllBySurveyID(Long id){
@@ -46,6 +45,9 @@ public class SubmissionService {
     public boolean didAlreadyParticipate(Participant participant, Survey survey) {
         List<Submission> list = submissionRepository.findAllBySurveyIdAndParticipant(survey.getId(), participant);
         return list.size() !=0;
+    }
+    public List<Submission> participation(String participant_cookie){
+        return submissionRepository.findAllByParticipant_CookieID(participant_cookie);
     }
 
     public Analysis getAnalysis(Survey survey) {

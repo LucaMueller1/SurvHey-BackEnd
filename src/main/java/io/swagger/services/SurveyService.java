@@ -36,7 +36,9 @@ public class SurveyService {
     }
 
     public Survey addOrUpdateSurvey(Survey survey) {
-        return surveyRepository.save(survey);
+        Survey survey1=surveyRepository.save(survey);
+        //surveyRepository.flush();
+        return survey1;
     }
 
     public void deleteSurvey(Survey survey) {

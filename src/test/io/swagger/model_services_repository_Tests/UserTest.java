@@ -5,8 +5,10 @@ import io.swagger.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,7 +18,9 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+@Transactional
 class UserTest {
 
 
@@ -34,7 +38,7 @@ class UserTest {
 
 
         while(amount_of_users==0) {
-            amount_of_users = r.nextInt(100000);
+            amount_of_users = r.nextInt(1000);
 
         }
         System.out.println("Users: "+amount_of_users);

@@ -27,6 +27,8 @@ import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -77,32 +79,62 @@ public class SurveyApiController implements SurveyApi {
 
         Survey survey = surveyService.findById(id);
 
+        //check if survey exists
         if(survey == null) {
             return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), "Survey not found"), HttpStatus.NOT_FOUND);
-        }
-
-        Participant participant = participantService.getByCookieID(body.getParticipant().getCookieID());
-
-        if (participant == null) {
-            //save participant first
-            body.getParticipant().setCookieID(participantService.generateNewCookie());
-            participant = participantService.createOrUpdateParticipant(body.getParticipant());
-        }
-
-        //no cookie supplied
-        if(participant.getCookieID() == null) {
-            participant.setCookieID(participantService.generateNewCookie());
-        }
-
-        //check if user with ipAddress already participated in this survey
-        if(submissionService.didAlreadyParticipate(participant, survey)) {
-            return new ResponseEntity(new ApiError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase(), "You have already participated in this survey"), HttpStatus.FORBIDDEN);
         }
 
         //check if answerOptions exist
         if(!surveyService.validAnswerOptions(survey, body.getChoices())) {
             return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), "AnswerOptions of survey not found"), HttpStatus.NOT_FOUND);
         }
+
+        List<Participant> participants = participantService.getByCookieID(body.getParticipant().getCookieID());
+        Participant participant1 = participantService.getByCookieIDAndByIP(body.getParticipant().getCookieID(),body.getParticipant().getIpAddress());
+
+        Participant participant = new Participant(null,body.getParticipant().getIpAddress(),null);
+
+        //if no participant with this cookie exists and no participant with this IP-Cookie combination exists
+        if (participants.size() == 0 && participant1==null && (body.getParticipant().getCookieID()!=null || body.getParticipant().getCookieID()!="")) {
+            //save participant first
+            body.getParticipant().setCookieID(participantService.generateNewCookie());
+            participant = participantService.createOrUpdateParticipant(body.getParticipant());
+            System.out.println("first");
+        }
+
+        //if a participant exist with this cookie but not with this IP-Cookie combination
+        if(participant1==null && participants.size() != 0 && (body.getParticipant().getCookieID()!=null || body.getParticipant().getCookieID()!="")){
+            participant = participantService.createOrUpdateParticipant(body.getParticipant());
+            System.out.println("second");
+        }
+
+        if(participant1 != null && (body.getParticipant().getCookieID()!=null || body.getParticipant().getCookieID()!="")){
+            participant = participantService.getParticipantByID(participant1.getId());
+            System.out.println("third");
+        }
+
+
+        //no cookie supplied
+        if(body.getParticipant().getCookieID()==null || body.getParticipant().getCookieID()=="") {
+            body.getParticipant().setCookieID(participantService.generateNewCookie());
+            participant = participantService.createOrUpdateParticipant(body.getParticipant());
+            System.out.println("ssss");
+        }
+        else{
+
+        }
+
+        //check if user with ipAddress already participated in this survey
+        List<Submission> submissionsOfParticipant = submissionService.participation(participant.getCookieID());
+
+        for (Submission submission : submissionsOfParticipant) {
+            if(submission.getId()==id){
+                return new ResponseEntity(new ApiError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase(), "You have already participated in this survey"), HttpStatus.FORBIDDEN);
+
+            }
+        }
+
+
 
         Submission submission = submissionService.addOrUpdateSubmission(new Submission(null, body.getSurveyId(), OffsetDateTime.now(), body.getChoices(), participant));
 
@@ -196,5 +228,27 @@ public class SurveyApiController implements SurveyApi {
 
         return new ResponseEntity<Survey>(rSurvey, HttpStatus.OK);
     }
+
+
+    public ResponseEntity<Survey> getParticipationsOfParticipant(@Parameter(in = ParameterIn.PATH, description = "CookieID needed", required=true, schema=@Schema()) @PathVariable("cookie") String cookie){
+            List<Participant> participants = participantService.getByCookieID(cookie);
+            List <Submission> submissionsOfParticipant = new ArrayList<>();
+        Iterator participantIterator = participants.iterator();
+
+        for(Participant participant : participants){
+            List<Submission> submissions =submissionService.participation(participant.getCookieID());
+
+            for (Submission submission : submissions){
+                submissionsOfParticipant.add(submission);
+
+            }
+        }
+
+        System.out.println(submissionsOfParticipant.toString());
+
+
+        return new ResponseEntity<Survey>(HttpStatus.OK);
+
+        }
 
 }

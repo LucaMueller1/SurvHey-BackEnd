@@ -15,6 +15,7 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
 
         List<Submission> findAllBySurveyIdAndParticipant(Long surveyID, Participant participant);
 
+        List<Submission> findAllByParticipant_CookieID(String cookieID);
 
         List<Submission> findAllByParticipant(Participant participant);
 
