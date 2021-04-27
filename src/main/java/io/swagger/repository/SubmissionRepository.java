@@ -19,5 +19,7 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
 
         List<Submission> findAllByParticipant(Participant participant);
 
+        List<Submission> findAllByParticipantIn(List<Participant> participantList);
+
 
 }

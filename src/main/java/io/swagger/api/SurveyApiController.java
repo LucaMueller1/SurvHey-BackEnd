@@ -120,9 +120,7 @@ public class SurveyApiController implements SurveyApi {
             participant = participantService.createOrUpdateParticipant(body.getParticipant());
             System.out.println("ssss");
         }
-        else{
 
-        }
 
         //check if user with ipAddress already participated in this survey
         List<Submission> submissionsOfParticipant = submissionService.participation(participant.getCookieID());
@@ -230,24 +228,17 @@ public class SurveyApiController implements SurveyApi {
     }
 
 
-    public ResponseEntity<Survey> getParticipationsOfParticipant(@Parameter(in = ParameterIn.PATH, description = "CookieID needed", required=true, schema=@Schema()) @PathVariable("cookie") String cookie){
-            List<Participant> participants = participantService.getByCookieID(cookie);
-            List <Submission> submissionsOfParticipant = new ArrayList<>();
-        Iterator participantIterator = participants.iterator();
+    public ResponseEntity<List<Fingerprint>> getParticipationsOfParticipant(@Parameter(in = ParameterIn.PATH, description = "CookieID needed", required=true, schema=@Schema()) @PathVariable("cookie") String cookie){
+        List<Participant> participants = participantService.getByCookieID(cookie);
 
-        for(Participant participant : participants){
-            List<Submission> submissions =submissionService.participation(participant.getCookieID());
+        List <Submission> submissionsOfParticipant = submissionService.findAllByParticipantIn(participants);
 
-            for (Submission submission : submissions){
-                submissionsOfParticipant.add(submission);
-
-            }
-        }
-
-        System.out.println(submissionsOfParticipant.toString());
+        List<Fingerprint> fingerprints=submissionService.getFingerprintsBySubmissions(submissionsOfParticipant);
 
 
-        return new ResponseEntity<Survey>(HttpStatus.OK);
+
+
+        return new ResponseEntity<List<Fingerprint>>(fingerprints,HttpStatus.OK);
 
         }
 

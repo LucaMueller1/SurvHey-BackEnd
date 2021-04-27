@@ -131,17 +131,17 @@ public interface SurveyApi {
     ResponseEntity<Survey> updateSurveyById(@Parameter(in = ParameterIn.PATH, description = "ID of survey to update", required=true, schema=@Schema()) @PathVariable("id") Long id, @Parameter(in = ParameterIn.DEFAULT, description = "Created survey object", schema=@Schema()) @Valid @RequestBody SurveyPrepare body);
 
 
-    @Operation(summary = "Update survey by id", description = "Updates the corresponding survey", security = {
+    @Operation(summary = "Get fingerprints by cookieID", description = "Returns fingerprints for given cookieID", security = {
             @SecurityRequirement(name = "ApiKeyAuth")    }, tags={ "survey" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = Survey.class))),
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = Fingerprint.class))),
 
             @ApiResponse(responseCode = "200", description = "unexpected error", content = @Content(schema = @Schema(implementation = ApiError.class))) })
-    @RequestMapping(value = "/participations/{cookie}",
+    @RequestMapping(value = "/fingerprints/{cookie}",
             produces = { "application/json" },
-            consumes = { "application/json" },
+
             method = RequestMethod.GET)
-    ResponseEntity<Survey> getParticipationsOfParticipant(@Parameter(in = ParameterIn.PATH, description = "CookieID needed", required=true, schema=@Schema()) @PathVariable("cookie") String cookie);
+    ResponseEntity<List<Fingerprint>> getParticipationsOfParticipant(@Parameter(in = ParameterIn.PATH, description = "CookieID needed", required=true, schema=@Schema()) @PathVariable("cookie") String cookie);
 
 }
 

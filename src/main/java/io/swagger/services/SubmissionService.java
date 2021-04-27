@@ -50,6 +50,29 @@ public class SubmissionService {
         return submissionRepository.findAllByParticipant_CookieID(participant_cookie);
     }
 
+    public List<Submission> findAllByParticipantIn(List<Participant> participantList){
+        return submissionRepository.findAllByParticipantIn(participantList);
+    }
+
+    public List<Fingerprint> getFingerprintsBySubmissions(List<Submission> submissions){
+
+        List<Fingerprint> fingerprints = new ArrayList<>();
+
+        for(Submission submission : submissions){
+            try{
+                GeoIP location = geoLocationService.getLocation(submission.getParticipant().getIpAddress());
+                fingerprints.add(new Fingerprint(submission, (location.getCity()+", "+location.getCountry())));
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            } catch (GeoIp2Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return fingerprints;
+
+    }
+
     public Analysis getAnalysis(Survey survey) {
         List<Submission> submissions = submissionRepository.findAllBySurveyId(survey.getId());
         Iterator <Submission> subIterator= submissions.iterator();
