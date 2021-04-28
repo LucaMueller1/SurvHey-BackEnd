@@ -79,6 +79,10 @@ public class SurveyApiController implements SurveyApi {
 
         Survey survey = surveyService.findById(id);
 
+        if(body.getSurveyId() != id) {
+            return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), "Survey not found"), HttpStatus.NOT_FOUND);
+        }
+
         //check if survey exists
         if(survey == null) {
             return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), "Survey not found"), HttpStatus.NOT_FOUND);
