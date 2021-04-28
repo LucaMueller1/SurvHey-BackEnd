@@ -61,6 +61,10 @@ public class UserApiController implements UserApi {
     }
 
     public ResponseEntity<Void> createUser(@Parameter(in = ParameterIn.DEFAULT, description = "User object to create", required=true, schema=@Schema()) @Valid @RequestBody User body) {
+        User user = userService.findByEmail(body.getEmail());
+        if(user != null) {
+            return new ResponseEntity(new ApiError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase(), "User already exists"), HttpStatus.FORBIDDEN);
+        }
 
         String pwd = body.getPassword();
         String hashed = BCrypt.hashpw(pwd, BCrypt.gensalt());
