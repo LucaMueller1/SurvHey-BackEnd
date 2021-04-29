@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +24,7 @@ import java.util.Random;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class SubmissionTest {
 
     @Autowired
@@ -49,9 +50,10 @@ class SubmissionTest {
 
 
     @Test
-    public void SubmitTest(){
+    public void SubmitTest() throws InterruptedException {
         this.createUsers();
         this.createSurveys();
+
         List<Survey> surveyList= new ArrayList<>();
         //Load Surveys of the Database
         for (int i=1; i<=amount_of_surveys;i++){
@@ -59,38 +61,26 @@ class SubmissionTest {
 
             }
         surveys=surveyList;
-        System.out.println("Surveys from DB: " +surveys.size());
 
-
-
-        System.out.println("SURVEYS!!!!: "+surveys.toString());
-        System.out.println("*******************************************");
-        int amount_of_submissions =0;
-        while (amount_of_submissions==0){
-            amount_of_submissions=r.nextInt(1000);
-        }
+        int amount_of_submissions =200;
 
         for(int j =0; j<= amount_of_submissions;j++){
         //Prepare submission
         //Choose a random survey for a submission
         int randomSurveyChoice = r.nextInt(amount_of_surveys-1);
 
-        System.out.println("randomSurveyChoice: "+randomSurveyChoice);
-        System.out.println("surveysSize: "+surveys.size());
-        System.out.println("SURVEY: "+surveys.get(randomSurveyChoice).toString());
+
         //get the size of possible answer options of this survey
         List<AnswerOption> options = surveys.get(randomSurveyChoice).getAnswerOptions();
-        System.out.println("options: "+options.toString());
-        System.out.println("amount AO: "+options.size());
 
         int sizeOfAnswerOptionsOfASurvey = options.size();
+
         //get random number of how many answers are choosen in the submission
         //int randomAnswerOptionChoice = r.nextInt(sizeOfAnswerOptionsOfASurvey)+1;
 
         //add the selected answer option to the list of choosen answerOption for this submission
         int randomChoice = r.nextInt(sizeOfAnswerOptionsOfASurvey);
         List<AnswerOption> Answer_choices= new ArrayList<>();
-        System.out.println("survey: "+surveys.get(randomSurveyChoice).toString());
         Answer_choices.add(surveys.get(randomSurveyChoice).getAnswerOptions().get(randomChoice));
 
         //create a participant
@@ -103,11 +93,7 @@ class SubmissionTest {
 
         submissionService.findAllBySurveyID((long) randomSurveyChoice).toString();
 
-
-
     }
-
-
 
 
 
@@ -115,11 +101,7 @@ class SubmissionTest {
 
 public void createSurveys(){
 
-    while (amount_of_surveys==0){
-        amount_of_surveys = r.nextInt(100);
-    }
-    System.out.println("amount Surveys by creation: "+ amount_of_surveys);
-
+    amount_of_surveys = 50;
     List<Survey> survey= new ArrayList<>();
     List<AnswerOption> answerOptions= new ArrayList<>();
     List<Integer> amount_per_Survey = new ArrayList<>();
@@ -129,44 +111,45 @@ public void createSurveys(){
 
         //Maximal 10 unterschiedliche Antwortmöglichkeiten
         int amount_answer_options =r.nextInt(8)+2;
-        System.out.println("Answer options: "+amount_answer_options);
         amount_per_Survey.add(amount_answer_options);
 
-        //Erstellung der Antwortmöglichkeiten
-        for(int j = 0; j<amount_answer_options; j++){
-            AnswerOption answerOption = new AnswerOption(null,null,stringGenerator(100));
-
-            answerOptions.add(answerOption);
-        }
 
         //Zufällige Auswahl des erstellenden Users
         int user = r.nextInt(users.size() -1);
 
-
         //Erstellung des Surveys
         Survey SurNew= new Survey(null,stringGenerator(50),stringGenerator(50),"nps",null,null,users.get(user),answerOptions);
-        survey.add(SurNew);
-        surveys.add(surveyService.addOrUpdateSurvey(SurNew));
+
+
+        //Erstellung der Antwortmöglichkeiten
+        for(int j = 0; j<amount_answer_options; j++){
+            AnswerOption answerOption = new AnswerOption(null,null,stringGenerator(100));
+            SurNew.addAnswerOptionsItem(answerOption);
+            answerOptions.add(answerOption);
+        }
+
+
+
+
+      survey.add(SurNew);
+        Survey newSurvey =surveyService.addOrUpdateSurvey(SurNew);
+        surveys.add(newSurvey);
 
         //Leeren der AnswerOptions
         answerOptions.clear();
 
     }
     amount_of_surveys=survey.size();
-    System.out.println("amount Surveys by creation 2: "+ amount_of_surveys);
+
 
 
 }
 
     public void createUsers(){
 
+        amount_of_users = 25;
 
 
-        while(amount_of_users==0) {
-            amount_of_users = r.nextInt(1000);
-
-        }
-        System.out.println("Users: "+amount_of_users);
         for(int i = 0; i<amount_of_users; i++){
             int rand = r.nextInt(44)+1;
             users.add(new User(stringGenerator(45),stringGenerator(rand),stringGenerator(rand),stringGenerator(rand)));

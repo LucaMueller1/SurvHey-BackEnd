@@ -17,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -34,7 +35,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class SurveyApiControllerTest {
 
 
@@ -177,6 +178,7 @@ class SurveyApiControllerTest {
         Submission submission = new Submission(null,s1.getId(), OffsetDateTime.now(),choices,participant);
         responseCreation=mockMvc.perform(post("/survey/{id}/submission",responseBody.getString("id")).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(submission))).andReturn().getResponse();
 
+
         //parse cookie out of the response of the first submission and safe is in a local property
         JSONObject responseSubmission = new JSONObject(responseCreation.getContentAsString());
         JSONObject cookieParticipant = new JSONObject(responseSubmission.getString("participant"));
@@ -186,8 +188,10 @@ class SurveyApiControllerTest {
         submission = new Submission(null,s1.getId(), OffsetDateTime.now(),choices,participantService.getByCookieID(cookie).get(0));
         responseCreation=mockMvc.perform(post("/survey/{id}/submission",responseBody.getString("id")).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(submission))).andReturn().getResponse();
 
+
         //create a new json object with the response
         responseBody= new JSONObject(responseCreation.getContentAsString());
+
 
         //assert that the type is forbidden and the http response is 403 -> submission is not allowed two times
         assertEquals(403,responseCreation.getStatus());
