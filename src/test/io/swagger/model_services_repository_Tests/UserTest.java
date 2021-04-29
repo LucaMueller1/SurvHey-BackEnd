@@ -2,11 +2,13 @@ package io.swagger.model_services_repository_Tests;
 
 import io.swagger.model.User;
 import io.swagger.repository.UserRepository;
+import io.swagger.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class UserTest {
 
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
 
 
@@ -34,13 +36,9 @@ class UserTest {
         //Dieser Test testet sowohl den UserService+Repository als auch das User-Model für eine definierbare Menge an zu erstellenden Usern
         List<User> users= new ArrayList<>();
         Random r = new Random();
-        int amount_of_users=0;
+        int amount_of_users=100;
 
 
-        while(amount_of_users==0) {
-            amount_of_users = r.nextInt(1000);
-
-        }
         System.out.println("Users: "+amount_of_users);
         for(int i = 0; i<amount_of_users; i++){
             int rand = r.nextInt(44)+1;
@@ -50,14 +48,15 @@ class UserTest {
 
         Iterator<User> iterUser= users.iterator();
         while(iterUser.hasNext()){
-            userRepository.save(iterUser.next());
+            userService.createUser(iterUser.next());
+
         }
 
         for (int i =0 ; i<users.size();i++){
-            System.out.println(users.get(i).toString());
-            assertEquals(userRepository.findByEmail(users.get(i).getEmail()),users.get(i));
 
 
+            //Test if data is stored correctly in the DB
+            assertEquals(userService.findByEmail(users.get(i).getEmail()),users.get(i));
 
         }
 

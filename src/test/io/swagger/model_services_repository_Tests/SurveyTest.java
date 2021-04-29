@@ -45,11 +45,9 @@ class SurveyTest {
     public void createSurveyTest(){
         this.createUsers();
 
-        int amount_of_surveys =0;
+        int amount_of_surveys =100;
 
-        while (amount_of_surveys==0){
-        amount_of_surveys = r.nextInt(100);
-        }
+
 
         List<Survey> survey= new ArrayList<>();
         List<AnswerOption> answerOptions= new ArrayList<>();
@@ -92,6 +90,15 @@ class SurveyTest {
 
             //Test, ob gleiche Anzahl Antwortmöglichkeiten zurückgeliefert werden
             assertEquals(amount_per_Survey.get(i),currentS.getAnswerOptions().size());
+
+            //test the content of surveys to see if the data is stored in the DB correctly
+            assertEquals(survey.get(i).getUser().toString(),currentS.getUser().toString());
+            assertEquals(survey.get(i).getName(),currentS.getName());
+            assertEquals(survey.get(i).getBackgroundColor(),currentS.getBackgroundColor());
+            assertEquals(survey.get(i).getAccentColor(),currentS.getAccentColor());
+            assertEquals(survey.get(i).getMode(),currentS.getMode());
+            assertEquals(survey.get(i).getQuestionText(),currentS.getQuestionText());
+
 
         }
     }

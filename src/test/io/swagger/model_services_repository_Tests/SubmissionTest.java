@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -86,11 +86,23 @@ class SubmissionTest {
         //create a participant
         Participant participant= new Participant(null,r.nextInt(256)+"."+r.nextInt(256)+"."+r.nextInt(256)+"."+r.nextInt(256),stringGenerator(35));
 
-        //create a new participant
-        submissionService.addOrUpdateSubmission(new Submission(null,surveys.get(randomSurveyChoice).getId(), OffsetDateTime.now(),Answer_choices,participant)).toString();
+        //create a new submission
+        Submission submission = submissionService.addOrUpdateSubmission(new Submission(null,surveys.get(randomSurveyChoice).getId(), OffsetDateTime.now(),Answer_choices,participant));
+
+        //get Submission of the db
+
+        Submission submissionOfDb =submissionService.findByID(submission.getId());
+
+        //assert that the submission properties are in the DB
+        assertEquals(submission.getId(),submissionOfDb.getId());
+        assertEquals(submission.getParticipant().getCookieID(),submissionOfDb.getParticipant().getCookieID());
+        assertEquals(submission.getSurveyId(),submissionOfDb.getSurveyId());
+        assertEquals(submission.getChoices().toString(),submissionOfDb.getChoices().toString());
+        assertEquals(submission.getTimestamp().getMinute(),submissionOfDb.getTimestamp().getMinute());
+        assertEquals(submission.getTimestamp().getHour(),submissionOfDb.getTimestamp().getHour());
+        assertEquals(submission.getTimestamp().getDayOfMonth(),submissionOfDb.getTimestamp().getDayOfMonth());
 
         //get all Submissions of this survey
-
         submissionService.findAllBySurveyID((long) randomSurveyChoice).toString();
 
     }
@@ -128,10 +140,7 @@ public void createSurveys(){
             answerOptions.add(answerOption);
         }
 
-
-
-
-      survey.add(SurNew);
+        survey.add(SurNew);
         Survey newSurvey =surveyService.addOrUpdateSurvey(SurNew);
         surveys.add(newSurvey);
 
