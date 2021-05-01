@@ -79,6 +79,7 @@ public class SurveyApiController implements SurveyApi {
 
         Survey survey = surveyService.findById(id);
 
+        // throw error in case path id is not equal to survey id of body
         if(body.getSurveyId() != id) {
             return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), "Survey not found"), HttpStatus.NOT_FOUND);
         }
@@ -93,53 +94,53 @@ public class SurveyApiController implements SurveyApi {
             return new ResponseEntity(new ApiError(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), "AnswerOptions of survey not found"), HttpStatus.NOT_FOUND);
         }
 
+        // get all participants (unique ip adresses) for the provided cookie
         List<Participant> participants = participantService.getByCookieID(body.getParticipant().getCookieID());
-        Participant participant1 = participantService.getByCookieIDAndByIP(body.getParticipant().getCookieID(),body.getParticipant().getIpAddress());
-
-        Participant participant = new Participant(null,body.getParticipant().getIpAddress(),null);
+        // get participant by cookie id and ip
+        Participant participantUnique = participantService.getByCookieIDAndByIP(body.getParticipant().getCookieID(),body.getParticipant().getIpAddress());
+        // new participant using ip
+        Participant participantNew = new Participant(null,body.getParticipant().getIpAddress(),null);
 
         //if no participant with this cookie exists and no participant with this IP-Cookie combination exists
-        if (participants.size() == 0 && participant1==null && (body.getParticipant().getCookieID()!=null || body.getParticipant().getCookieID()!="")) {
+        if (participants.size() == 0 && participantUnique==null && (body.getParticipant().getCookieID()!=null || body.getParticipant().getCookieID()!="")) {
             //save participant first
             body.getParticipant().setCookieID(participantService.generateNewCookie());
-            participant = participantService.createOrUpdateParticipant(body.getParticipant());
-            System.out.println("first");
+            participantNew = participantService.createOrUpdateParticipant(body.getParticipant());
         }
 
         //if a participant exist with this cookie but not with this IP-Cookie combination
-        if(participant1==null && participants.size() != 0 && (body.getParticipant().getCookieID()!=null || body.getParticipant().getCookieID()!="")){
-            participant = participantService.createOrUpdateParticipant(body.getParticipant());
-            System.out.println("second");
+        if(participantUnique==null && participants.size() != 0 && (body.getParticipant().getCookieID()!=null || body.getParticipant().getCookieID()!="")){
+            participantNew = participantService.createOrUpdateParticipant(body.getParticipant());
         }
 
-        if(participant1 != null && (body.getParticipant().getCookieID()!=null || body.getParticipant().getCookieID()!="")){
-            participant = participantService.getParticipantByID(participant1.getId());
-            System.out.println("third");
+        // unique participant already exists
+        if(participantUnique != null && (body.getParticipant().getCookieID()!=null || body.getParticipant().getCookieID()!="")){
+            participantNew = participantService.getParticipantByID(participantUnique.getId());
         }
 
 
         //no cookie supplied
         if(body.getParticipant().getCookieID()==null || body.getParticipant().getCookieID()=="") {
             body.getParticipant().setCookieID(participantService.generateNewCookie());
-            participant = participantService.createOrUpdateParticipant(body.getParticipant());
-            System.out.println("ssss");
+            participantNew = participantService.createOrUpdateParticipant(body.getParticipant());
         }
 
 
         //check if user with ipAddress already participated in this survey
-        List<Submission> submissionsOfParticipant = submissionService.participation(participant.getCookieID());
+        List<Submission> submissionsOfParticipant = submissionService.participation(participantNew.getCookieID());
 
         for (Submission submission : submissionsOfParticipant) {
-            if(submission.getId()==id){
+            if(submission.getSurveyId()==id){
+                log.info("Participant with cookie id: " + participantNew.getCookieID() + " has already participated");
                 return new ResponseEntity(new ApiError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase(), "You have already participated in this survey"), HttpStatus.FORBIDDEN);
-
             }
         }
 
 
 
-        Submission submission = submissionService.addOrUpdateSubmission(new Submission(null, body.getSurveyId(), OffsetDateTime.now(), body.getChoices(), participant));
+        Submission submission = submissionService.addOrUpdateSubmission(new Submission(null, body.getSurveyId(), OffsetDateTime.now(), body.getChoices(), participantNew));
 
+        log.info("New submission for survey: " + id + " created with cookie id: " + participantNew.getCookieID());
         return new ResponseEntity<Submission>(submission, HttpStatus.OK);
     }
 
