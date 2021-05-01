@@ -1,236 +1,149 @@
-openapi: 3.0.1
+openapi: 3.0.3
 info:
   title: SurvHey BackEnd
-  description: 'This is the OAS for the BackEnd of the SurvHey Project.'
+  description: This is the OAS for the BackEnd of the SurvHey Project.
   version: 1.0.0
 servers:
-  - url: http://localhost:8080/v2
-tags:
-  - name: survey
-    description: Everything about surveys
-  - name: submission
-    description: Access to the submissions for your surveys
-  - name: user
-    description: Operations about user
+  - url: 'http://localhost:8080'
+    description: Inferred Url
 paths:
-  /user:
-    post:
-      tags:
-        - user
-      summary: Create user
-      description: Registers a new user
-      operationId: createUser
-      requestBody:
-        description: User object to create
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-        required: true
-      responses:
-        200:
-          description: successful operation
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-    get:
-      tags:
-        - user
-      summary: Get user by api_key
-      description: This can only be done by the logged-in user and will return a user object
-      operationId: getUser
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-      security:
-        - ApiKeyAuth: []
-    delete:
-      tags:
-        - user
-      summary: Delete user
-      description: This can only be done by the logged-in user
-      operationId: deleteUser
-      responses:
-        200:
-          description: successful operation
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-      security:
-        - ApiKeyAuth: []
-  /user/login:
-    post:
-      tags:
-        - user
-      summary: Logs user into the system
-      operationId: loginUser
-      requestBody:
-        description: Object that stores user login data
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserLogin'
-        required: true
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthKey'
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-  /user/logout:
-    get:
-      tags:
-        - user
-      summary: Logs out current logged in user session
-      description: This can only be done by the logged-in user
-      operationId: logoutUser
-      responses:
-        200:
-          description: successful operation
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-      security:
-        - ApiKeyAuth: []
-  /survey:
-    post:
-      tags:
-        - survey
-      summary: Create new survey
-      description: Creates a new survey for the logged-in user
-      operationId: createSurvey
-      requestBody:
-        description: Created survey object
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SurveyPrepare'
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Survey'
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-      security:
-        - ApiKeyAuth: []
-  /surveys:
+  '/v2/fingerprints/{cookie}':
     get:
       tags:
         - survey
-      summary: Return all surveys for the logged in user
-      description: All surveys for the corresponding user are returned
-      operationId: getSurveys
+      summary: Get fingerprints by cookieID
+      description: Returns fingerprints for given cookieID
+      operationId: getParticipationsOfParticipantUsingGET
+      parameters:
+        - name: cookie
+          in: path
+          description: CookieID needed
+          required: true
+          style: simple
+          schema:
+            type: string
       responses:
-        200:
+        '200':
           description: successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Survey'
-        default:
-          description: unexpected error
+                  $ref: '#/components/schemas/Fingerprint'
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Fingerprint'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - ApiKeyAuth: []
+  /v2/survey:
+    post:
+      tags:
+        - survey
+      summary: Create new survey
+      description: Creates a new survey for the logged-in user
+      operationId: createSurveyUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurveyPrepare'
+      responses:
+        '200':
+          description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiError'
+                $ref: '#/components/schemas/SurveyRes'
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SurveyRes'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
       security:
         - ApiKeyAuth: []
-  /survey/{id}:
+  '/v2/survey/{id}':
     get:
       tags:
         - survey
       summary: Get survey by id
       description: Returns survey by id without need for authentication. This endpoint returns the survey for end-users
-      operationId: getSurveyById
+      operationId: getSurveyByIdUsingGET
       parameters:
         - name: id
           in: path
           description: ID of survey to return
           required: true
+          style: simple
           schema:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Survey'
-        default:
-          description: unexpected error
-          content:
-            application/json:
+                $ref: '#/components/schemas/SurveyRes'
+            '*/*':
               schema:
-                $ref: '#/components/schemas/ApiError'
+                $ref: '#/components/schemas/SurveyRes'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
     post:
       tags:
         - survey
       summary: Update survey by id
       description: Updates the corresponding survey
-      operationId: updateSurveyById
-      requestBody:
-        description: Created survey object
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SurveyPrepare'
+      operationId: updateSurveyByIdUsingPOST
       parameters:
         - name: id
           in: path
           description: ID of survey to update
           required: true
+          style: simple
           schema:
             type: integer
             format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurveyPrepare'
       responses:
-        200:
+        '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Survey'
-        default:
-          description: unexpected error
-          content:
-            application/json:
+                $ref: '#/components/schemas/SurveyRes'
+            '*/*':
               schema:
-                $ref: '#/components/schemas/ApiError'
+                $ref: '#/components/schemas/SurveyRes'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
       security:
         - ApiKeyAuth: []
     delete:
@@ -238,73 +151,150 @@ paths:
         - survey
       summary: Delete survey by id
       description: Deletes the corresponding survey
-      operationId: deleteSurveyById
+      operationId: deleteSurveyByIdUsingDELETE
       parameters:
         - name: id
           in: path
           description: ID of survey to update
           required: true
+          style: simple
           schema:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: successful operation
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
       security:
         - ApiKeyAuth: []
-  /survey/{id}/analysis:
+  '/v2/survey/{id}/analysis':
     get:
       tags:
         - survey
       summary: Returns an analysis for the given survey
       description: Returns an analysis object that contains data about the survey participants
-      operationId: getSurveyAnalysisById
+      operationId: getSurveyAnalysisByIdUsingGET
       parameters:
         - name: id
           in: path
           description: ID of survey to return an analysis for
           required: true
+          style: simple
           schema:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: successful operation
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Analysis'
-        default:
-          description: unexpected error
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Analysis'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - ApiKeyAuth: []
+  '/v2/survey/{id}/results':
+    get:
+      tags:
+        - submission
+      summary: Returns results of the given survey
+      description: Returns a more simple representation of survey results for the end-user to view
+      operationId: getSurveyResultsByIdUsingGET
+      parameters:
+        - name: id
+          in: path
+          description: ID of survey to return results for
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiError'
-      security:
-        - ApiKeyAuth: []
-  /survey/{id}/submissions:
+                $ref: '#/components/schemas/SurveyResult'
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SurveyResult'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/v2/survey/{id}/submission':
+    post:
+      tags:
+        - submission
+      summary: Creates a new submission for the given survey
+      description: Endpoint is used by the end-user to create a new submission
+      operationId: createSurveySubmissionUsingPOST
+      parameters:
+        - name: id
+          in: path
+          description: ID of survey to create a new submission for
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmissionPrepare'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Submission'
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Submission'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/v2/survey/{id}/submissions':
     get:
       tags:
         - submission
       summary: Returns all submissions for the given survey
       description: Returns a list of all submissions for the given survey
-      operationId: getSurveySubmissionsById
+      operationId: getSurveySubmissionsByIdUsingGET
       parameters:
         - name: id
           in: path
           description: ID of survey to return all submissions for
           required: true
+          style: simple
           schema:
             type: integer
             format: int64
       responses:
-        200:
+        '200':
           description: successful operation
           content:
             application/json:
@@ -312,203 +302,274 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Submission'
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
       security:
         - ApiKeyAuth: []
-  /survey/{id}/results:
+  /v2/surveys:
     get:
       tags:
-        - submission
-      summary: Returns results of the given survey
-      description: Returns a more simple representation of survey results for the end-user to view
-      operationId: getSurveyResultsById
-      parameters:
-        - name: id
-          in: path
-          description: ID of survey to return results for
-          required: true
-          schema:
-            type: integer
-            format: int64
+        - survey
+      summary: Return all surveys for the logged in user
+      description: All surveys for the corresponding user are returned
+      operationId: getSurveysUsingGET
       responses:
-        200:
+        '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SurveyResult'
-        default:
-          description: unexpected error
+                type: array
+                items:
+                  $ref: '#/components/schemas/Survey'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - ApiKeyAuth: []
+  /v2/user:
+    get:
+      tags:
+        - user
+      summary: Get user by api_key
+      description: This can only be done by the logged-in user and will return a user object
+      operationId: getUserUsingGET
+      responses:
+        '200':
+          description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiError'
-  /survey/{id}/submission:
+                $ref: '#/components/schemas/UserRes'
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserRes'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - ApiKeyAuth: []
     post:
       tags:
-        - submission
-      summary: Creates a new submission for the given survey
-      description: Endpoint is used by the end-user to create a new submission
-      operationId: createSurveySubmission
+        - user
+      summary: Create user
+      description: Registers a new user
+      operationId: createUserUsingPOST
       requestBody:
-        description: Created submission object for survey
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SubmissionPrepare'
-      parameters:
-        - name: id
-          in: path
-          description: ID of survey to create a new submission for
-          required: true
-          schema:
-            type: integer
-            format: int64
+              $ref: '#/components/schemas/UserReq'
       responses:
-        200:
+        '200':
+          description: successful operation
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      description: This can only be done by the logged-in user
+      operationId: deleteUserUsingDELETE
+      responses:
+        '200':
+          description: successful operation
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      security:
+        - ApiKeyAuth: []
+  /v2/user/login:
+    post:
+      tags:
+        - user
+      summary: Logs user into the system
+      operationId: loginUserUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+      responses:
+        '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Submission'
-        default:
-          description: unexpected error
-          content:
-            application/json:
+                $ref: '#/components/schemas/AuthKey'
+            '*/*':
               schema:
-                $ref: '#/components/schemas/ApiError'
+                $ref: '#/components/schemas/AuthKey'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /v2/user/logout:
+    get:
+      tags:
+        - user
+      summary: Logs out current logged in user session
+      description: This can only be done by the logged-in user
+      operationId: logoutUserUsingGET
+      responses:
+        '200':
+          description: successful operation
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - ApiKeyAuth: []
 components:
   schemas:
-    User:
+    Analysis:
+      title: Analysis
       required:
-        - email
-        - password
+        - id
+        - surveyId
       type: object
       properties:
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-          format: password
-          example: lol123
-        firstName:
-          type: string
-          example: Luca
-        lastName:
-          type: string
-          example: Mueller
-    UserLogin:
-      required:
-        - email
-        - password
-      type: object
-      properties:
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-          format: password
-          example: lol123
-    Survey:
-      required:
-        - name
-        - user
-        - questionText
-        - answerOptions
-        - mode
-      type: object
-      properties:
-        id:
+        amount:
           type: integer
           format: int64
-        name:
-          type: string
-          example: Survey about electric cars
-        questionText:
-          type: string
-          example: "What brand of electric car would you buy?"
-        mode:
-          type: string
-          enum: [radio, check, rating, dropdown, nps, consent]
-        backgroundColor:
-          type: string
-          example: "#9bfe55"
-        accentColor:
-          type: string
-          example: "#8d55fe"
-        user:
-          $ref: '#/components/schemas/User'
-        answerOptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/AnswerOption'
-    SurveyPrepare:
-      required:
-        - name
-        - questionText
-        - mode
-        - answerOptions
-      type: object
-      properties:
-        name:
-          type: string
-          example: Survey about electric cars
-        questionText:
-          type: string
-          example: "What brand of electric car would you buy?"
-        mode:
-          type: string
-          enum: [radio, check, rating, dropdown, nps, consent]
-        answerOptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/AnswerOption'
-    AnswerOption:
-      required:
-        - content
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        surveyId:
-          type: integer
-          format: int64
-        content:
-          oneOf:
-            - type: string
-            - type: number
-            - type: integer
-            - type: boolean
-          example: "Tesla"
-    SurveyResult:
-      type: object
-      properties:
-        surveyId:
-          type: integer
-          format: int64
-        choices:
+          example: 527
+        countries:
           type: object
           additionalProperties:
             type: integer
-          example:
-            Tesla: 420
-            Hyundai: 38
-            Porsche: 69
-    Submission:
+            format: int64
+          example: '{"Germany":69,"USA":420,"Spain":11,"Norway":27}'
+        id:
+          type: integer
+          format: int64
+        surveyId:
+          type: integer
+          format: int64
+    AnswerOption:
+      title: AnswerOption
       required:
+        - content
+        - id
         - surveyId
-        - timestamp
-        - choices
       type: object
       properties:
+        content:
+          type: string
+          example: Tesla
+        id:
+          type: integer
+          format: int64
+        surveyId:
+          $ref: '#/components/schemas/Survey'
+    AnswerOptionReq:
+      title: AnswerOptionReq
+      required:
+        - content
+        - id
+        - surveyId
+      type: object
+      properties:
+        content:
+          type: string
+          example: Tesla
+        id:
+          type: integer
+          format: int64
+        surveyId:
+          $ref: '#/components/schemas/SurveyReq'
+    AnswerOptionRes:
+      title: AnswerOptionRes
+      required:
+        - content
+        - id
+        - surveyId
+      type: object
+      properties:
+        content:
+          type: string
+          example: Tesla
+        id:
+          type: integer
+          format: int64
+        surveyId:
+          $ref: '#/components/schemas/SurveyRes'
+    AuthKey:
+      title: AuthKey
+      type: object
+      properties:
+        authKey:
+          type: string
+          example: bWFnZ2llOnN1bW1lcXMgs29E
+        expiry:
+          type: string
+          format: date-time
+        user:
+          $ref: '#/components/schemas/UserRes'
+    Fingerprint:
+      title: Fingerprint
+      type: object
+      properties:
+        cityAndCountry:
+          type: string
+          example: Stuttgart, Germany
+        submission:
+          $ref: '#/components/schemas/Submission'
+    Participant:
+      title: Participant
+      required:
+        - Cookie
+        - IP
+        - id
+      type: object
+      properties:
+        Cookie:
+          type: string
+          example: regsethdfghysdrhetjsrtgjhsgfhj456sgaru
+        IP:
+          type: string
+          example: 192.1.1.1
+        id:
+          type: integer
+          format: int64
+    Submission:
+      title: Submission
+      required:
+        - choices
+        - id
+        - participant
+        - surveyId
+        - timestamp
+      type: object
+      properties:
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnswerOptionRes'
         id:
           type: integer
           format: int64
@@ -520,84 +581,227 @@ components:
         timestamp:
           type: string
           format: date-time
-        choices:
-          type: array
-          items:
-            $ref: '#/components/schemas/AnswerOption'
     SubmissionPrepare:
+      title: SubmissionPrepare
       required:
         - choices
+        - participant
       type: object
       properties:
-        surveyId:
-          type: integer
-          format: int64
-        participant:
-          $ref: '#/components/schemas/Participant'
         choices:
           type: array
           items:
-            $ref: '#/components/schemas/AnswerOption'
-    Participant:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        IP:
-          type: string
-          format: ipv4
-        Cookie:
-          type: string
-    Analysis:
-      required:
-        - id
-        - surveyId
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
+            $ref: '#/components/schemas/AnswerOptionReq'
+        participant:
+          $ref: '#/components/schemas/Participant'
         surveyId:
           type: integer
           format: int64
-        amount:
+    Survey:
+      title: Survey
+      required:
+        - accentColor
+        - answerOptions
+        - backgroundColor
+        - id
+        - mode
+        - name
+        - questionText
+        - user
+      type: object
+      properties:
+        accentColor:
+          type: string
+        answerOptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnswerOption'
+        backgroundColor:
+          type: string
+        id:
           type: integer
           format: int64
-          example: 527
-        countries:
+        mode:
+          type: string
+        name:
+          type: string
+          example: Survey about electric cars
+        questionText:
+          type: string
+          example: What brand of electric car would you buy?
+        user:
+          $ref: '#/components/schemas/User'
+    SurveyPrepare:
+      title: SurveyPrepare
+      required:
+        - accentColor
+        - answerOptions
+        - backgroundColor
+        - mode
+        - name
+        - questionText
+      type: object
+      properties:
+        accentColor:
+          type: string
+        answerOptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnswerOptionReq'
+        backgroundColor:
+          type: string
+        mode:
+          type: string
+          enum:
+            - check
+            - consent
+            - dropdown
+            - nps
+            - radio
+            - rating
+        name:
+          type: string
+          example: Survey about electric cars
+        questionText:
+          type: string
+          example: What brand of electric car would you buy?
+    SurveyReq:
+      title: SurveyReq
+      required:
+        - accentColor
+        - answerOptions
+        - backgroundColor
+        - id
+        - mode
+        - name
+        - questionText
+        - user
+      type: object
+      properties:
+        accentColor:
+          type: string
+        answerOptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnswerOptionReq'
+        backgroundColor:
+          type: string
+        id:
+          type: integer
+          format: int64
+        mode:
+          type: string
+        name:
+          type: string
+          example: Survey about electric cars
+        questionText:
+          type: string
+          example: What brand of electric car would you buy?
+        user:
+          $ref: '#/components/schemas/UserReq'
+    SurveyRes:
+      title: SurveyRes
+      required:
+        - accentColor
+        - answerOptions
+        - backgroundColor
+        - id
+        - mode
+        - name
+        - questionText
+        - user
+      type: object
+      properties:
+        accentColor:
+          type: string
+        answerOptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnswerOptionRes'
+        backgroundColor:
+          type: string
+        id:
+          type: integer
+          format: int64
+        mode:
+          type: string
+        name:
+          type: string
+          example: Survey about electric cars
+        questionText:
+          type: string
+          example: What brand of electric car would you buy?
+        user:
+          $ref: '#/components/schemas/UserRes'
+    SurveyResult:
+      title: SurveyResult
+      type: object
+      properties:
+        choices:
           type: object
           additionalProperties:
             type: integer
-          example:
-            Germany: 69
-            USA: 420
-            Spain: 11
-            Norway: 27
-    AuthKey:
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/User'
-        authKey:
-          type: string
-          example: bWFnZ2llOnN1bW1lcXMgs29E
-        expiry:
-          type: string
-          format: date-time
-    ApiError:
-      type: object
-      properties:
-        code:
+            format: int32
+          example: '{"Tesla":0.65,"Hyundai":0.15,"Porsche":0.2}'
+        surveyId:
           type: integer
-          format: int32
-          example: 404
-        type:
+          format: int64
+    User:
+      title: User
+      required:
+        - email
+      type: object
+      properties:
+        email:
           type: string
-          example: Not Found
-        message:
+        firstName:
           type: string
-          example: Requested survey not found
+          example: Luca
+        lastName:
+          type: string
+          example: Mueller
+    UserLogin:
+      title: UserLogin
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+          example: lol123
+    UserReq:
+      title: UserReq
+      required:
+        - email
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+          example: Luca
+        lastName:
+          type: string
+          example: Mueller
+        password:
+          type: string
+    UserRes:
+      title: UserRes
+      required:
+        - email
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+          example: Luca
+        lastName:
+          type: string
+          example: Mueller
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
