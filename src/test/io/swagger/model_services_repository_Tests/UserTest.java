@@ -1,7 +1,6 @@
 package io.swagger.model_services_repository_Tests;
 
 import io.swagger.model.User;
-import io.swagger.repository.UserRepository;
 import io.swagger.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,7 +37,7 @@ class UserTest {
         int amount_of_users=100;
 
 
-        System.out.println("Users: "+amount_of_users);
+
         for(int i = 0; i<amount_of_users; i++){
             int rand = r.nextInt(44)+1;
             users.add(new User(stringGenerator(45),stringGenerator(rand),stringGenerator(rand),stringGenerator(rand)));

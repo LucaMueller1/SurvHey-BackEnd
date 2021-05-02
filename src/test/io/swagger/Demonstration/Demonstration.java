@@ -204,21 +204,19 @@ public class Demonstration {
         //fetch results 1.-> radio 2.->Checkbox
         //1.radio:
         response=mockMvc.perform(get("/survey/{id}/results",radioSurvey.getId()).contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse();
-        System.out.println("Results Radio: "+response.getContentAsString());
 
         //2. Check
         response=mockMvc.perform(get("/survey/{id}/results",checkboxSurvey.getId()).contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse();
-        System.out.println("Results Check: "+response.getContentAsString());
 
 
         //fetch analysis 1.-> radio 2.->Checkbox
         //1.radio:
         response=mockMvc.perform(get("/survey/{id}/analysis",radioSurvey.getId()).header("api_key",authKey).contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse();
-        System.out.println("Analysis Radio: "+response.getContentAsString());
+
 
         //2. Check
         response=mockMvc.perform(get("/survey/{id}/analysis",checkboxSurvey.getId()).header("api_key",authKey).contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse();
-        System.out.println("Analysis Check: "+response.getContentAsString());
+
 
         while (true){
             Thread.sleep(100000000);

@@ -71,7 +71,7 @@ public class SurveyAPIControllerResultsTest {
 
         MockHttpServletResponse response=mockMvc.perform(get("/survey/{id}/results",survey.getId()).contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse();
 
-        //System.out.println(response.getContentAsString());
+
         JSONObject jsonObject=new JSONObject(response.getContentAsString());
 
         JSONObject choices = new JSONObject(jsonObject.getString("choices"));
@@ -100,7 +100,7 @@ public class SurveyAPIControllerResultsTest {
         //prepare this test with test data
         this.prepare();
         MockHttpServletResponse response=mockMvc.perform(get("/survey/{id}/analysis",survey.getId()).header("api_key",authKey).contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse();
-        System.out.println(response.getContentAsString());
+
 
         assertEquals(200,response.getStatus());
 
