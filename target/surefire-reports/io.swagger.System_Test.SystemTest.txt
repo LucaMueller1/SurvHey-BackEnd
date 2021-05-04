@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: io.swagger.System_Test.SystemTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 16.557 s - in io.swagger.System_Test.SystemTest

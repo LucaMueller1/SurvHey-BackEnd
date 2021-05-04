@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: io.swagger.model_services_repository_Tests.UserTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.153 s - in io.swagger.model_services_repository_Tests.UserTest
