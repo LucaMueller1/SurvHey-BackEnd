@@ -103,7 +103,7 @@ public class Demonstration {
         answerOptionsRadio.add(new AnswerOption(null,null,"Straciatella"));
         answerOptionsRadio.add(new AnswerOption(null,null,"Erdbeere"));
 
-        Survey radioSurvey= new Survey(null,"Eissorte","Welche dieser Eissorten mögen Sie am liebsten?","check","#81D325","#000000",user,answerOptionsRadio);
+        Survey radioSurvey= new Survey(null,"Eissorte","Welche dieser Eissorten mögen Sie am liebsten?","check","#008a5e","#7dffb3",user,answerOptionsRadio);
 
 
         // create Survey and fetch response
