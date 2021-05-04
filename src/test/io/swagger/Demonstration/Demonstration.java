@@ -103,7 +103,7 @@ public class Demonstration {
         answerOptionsRadio.add(new AnswerOption(null,null,"Straciatella"));
         answerOptionsRadio.add(new AnswerOption(null,null,"Erdbeere"));
 
-        Survey radioSurvey= new Survey(null,"Eissorte","Welche dieser Eissorten mögen Sie am liebsten?","check",null,null,user,answerOptionsRadio);
+        Survey radioSurvey= new Survey(null,"Eissorte","Welche dieser Eissorten mögen Sie am liebsten?","check","#81D325","#000000",user,answerOptionsRadio);
 
 
         // create Survey and fetch response
@@ -124,7 +124,7 @@ public class Demonstration {
         answerOptionsCheckbox.add(new AnswerOption(null,null,"Python"));
         answerOptionsCheckbox.add(new AnswerOption(null,null,"PHP"));
 
-        Survey checkboxSurvey= new Survey(null,"Programmiersprachen","Welche dieser Programmiersprachen beherrschen Sie?","radio",null,null,user,answerOptionsCheckbox);
+        Survey checkboxSurvey= new Survey(null,"Programmiersprachen","Welche dieser Programmiersprachen beherrschen Sie?","radio","#0C3A71","#F7E562",user,answerOptionsCheckbox);
 
         responseCreation=mockMvc.perform(post("/survey").header("api_key",authKey).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(checkboxSurvey))).andReturn().getResponse();
         responseJson= new JSONObject(responseCreation.getContentAsString());
