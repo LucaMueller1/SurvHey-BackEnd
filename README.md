@@ -1,6 +1,6 @@
 # SurvHey BackEnd
 
-The Spring Boot Server of the awesome SurvHey Project. 
+The Spring Boot Server of the awesome SurvHey Project. FrontEnd repository can be found [here](https://github.com/LucaMueller1/SurvHey-FrontEnd).
 
 ## Overview 
 The OpenAPI Specification is the openapi.yaml document in the root directory and is aditionally generated during runtime (localhost:8080/v2/api-docs).
