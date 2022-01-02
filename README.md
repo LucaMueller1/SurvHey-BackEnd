@@ -18,7 +18,7 @@ docker run -d --name survhey-backend -p 8080:8080 survhey-backend
 ```
 
 The API is reachable under localhost:8080.
-The BackEnd is included in the multi-container Docker stack in the [SurvHey-Delivery](https://git.dhbw-stuttgart.de/survhey/survhey-delivery) repository.
+The BackEnd is included in the multi-container Docker stack in the [SurvHey](https://github.com/LucaMueller1/SurvHey) repository.
 
 ## Run tests
 
